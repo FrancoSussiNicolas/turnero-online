@@ -1,0 +1,54 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.14.36310.24
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WebAPI", "WebAPI\WebAPI.csproj", "{E3FB3257-552F-4E66-9842-73B2E13BEABE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Controllers", "Controllers\Controllers.csproj", "{9094C448-B8C8-4573-9B36-42C8FBAC9CA2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Entities", "Entities\Entities.csproj", "{785347EB-3EC6-467C-A7AD-94CADA8C1D72}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{893E2952-3661-4188-8486-7E7177C22A8C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DTOs", "DTOs\DTOs.csproj", "{35369558-EC39-4AEE-849F-07EBFE89D095}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución", "Elementos de la solución", "{D107F4C8-89CC-BEA8-D3D7-CA6B7733353D}"
+	ProjectSection(SolutionItems) = preProject
+		.gitignore = .gitignore
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{E3FB3257-552F-4E66-9842-73B2E13BEABE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3FB3257-552F-4E66-9842-73B2E13BEABE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3FB3257-552F-4E66-9842-73B2E13BEABE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3FB3257-552F-4E66-9842-73B2E13BEABE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9094C448-B8C8-4573-9B36-42C8FBAC9CA2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9094C448-B8C8-4573-9B36-42C8FBAC9CA2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9094C448-B8C8-4573-9B36-42C8FBAC9CA2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9094C448-B8C8-4573-9B36-42C8FBAC9CA2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{785347EB-3EC6-467C-A7AD-94CADA8C1D72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{785347EB-3EC6-467C-A7AD-94CADA8C1D72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{785347EB-3EC6-467C-A7AD-94CADA8C1D72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{785347EB-3EC6-467C-A7AD-94CADA8C1D72}.Release|Any CPU.Build.0 = Release|Any CPU
+		{893E2952-3661-4188-8486-7E7177C22A8C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{893E2952-3661-4188-8486-7E7177C22A8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{893E2952-3661-4188-8486-7E7177C22A8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{893E2952-3661-4188-8486-7E7177C22A8C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{35369558-EC39-4AEE-849F-07EBFE89D095}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{35369558-EC39-4AEE-849F-07EBFE89D095}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{35369558-EC39-4AEE-849F-07EBFE89D095}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{35369558-EC39-4AEE-849F-07EBFE89D095}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0E30B6F1-3AE8-4917-B6BA-9FF71A5BA1F5}
+	EndGlobalSection
+EndGlobal
