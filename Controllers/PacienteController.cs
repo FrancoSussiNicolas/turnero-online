@@ -18,13 +18,13 @@ namespace Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Entities.Paciente>> GetAll()
+        public ActionResult<IEnumerable<Paciente>> GetAll()
         {
             return Ok(pacienteService.GetAll());
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Entities.Paciente> GetById(int id)
+        public ActionResult<Paciente> GetById(int id)
         {
 
             var p = pacienteService.GetByIdPaciente(id);
@@ -35,7 +35,7 @@ namespace Controllers
 
 
         [HttpPost]
-        public ActionResult<Entities.Paciente> CrearPaciente([FromBody] Entities.Paciente paciente)
+        public ActionResult<Paciente> CrearPaciente([FromBody] PacienteDTO paciente)
         {
             var newPaciente = pacienteService.CrearPaciente(paciente);
 
@@ -44,7 +44,7 @@ namespace Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdatePaciente([FromBody] Entities.Paciente paciente, int id)
+        public ActionResult UpdatePaciente([FromBody] PacienteDTO paciente, int id)
         {
             var updatePac = pacienteService.UpdatePaciente(paciente, id); 
             if(updatePac is null) return NotFound();

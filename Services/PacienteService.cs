@@ -1,4 +1,5 @@
 ﻿using Entities;
+using DTOs;
 
 namespace Services
 {
@@ -13,7 +14,7 @@ namespace Services
             return Paciente.listaPaciente.FirstOrDefault(pac => pac.IdPersona == idPaciente);
         }
 
-        public Paciente CrearPaciente(Paciente paciente)
+        public Paciente CrearPaciente(PacienteDTO paciente)
         {
             var newPaciente = new Paciente(
                 paciente.ApellidoNombre,
@@ -30,7 +31,7 @@ namespace Services
 
         }
 
-        public Paciente? UpdatePaciente(Paciente pac, int idPac)
+        public Paciente? UpdatePaciente(PacienteDTO pac, int idPac)
         {
             var pacEncontrado = GetByIdPaciente(idPac);
 

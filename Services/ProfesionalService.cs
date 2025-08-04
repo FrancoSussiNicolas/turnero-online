@@ -1,4 +1,5 @@
 ﻿using Entities;
+using DTOs;
 
 namespace Services
 {
@@ -14,7 +15,7 @@ namespace Services
             return Profesional.listaProfesional.FirstOrDefault(pro => pro.IdPersona == id);
         }
 
-        public Profesional CrearProfesional(Profesional profesional)
+        public Profesional CrearProfesional(ProfesionalDTO profesional)
         {
             var newProfesional = new Profesional(
                 profesional.ApellidoNombre,
@@ -28,7 +29,7 @@ namespace Services
 
         }
 
-        public Profesional? UpdateProfesional(Profesional pro, int idPro)
+        public Profesional? UpdateProfesional(ProfesionalDTO pro, int idPro)
         {
             var proEncontrado = GetByIdProfesional(idPro);
 

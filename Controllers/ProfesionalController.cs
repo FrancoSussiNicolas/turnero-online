@@ -35,7 +35,7 @@ namespace Controllers
 
 
         [HttpPost]
-        public ActionResult<Profesional> CrearProfesional([FromBody] Profesional profesional)
+        public ActionResult<Profesional> CrearProfesional([FromBody] ProfesionalDTO profesional)
         {
             var newProfesional = profesionalService.CrearProfesional(profesional);
 
@@ -44,7 +44,7 @@ namespace Controllers
         }
 
         [HttpPut("{id}")]
-        public ActionResult UpdateProfesional([FromBody] Profesional profesional, int id)
+        public ActionResult UpdateProfesional([FromBody] ProfesionalDTO profesional, int id)
         {
             var updatePro = profesionalService.UpdateProfesional(profesional, id);
             if (updatePro is null) return NotFound();
