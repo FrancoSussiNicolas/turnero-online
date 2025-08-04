@@ -18,6 +18,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Elementos de la solución",
 		.gitignore = .gitignore
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp", "WinFormsApp\WinFormsApp.csproj", "{CAE69B9C-1FEF-4900-962B-D81E97DC7BEF}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Clients", "API.Clients\API.Clients.csproj", "{7EC2256D-61A3-4ED4-80CB-6E0C66024175}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +48,14 @@ Global
 		{35369558-EC39-4AEE-849F-07EBFE89D095}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{35369558-EC39-4AEE-849F-07EBFE89D095}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{35369558-EC39-4AEE-849F-07EBFE89D095}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CAE69B9C-1FEF-4900-962B-D81E97DC7BEF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CAE69B9C-1FEF-4900-962B-D81E97DC7BEF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CAE69B9C-1FEF-4900-962B-D81E97DC7BEF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CAE69B9C-1FEF-4900-962B-D81E97DC7BEF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EC2256D-61A3-4ED4-80CB-6E0C66024175}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EC2256D-61A3-4ED4-80CB-6E0C66024175}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EC2256D-61A3-4ED4-80CB-6E0C66024175}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EC2256D-61A3-4ED4-80CB-6E0C66024175}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
