@@ -10,9 +10,15 @@ namespace WinFormsApp
             InitializeComponent();
         }
 
-        private void PacienteForm_Load(object sender, EventArgs e)
+        private async void PacienteForm_Load(object sender, EventArgs e)
         {
-            this.GetAllAndLoad();
+            await this.GetAllAndLoad();
+        }
+
+        protected override async void OnShown(EventArgs e)
+        {
+            base.OnShown(e);
+            await GetAllAndLoad();
         }
 
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
@@ -20,7 +26,7 @@ namespace WinFormsApp
 
         }
 
-        private async void GetAllAndLoad()
+        private async Task GetAllAndLoad()
         {
             try
             {

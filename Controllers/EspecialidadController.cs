@@ -7,7 +7,7 @@ namespace Controllers
 {
     [ApiController]
     [Route("especialidades")]
-    public class EspecialidadController
+    public class EspecialidadController : ControllerBase
     {
 
         private readonly EspecialidadesService especialidadService;

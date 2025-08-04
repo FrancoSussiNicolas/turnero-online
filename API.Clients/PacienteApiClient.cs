@@ -9,7 +9,7 @@ namespace API.Clients
         private static HttpClient client = new HttpClient();
         static PacienteApiClient()
         {
-            client.BaseAddress = new Uri("http://localhost:7119/");
+            client.BaseAddress = new Uri("https://localhost:7119/");
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(
                 new MediaTypeWithQualityHeaderValue("application/json"));
@@ -20,8 +20,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("pacientes" +
-                    "/" + id);
+                HttpResponseMessage response = await client.GetAsync("pacientes/" + id);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -117,7 +116,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync("pacientes", paciente);
+                HttpResponseMessage response = await client.PutAsJsonAsync($"pacientes/{paciente.IdPersona}", paciente);
 
                 if (!response.IsSuccessStatusCode)
                 {

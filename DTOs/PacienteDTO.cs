@@ -4,7 +4,6 @@ namespace DTOs
 {
     public class PacienteDTO
     {
-        [Required]
         public int IdPersona { get; set; }
 
         [Required]

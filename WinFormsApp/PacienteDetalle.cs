@@ -121,16 +121,12 @@ namespace WinFormsApp
             {
                 idLabel.Visible = false;
                 idTextBox.Visible = false;
-                fechaNacLabel.Visible = false;
-                fechaNacTextBox.Visible = false;
             }
 
             if (Mode == FormMode.Update)
             {
                 idLabel.Visible = true;
                 idTextBox.Visible = true;
-                fechaNacLabel.Visible = true;
-                fechaNacTextBox.Visible = true; 
             }
         }
 

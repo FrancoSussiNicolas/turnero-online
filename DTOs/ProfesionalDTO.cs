@@ -9,7 +9,6 @@ namespace DTOs
 {
     public class ProfesionalDTO
     {
-        [Required]
         public int IdPersona { get; set; }
 
         [Required]

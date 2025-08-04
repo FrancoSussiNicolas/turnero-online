@@ -40,7 +40,7 @@ namespace Controllers
             var newPaciente = pacienteService.CrearPaciente(paciente);
 
             //return CreatedAtAction(nameof(GetById), new { id = newPaciente.IdPersona }, newPaciente);
-            return Created($"https://localhost:7275/pacientes/{newPaciente.IdPersona}", newPaciente); 
+            return Created($"https://localhost:7119/pacientes/{newPaciente.IdPersona}", newPaciente); 
         }
 
         [HttpPut("{id}")]
