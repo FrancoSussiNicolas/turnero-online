@@ -39,7 +39,7 @@ namespace Controllers
         {
             var newEsp = especialidadService.CreateEspecialidad(especialidad);
 
-            return Created($"https://localhost:7275/especialidades/{newEsp.IdEspecialidad}", newEsp);
+            return Created($"https://localhost:7119/especialidades/{newEsp.IdEspecialidad}", newEsp);
         }
 
         [HttpPut("{id}")]

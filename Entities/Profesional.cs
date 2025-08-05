@@ -9,7 +9,8 @@ namespace Entities
     public class Profesional : Persona
     {
         public string Matricula { get; set; }
-        public List<Especialidad> especialidades { get; set; }
+        public List<Especialidad> Especialidades { get; set; }
+        public List<Turno> Turnos { get; set; }
 
         public static List<Profesional> listaProfesional = new(); 
 
@@ -21,7 +22,12 @@ namespace Entities
 
         public void AddEspecialidad(Especialidad esp)
         {
-            this.especialidades.Add(esp);
+            Especialidades.Add(esp);
+        }
+
+        public void AddTurno(Turno turno)
+        {
+            Turnos.Add(turno);
         }
 
         private static int ObtenerProximoId()
