@@ -80,6 +80,7 @@ namespace WinFormsApp
 
                     if (this.Mode == FormMode.Update)
                     {
+                        this.Paciente.IdPersona = int.Parse(idTextBox.Text);
                         await PacienteApiClient.UpdateAsync(this.Paciente);
                     }
                     else
@@ -140,7 +141,7 @@ namespace WinFormsApp
             errorProvider.SetError(telefonoTextBox, string.Empty);
             errorProvider.SetError(sexoTextBox, string.Empty);
             errorProvider.SetError(dniTextBox, string.Empty);
-            errorProvider.SetError(emailTextBox, string.Empty);
+            errorProvider.SetError(fechaNacTextBox, string.Empty);
 
 
             if (this.nombreTextBox.Text == string.Empty)

@@ -47,7 +47,7 @@ namespace WinFormsApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar la lista de clientes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar la lista de pacientes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 this.eliminarButton.Enabled = false;
                 this.modificarButton.Enabled = false;
             }
@@ -55,14 +55,14 @@ namespace WinFormsApp
 
         private PacienteDTO SelectedItem()
         {
-            PacienteDTO cliente;
+            PacienteDTO paciente;
 
-            cliente = (PacienteDTO)PacientesDataGridView.SelectedRows[0].DataBoundItem;
+            paciente = (PacienteDTO)PacientesDataGridView.SelectedRows[0].DataBoundItem;
 
-            return cliente;
+            return paciente;
         }
 
-        private void agregarButton_Click(object sender, EventArgs e)
+        private async void agregarButton_Click(object sender, EventArgs e)
         {
             var pacienteDetalle = new PacienteDetalle();
 
@@ -73,7 +73,7 @@ namespace WinFormsApp
 
             pacienteDetalle.ShowDialog();
 
-            this.GetAllAndLoad();
+            await this.GetAllAndLoad();
         }
 
         private async void modificarButton_Click(object sender, EventArgs e)
@@ -91,7 +91,7 @@ namespace WinFormsApp
 
                 pacienteDetalle.ShowDialog();
 
-                this.GetAllAndLoad();
+                await this.GetAllAndLoad();
             }
             catch (Exception ex)
             {
@@ -110,7 +110,7 @@ namespace WinFormsApp
                 if (result == DialogResult.Yes)
                 {
                     await PacienteApiClient.DeleteAsync(id);
-                    this.GetAllAndLoad();
+                    await this.GetAllAndLoad();
                 }
             }
             catch (Exception ex)

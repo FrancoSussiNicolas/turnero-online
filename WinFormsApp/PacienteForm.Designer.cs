@@ -38,18 +38,20 @@
             // PacientesDataGridView
             // 
             PacientesDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            PacientesDataGridView.Location = new Point(12, 12);
+            PacientesDataGridView.Location = new Point(10, 9);
+            PacientesDataGridView.Margin = new Padding(3, 2, 3, 2);
             PacientesDataGridView.Name = "PacientesDataGridView";
             PacientesDataGridView.RowHeadersWidth = 51;
-            PacientesDataGridView.Size = new Size(776, 365);
+            PacientesDataGridView.Size = new Size(1091, 495);
             PacientesDataGridView.TabIndex = 0;
             PacientesDataGridView.CellContentClick += dataGridView1_CellContentClick;
             // 
             // agregarButton
             // 
-            agregarButton.Location = new Point(79, 403);
+            agregarButton.Location = new Point(281, 536);
+            agregarButton.Margin = new Padding(3, 2, 3, 2);
             agregarButton.Name = "agregarButton";
-            agregarButton.Size = new Size(138, 35);
+            agregarButton.Size = new Size(121, 42);
             agregarButton.TabIndex = 1;
             agregarButton.Text = "Agregar";
             agregarButton.UseVisualStyleBackColor = true;
@@ -57,9 +59,10 @@
             // 
             // modificarButton
             // 
-            modificarButton.Location = new Point(324, 403);
+            modificarButton.Location = new Point(503, 536);
+            modificarButton.Margin = new Padding(3, 2, 3, 2);
             modificarButton.Name = "modificarButton";
-            modificarButton.Size = new Size(138, 35);
+            modificarButton.Size = new Size(121, 42);
             modificarButton.TabIndex = 2;
             modificarButton.Text = "Modificar";
             modificarButton.UseVisualStyleBackColor = true;
@@ -67,9 +70,10 @@
             // 
             // eliminarButton
             // 
-            eliminarButton.Location = new Point(582, 403);
+            eliminarButton.Location = new Point(728, 536);
+            eliminarButton.Margin = new Padding(3, 2, 3, 2);
             eliminarButton.Name = "eliminarButton";
-            eliminarButton.Size = new Size(138, 35);
+            eliminarButton.Size = new Size(121, 42);
             eliminarButton.TabIndex = 3;
             eliminarButton.Text = "Eliminar";
             eliminarButton.UseVisualStyleBackColor = true;
@@ -77,13 +81,14 @@
             // 
             // PacienteForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(1113, 610);
             Controls.Add(eliminarButton);
             Controls.Add(modificarButton);
             Controls.Add(agregarButton);
             Controls.Add(PacientesDataGridView);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "PacienteForm";
             Text = "Pacientes";
             ((System.ComponentModel.ISupportInitialize)PacientesDataGridView).EndInit();
