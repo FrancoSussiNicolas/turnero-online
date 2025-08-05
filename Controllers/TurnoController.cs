@@ -15,10 +15,12 @@ namespace Controllers
     public class TurnoController : ControllerBase
     {
         private readonly TurnoService turnoService;
+        private readonly ConsultorioService consultorioService;
 
-        public TurnoController(TurnoService turnoService)
+        public TurnoController(TurnoService turnoService, ConsultorioService consultorioService)
         {
             this.turnoService = turnoService;
+            this.consultorioService = consultorioService;
         }
 
         [HttpGet]
@@ -46,7 +48,11 @@ namespace Controllers
         [HttpPost]
         public ActionResult<Turno> CrearTurno([FromBody] TurnoDTO turno)
         {
-            var newTurno = turnoService.CreateTurno(turno);
+            var consultorio = consultorioService.GetByNro(turno.NroConsultorio);
+            if (consultorio is null) return NotFound();
+            if (!consultorio.EstaLibre(turno.FechaTurno, turno.HoraTurno)) return UnprocessableEntity();
+
+            var newTurno = turnoService.CreateTurno(turno, consultorio);
 
             return Created($"https://localhost:7119/turnos/{newTurno.IdTurno}", newTurno);
         }

@@ -17,7 +17,9 @@ namespace Entities
         public Profesional(string apellidoNombre, string mail, string contrasenia, string matricula) 
             : base (apellidoNombre, mail, contrasenia, ObtenerProximoId())
         {
-            Matricula = matricula; 
+            Matricula = matricula;
+            Turnos = new();
+            Especialidades = new();
         }
 
         public void AddEspecialidad(Especialidad esp)

@@ -19,5 +19,8 @@ namespace DTOs
         public TimeOnly HoraTurno { get; set; }
 
         public EstadoTurno Estado { get; set; }
+
+        [Required]
+        public int NroConsultorio { get; set; }
     }
 }

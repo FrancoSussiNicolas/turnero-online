@@ -13,6 +13,7 @@ builder.Services.AddSingleton<PacienteService>();
 builder.Services.AddSingleton<ProfesionalService>();
 builder.Services.AddSingleton<EspecialidadesService>();
 builder.Services.AddSingleton<TurnoService>();
+builder.Services.AddSingleton<ConsultorioService>();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

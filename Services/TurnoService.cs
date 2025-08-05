@@ -25,12 +25,13 @@ namespace Services
             return Turno.ListaTurno.FindAll(turno => turno.Estado == EstadoTurno.Disponible);
         }
 
-        public Turno CreateTurno(TurnoDTO turno)
+        public Turno CreateTurno(TurnoDTO turno, Consultorio consultorio)
         {
             var newTurno= new Turno(
                 turno.FechaTurno,
                 turno.HoraTurno,
-                EstadoTurno.Disponible
+                EstadoTurno.Disponible,
+                consultorio
             );
 
             Turno.ListaTurno.Add(newTurno);

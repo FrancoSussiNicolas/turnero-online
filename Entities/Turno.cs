@@ -18,15 +18,17 @@ namespace Entities
         public DateOnly FechaTurno { get; set; }
         public TimeOnly HoraTurno { get; set; }
         public EstadoTurno Estado { get; set; }
+        public Consultorio Consultorio { get; set; }
 
         static public List<Turno> ListaTurno = new();
 
-        public Turno(DateOnly fecha, TimeOnly hora, EstadoTurno estado) 
+        public Turno(DateOnly fecha, TimeOnly hora, EstadoTurno estado, Consultorio consultorio) 
         {
             IdTurno = ObtenerProximoId();
             FechaTurno = fecha;
             HoraTurno = hora;
             Estado = estado;
+            Consultorio = consultorio;
         }
 
         private static int ObtenerProximoId()
