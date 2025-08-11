@@ -14,6 +14,10 @@ builder.Services.AddSingleton<ProfesionalService>();
 builder.Services.AddSingleton<EspecialidadesService>();
 builder.Services.AddSingleton<TurnoService>();
 builder.Services.AddSingleton<ConsultorioService>();
+builder.Services.AddSingleton<ObraSocialService>();
+builder.Services.AddSingleton<PlanObraSocialService>();
+
+
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 

@@ -12,6 +12,8 @@ namespace Entities
         public List<Especialidad> Especialidades { get; set; }
         public List<Turno> Turnos { get; set; }
 
+        public List<ObraSocial> ObraSociales { get; set; }
+
         public static List<Profesional> listaProfesional = new(); 
 
         public Profesional(string apellidoNombre, string mail, string contrasenia, string matricula) 
@@ -30,6 +32,11 @@ namespace Entities
         public void AddTurno(Turno turno)
         {
             Turnos.Add(turno);
+        }
+
+        public void AddObraSocial(ObraSocial obraSocial)
+        {
+           ObraSociales.Add(obraSocial);
         }
 
         private static int ObtenerProximoId()
