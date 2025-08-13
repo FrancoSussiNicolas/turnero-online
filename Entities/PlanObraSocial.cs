@@ -36,7 +36,7 @@ namespace Entities
 
         private static int ObtenerProximoId()
         {
-            return PlanesObraSocial.Count == 0 ? 1 : PlanesObraSocial.Max(e => e.NroPlan) + 1;
+            return listaPlanesObraSocial.Count == 0 ? 1 : listaPlanesObraSocial.Max(e => e.NroPlan) + 1;
         }
 
     }
