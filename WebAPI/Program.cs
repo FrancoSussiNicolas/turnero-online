@@ -16,6 +16,7 @@ builder.Services.AddSingleton<TurnoService>();
 builder.Services.AddSingleton<ConsultorioService>();
 builder.Services.AddSingleton<ObraSocialService>();
 builder.Services.AddSingleton<PlanObraSocialService>();
+builder.Services.AddSingleton<PracticaService>();
 
 
 builder.Services.AddEndpointsApiExplorer();
