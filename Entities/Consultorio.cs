@@ -9,27 +9,19 @@ namespace Entities
 {
     public class Consultorio
     {
-        public int NroConsultorio { get; set; }
+        public int ConsultorioId { get; set; }
         public string Ubicacion { get; set; }
-        public List<Turno> TurnosConsultorio { get; set; }
-
-        static public List<Consultorio> ListaConsultorio = new();
+        public List<Turno> Turnos { get; set; }
 
         public Consultorio(string ubicacion)
         {
-            NroConsultorio = ObtenerProximoNro();
             Ubicacion = ubicacion;
-            TurnosConsultorio = new();
-        }
-
-        private static int ObtenerProximoNro()
-        {
-            return ListaConsultorio.Count == 0 ? 1 : ListaConsultorio.Max(c => c.NroConsultorio) + 1;
+            Turnos = [];
         }
 
         public bool EstaLibre(DateOnly fechaTurno, TimeOnly horaTurno)
         {
-            return !this.TurnosConsultorio.Exists(turno => turno.FechaTurno == fechaTurno && turno.HoraTurno == horaTurno);
+            return !this.Turnos.Exists(turno => turno.FechaTurno == fechaTurno && turno.HoraTurno == horaTurno);
         }
     }
 }

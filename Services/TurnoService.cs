@@ -10,47 +10,63 @@ namespace Services
 {
     public class TurnoService
     {
-        public IEnumerable<Turno> GetAll()
+        public List<Turno> GetAll()
         {
-            return Turno.ListaTurno;
+            using (var context = new TurneroContext())
+            {
+                return context.Turnos.ToList();
+            }
         }
 
         public Turno? GetById(int id)
         {
-            return Turno.ListaTurno.FirstOrDefault(turno => turno.IdTurno == id);
+            using (var context = new TurneroContext())
+            {
+                return context.Turnos.FirstOrDefault(turno => turno.TurnoId == id);
+            }
         }
 
-        public IEnumerable<Turno> GetDisponibles()
+        public List<Turno> GetDisponibles()
         {
-            return Turno.ListaTurno.FindAll(turno => turno.Estado == EstadoTurno.Disponible);
+            using (var context = new TurneroContext())
+            {
+                return context.Turnos.ToList().FindAll(turno => turno.Estado == EstadoTurno.Disponible);
+            }
+
         }
 
         public Turno CreateTurno(TurnoDTO turno, Consultorio consultorio)
         {
-            var newTurno= new Turno(
-                turno.FechaTurno,
-                turno.HoraTurno,
-                EstadoTurno.Disponible,
-                consultorio
-            );
+            using (var context = new TurneroContext())
+            {
+                var newTurno = new Turno(
+                    turno.FechaTurno,
+                    turno.HoraTurno,
+                    EstadoTurno.Disponible,
+                    consultorio
+                );
 
-            Turno.ListaTurno.Add(newTurno);
-            return newTurno;
-
+                context.Turnos.Add(newTurno);
+                context.SaveChanges();
+                return newTurno;
+            }
         }
 
         public Turno? UpdateTurno(TurnoDTO turno, int id)
         {
             var turnoFound = GetById(id);
-
             if (turnoFound is null) return null;
 
-            turnoFound.IdTurno = turno.IdTurno;
-            turnoFound.FechaTurno = turno.FechaTurno;
-            turnoFound.HoraTurno = turno.HoraTurno;
-            turnoFound.Estado = turno.Estado;
+            using (var context = new TurneroContext())
+            {
+                turnoFound.TurnoId = turno.TurnoId;
+                turnoFound.FechaTurno = turno.FechaTurno;
+                turnoFound.HoraTurno = turno.HoraTurno;
+                turnoFound.Estado = turno.Estado;
 
-            return turnoFound;
+                context.SaveChanges();
+                return turnoFound;
+            }
         }
 
         public bool ConfirmarTurno(int id)
@@ -58,8 +74,11 @@ namespace Services
             var turnoFound = GetById(id);
             if (turnoFound is null) return false;
 
-            turnoFound.Estado = EstadoTurno.Ocupado;
-            return true;
+            using (var context = new TurneroContext())
+            {
+                turnoFound.Estado = EstadoTurno.Ocupado;
+                return true;
+            }
         }
 
         public bool DeleteTurno(int id)
@@ -67,8 +86,11 @@ namespace Services
             var turno = GetById(id);
             if (turno == null) return false;
 
-            Turno.ListaTurno.Remove(turno);
-            return true;
+            using (var context = new TurneroContext())
+            {
+                context.Turnos.Remove(turno);
+                return true;
+            }
         }
     }
 }

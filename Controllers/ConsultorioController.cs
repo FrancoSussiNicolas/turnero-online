@@ -28,10 +28,10 @@ namespace Controllers
         }
 
         [HttpGet("{nro}")]
-        public ActionResult<Consultorio> GetByNro(int nro)
+        public ActionResult<Consultorio> GetById(int nro)
         {
 
-            var consultorio = consultorioService.GetByNro(nro);
+            var consultorio = consultorioService.GetById(nro);
             if (consultorio is null) return NotFound();
 
             return Ok(consultorio);
@@ -42,7 +42,7 @@ namespace Controllers
         {
             var newConsul = consultorioService.CreateConsultorio(consultorio);
 
-            return Created($"https://localhost:7119/consultorios/{newConsul.NroConsultorio}", newConsul);
+            return Created($"https://localhost:7119/consultorios/{newConsul.ConsultorioId}", newConsul);
         }
 
         [HttpPut("{nro}")]

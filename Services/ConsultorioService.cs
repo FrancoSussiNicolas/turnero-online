@@ -10,43 +10,60 @@ namespace Services
 {
     public class ConsultorioService
     {
-        public IEnumerable<Consultorio> GetAll()
+        public List<Consultorio> GetAll()
         {
-            return Consultorio.ListaConsultorio;
+            using (var context = new TurneroContext())
+            {
+                return context.Consultorios.ToList();
+            }
         }
 
-        public Consultorio? GetByNro(int nro)
+        public Consultorio? GetById(int id)
         {
-            return Consultorio.ListaConsultorio.FirstOrDefault(consul => consul.NroConsultorio == nro);
+            using (var context = new TurneroContext())
+            {
+                return context.Consultorios.FirstOrDefault(consul => consul.ConsultorioId == id);
+            }
         }
 
         public Consultorio CreateConsultorio(ConsultorioDTO consultorio)
         {
-            var newConsul = new Consultorio(consultorio.Ubicacion);
+            using (var context = new TurneroContext())
+            {
+                var newConsul = new Consultorio(consultorio.Ubicacion);
 
-            Consultorio.ListaConsultorio.Add(newConsul);
-            return newConsul;
+                context.Consultorios.Add(newConsul);
+                context.SaveChanges();
+                return newConsul;
+            }
         }
 
-        public Consultorio? UpdateConsultorio(ConsultorioDTO consultorio, int nro)
+        public Consultorio? UpdateConsultorio(ConsultorioDTO consultorio, int id)
         {
-            var consulFound = GetByNro(nro);
-
+            var consulFound = GetById(id);
             if (consulFound is null) return null;
 
-            consulFound.NroConsultorio = consultorio.NroConsultorio;
-            consulFound.Ubicacion = consultorio.Ubicacion;
+            using (var context = new TurneroContext())
+            {
+                consulFound.ConsultorioId = consultorio.ConsultorioId;
+                consulFound.Ubicacion = consultorio.Ubicacion;
 
-            return consulFound;
+                context.SaveChanges();
+                return consulFound;
+            }
         }
 
-        public bool DeleteConsultorio(int nro)
+        public bool DeleteConsultorio(int id)
         {
-            var consul = GetByNro(nro);
+            var consul = GetById(id);
             if (consul == null) return false;
 
-            Consultorio.ListaConsultorio.Remove(consul);
-            return true;
+            using (var context = new TurneroContext())
+            {
+                context.Consultorios.Remove(consul);
+                context.SaveChanges();
+                return true;
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ namespace DTOs
 {
     public class EspecialidadDTO
     {
-        public int IdEspecialidad { get; set; }
+        public int EspecialidadId { get; set; }
 
         [Required]
         public string Descripcion { get; set; }

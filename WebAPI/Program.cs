@@ -9,14 +9,14 @@ builder.Services.AddControllers()
     {
         options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
     });
-builder.Services.AddSingleton<PacienteService>();
-builder.Services.AddSingleton<ProfesionalService>();
-builder.Services.AddSingleton<EspecialidadesService>();
-builder.Services.AddSingleton<TurnoService>();
-builder.Services.AddSingleton<ConsultorioService>();
-builder.Services.AddSingleton<ObraSocialService>();
-builder.Services.AddSingleton<PlanObraSocialService>();
-builder.Services.AddSingleton<PracticaService>();
+builder.Services.AddScoped<PacienteService>();
+builder.Services.AddScoped<ProfesionalService>();
+builder.Services.AddScoped<EspecialidadesService>();
+builder.Services.AddScoped<TurnoService>();
+builder.Services.AddScoped<ConsultorioService>();
+builder.Services.AddScoped<ObraSocialService>();
+builder.Services.AddScoped<PlanObraSocialService>();
+builder.Services.AddScoped<PracticaService>();
 
 
 builder.Services.AddEndpointsApiExplorer();

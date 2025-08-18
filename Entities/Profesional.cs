@@ -9,24 +9,16 @@ namespace Entities
     public class Profesional : Persona
     {
         public string Matricula { get; set; }
-        public List<Especialidad> Especialidades { get; set; }
+        public int EspecialidadId { get; set; }
+        public Especialidad Especialidad { get; set; }
         public List<Turno> Turnos { get; set; }
-
         public List<ObraSocial> ObraSociales { get; set; }
 
-        public static List<Profesional> listaProfesional = new(); 
-
         public Profesional(string apellidoNombre, string mail, string contrasenia, string matricula) 
-            : base (apellidoNombre, mail, contrasenia, ObtenerProximoId())
+            : base (apellidoNombre, mail, contrasenia)
         {
             Matricula = matricula;
             Turnos = new();
-            Especialidades = new();
-        }
-
-        public void AddEspecialidad(Especialidad esp)
-        {
-            Especialidades.Add(esp);
         }
 
         public void AddTurno(Turno turno)
@@ -37,11 +29,6 @@ namespace Entities
         public void AddObraSocial(ObraSocial obraSocial)
         {
            ObraSociales.Add(obraSocial);
-        }
-
-        private static int ObtenerProximoId()
-        {
-            return listaProfesional.Count == 0 ? 1 : listaProfesional.Max(a => a.IdPersona) + 1;
         }
     }
 }

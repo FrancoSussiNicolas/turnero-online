@@ -48,13 +48,13 @@ namespace Controllers
         [HttpPost]
         public ActionResult<Turno> CrearTurno([FromBody] TurnoDTO turno)
         {
-            var consultorio = consultorioService.GetByNro(turno.NroConsultorio);
+            var consultorio = consultorioService.GetById(turno.NroConsultorio);
             if (consultorio is null) return NotFound();
             if (!consultorio.EstaLibre(turno.FechaTurno, turno.HoraTurno)) return UnprocessableEntity();
 
             var newTurno = turnoService.CreateTurno(turno, consultorio);
 
-            return Created($"https://localhost:7119/turnos/{newTurno.IdTurno}", newTurno);
+            return Created($"https://localhost:7119/turnos/{newTurno.TurnoId}", newTurno);
         }
 
         [HttpPut("{id}")]

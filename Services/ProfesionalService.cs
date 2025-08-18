@@ -5,42 +5,55 @@ namespace Services
 {
     public class ProfesionalService
     {
-        public IEnumerable<Profesional> GetAll()
+        public List<Profesional> GetAll()
         {
-            return Profesional.listaProfesional;
+            using (var context = new TurneroContext())
+            {
+                return context.Profesionales.ToList();
+            }
         }
 
         public Profesional? GetByIdProfesional(int id)
         {
-            return Profesional.listaProfesional.FirstOrDefault(pro => pro.IdPersona == id);
+            using (var context = new TurneroContext())
+            {
+                return context.Profesionales.FirstOrDefault(pro => pro.PersonaId == id);
+            }
         }
 
         public Profesional CrearProfesional(ProfesionalDTO profesional)
         {
-            var newProfesional = new Profesional(
-                profesional.ApellidoNombre,
-                profesional.Mail,
-                profesional.Contrasenia, 
-                profesional.Matricula
-            );
+            using (var context = new TurneroContext())
+            {
+                var newProfesional = new Profesional(
+                    profesional.ApellidoNombre,
+                    profesional.Mail,
+                    profesional.Contrasenia, 
+                    profesional.Matricula
+                );
 
-            Profesional.listaProfesional.Add(newProfesional);
-            return newProfesional;
-
+                context.Profesionales.Add(newProfesional);
+                context.SaveChanges();
+                return newProfesional;
+            }
         }
 
         public Profesional? UpdateProfesional(ProfesionalDTO pro, int idPro)
         {
             var proEncontrado = GetByIdProfesional(idPro);
-
             if (proEncontrado is null) return null;
 
-            proEncontrado.ApellidoNombre = pro.ApellidoNombre;
-            proEncontrado.Mail = pro.Mail;
-            proEncontrado.Contrasenia = pro.Contrasenia;
-            proEncontrado.Matricula = pro.Matricula;
+            using (var context = new TurneroContext())
+            {
+                proEncontrado.PersonaId = pro.PersonaId;
+                proEncontrado.ApellidoNombre = pro.ApellidoNombre;
+                proEncontrado.Mail = pro.Mail;
+                proEncontrado.Contrasenia = pro.Contrasenia;
+                proEncontrado.Matricula = pro.Matricula;
 
-            return proEncontrado;
+                context.SaveChanges();
+                return proEncontrado;
+            }
         }
 
         public bool EliminarProfesional(int id)
@@ -48,9 +61,11 @@ namespace Services
             var pro = GetByIdProfesional(id);
             if (pro == null) return false;
 
-            Profesional.listaProfesional.Remove(pro);
-            return true;
+            using (var context = new TurneroContext())
+            {
+                context.Profesionales.Remove(pro);
+                return true;
+            }
         }
-
     }
 }

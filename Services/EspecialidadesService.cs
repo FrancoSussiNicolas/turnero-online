@@ -10,36 +10,49 @@ namespace Services
 {
     public class EspecialidadesService
     {
-        public IEnumerable<Especialidad> GetAll()
+        public List<Especialidad> GetAll()
         {
-            return Especialidad.ListaEspecialidad;
+            using (var context = new TurneroContext())
+            {
+                return context.Especialidades.ToList();
+            }
         }
 
         public Especialidad? GetById(int id)
         {
-            return Especialidad.ListaEspecialidad.FirstOrDefault(esp => esp.IdEspecialidad == id);
+            using (var context = new TurneroContext())
+            {
+                return context.Especialidades.FirstOrDefault(esp => esp.IdEspecialidad == id);
+            }
         }
 
         public Especialidad CreateEspecialidad(EspecialidadDTO esp)
         {
-            var newEsp = new Especialidad(
-                esp.Descripcion
-            );
+            using (var context = new TurneroContext())
+            {
+                var newEsp = new Especialidad(
+                    esp.Descripcion
+                );
 
-            Especialidad.ListaEspecialidad.Add(newEsp);
-            return newEsp;
-
+                context.Especialidades.Add(newEsp);
+                context.SaveChanges();
+                return newEsp;
+            }
         }
 
         public Especialidad? UpdateEspecialidad(EspecialidadDTO esp, int id)
         {
             var espFound = GetById(id);
-
             if (espFound is null) return null;
 
-            espFound.Descripcion = esp.Descripcion;
+            using (var context = new TurneroContext())
+            {
+                espFound.EspecialidadId = esp.EspecialidadId;
+                espFound.Descripcion = esp.Descripcion;
 
-            return espFound;
+                context.SaveChanges();
+                return espFound;
+            }
         }
 
         public bool DeleteEspecialidad(int id)
@@ -47,8 +60,12 @@ namespace Services
             var esp = GetById(id);
             if (esp == null) return false;
 
-            Especialidad.ListaEspecialidad.Remove(esp);
-            return true;
+            using (var context = new TurneroContext())
+            {
+                context.Especialidades.Remove(esp);
+                context.SaveChanges();
+                return true;
+            }
         }
     }
 }

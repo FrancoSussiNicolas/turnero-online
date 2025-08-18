@@ -10,7 +10,7 @@ namespace DTOs
 {
     public class TurnoDTO
     {
-        public int IdTurno { get; set; }
+        public int TurnoId { get; set; }
 
         [Required]
         public DateOnly FechaTurno { get; set; }
