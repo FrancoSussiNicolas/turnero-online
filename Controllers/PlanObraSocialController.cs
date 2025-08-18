@@ -38,7 +38,7 @@ namespace Controllers
         {
             var newPlanOS = planObraSocialService.CrearPlanObraSocial(planObraSocial);
 
-            return Created($"https://localhost:7119/especialidades/{newPlanOS.NroPlan}", newPlanOS);
+            return Created($"https://localhost:7119/especialidades/{newPlanOS.PlanObraSocialId}", newPlanOS);
         }
 
         [HttpPut("{nro}")]

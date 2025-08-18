@@ -4,7 +4,7 @@ namespace DTOs
 {
     public class PacienteDTO
     {
-        public int IdPersona { get; set; }
+        public int PersonaId { get; set; }
 
         [Required]
         public string ApellidoNombre { get; set; }

@@ -40,7 +40,7 @@ namespace Controllers
             var newProfesional = profesionalService.CrearProfesional(profesional);
 
             //return CreatedAtAction(nameof(GetById), new { id = newProfesional.IdPersona }, newProfesional);
-            return Created($"https://localhost:5078/profesionales/{newProfesional.IdPersona}", newProfesional);
+            return Created($"https://localhost:5078/profesionales/{newProfesional.PersonaId}", newProfesional);
         }
 
         [HttpPut("{id}")]

@@ -1,60 +1,80 @@
-﻿using Entities;
-using DTOs;
+﻿using DTOs;
+using Entities;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
     public class PacienteService
     {
-        public IEnumerable<Paciente> GetAll() {
-            return Paciente.listaPaciente;
+        public List<Paciente> GetAll() {
+            using (var context = new TurneroContext())
+            {
+                return context.Pacientes.ToList();
+            }
         }
 
         public Paciente? GetByIdPaciente(int idPaciente)
         {
-            return Paciente.listaPaciente.FirstOrDefault(pac => pac.IdPersona == idPaciente);
+            using (var context = new TurneroContext())
+            {
+                return context.Pacientes.FirstOrDefault(pac => pac.PersonaId == idPaciente);
+            }
         }
 
         public Paciente CrearPaciente(PacienteDTO paciente)
         {
-            var newPaciente = new Paciente(
-                paciente.ApellidoNombre,
-                paciente.Mail,
-                paciente.Contrasenia, 
-                paciente.DNI, 
-                paciente.Sexo, 
-                paciente.FechaNacimiento,
-                paciente.Telefono
-            );
+            using (var context = new TurneroContext())
+            {
+                var newPaciente = new Paciente(
+                    paciente.ApellidoNombre,
+                    paciente.Mail,
+                    paciente.Contrasenia,
+                    paciente.DNI,
+                    paciente.Sexo,
+                    paciente.FechaNacimiento,
+                    paciente.Telefono
+                );
 
-            Paciente.listaPaciente.Add( newPaciente );
-            return newPaciente;
+                context.Pacientes.Add(newPaciente);
+                context.SaveChanges();
+                return newPaciente;
+            }
 
         }
 
         public Paciente? UpdatePaciente(PacienteDTO pac, int idPac)
         {
             var pacEncontrado = GetByIdPaciente(idPac);
-
             if (pacEncontrado is null) return null;
 
-            pacEncontrado.ApellidoNombre = pac.ApellidoNombre;
-            pacEncontrado.Mail = pac.Mail;
-            pacEncontrado.Contrasenia = pac.Contrasenia;
-            pacEncontrado.DNI = pac.DNI;
-            pacEncontrado.Sexo = pac.Sexo;
-            pacEncontrado.FechaNacimiento = pac.FechaNacimiento;
-            pacEncontrado.Telefono = pac.Telefono;
+            using (var context = new TurneroContext())
+            {
 
-            return pacEncontrado;
+                pacEncontrado.ApellidoNombre = pac.ApellidoNombre;
+                pacEncontrado.Mail = pac.Mail;
+                pacEncontrado.Contrasenia = pac.Contrasenia;
+                pacEncontrado.DNI = pac.DNI;
+                pacEncontrado.Sexo = pac.Sexo;
+                pacEncontrado.FechaNacimiento = pac.FechaNacimiento;
+                pacEncontrado.Telefono = pac.Telefono;
+
+                context.SaveChanges();
+                return pacEncontrado;
+            }
         }
 
-        public bool EliminarPaciente (int id)
+        public bool EliminarPaciente(int id)
         {
             var pac = GetByIdPaciente(id);
             if (pac == null) return false;
 
-            Paciente.listaPaciente.Remove(pac); 
-            return true;
+            using (var context = new TurneroContext())
+            { 
+
+                context.Pacientes.Remove(pac);
+                context.SaveChanges();
+                return true;
+            }
         }
 
     }

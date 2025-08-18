@@ -8,25 +8,35 @@ namespace Services
 {
     public class PracticaService
     {
-        public IEnumerable<Practica> GetAll()
+        public List<Practica> GetAll()
         {
-            return Practica.ListaPracticas;
+            using (var context = new TurneroContext())
+            {
+                return context.Practicas.ToList();
+            }
         }
 
         public Practica? GetByIdPractica(int id)
         {
-            return Practica.ListaPracticas.FirstOrDefault(p => p.IdPractica == id);
+            using (var context = new TurneroContext())
+            {
+                return context.Practicas.FirstOrDefault(p => p.PracticaId == id);
+            }
         }
 
         public Practica CrearPractica(PracticaDTO practica)
         {
-            var nuevaPractica = new Practica(
+            using (var context = new TurneroContext())
+            {
+                var nuevaPractica = new Practica(
                 practica.Nombre,
                 practica.Descripcion
             );
 
-            Practica.ListaPracticas.Add(nuevaPractica);
-            return nuevaPractica;
+                context.Practicas.Add(nuevaPractica);
+                context.SaveChanges();
+                return nuevaPractica;
+            }
         }
 
         public Practica? UpdatePractica(PracticaDTO practica, int idPractica)
@@ -35,10 +45,14 @@ namespace Services
 
             if (practicaEncontrada is null) return null;
 
-            practicaEncontrada.Nombre = practica.Nombre;
-            practicaEncontrada.Descripcion = practica.Descripcion;
+            using (var context = new TurneroContext())
+            {
+                practicaEncontrada.Nombre = practica.Nombre;
+                practicaEncontrada.Descripcion = practica.Descripcion;
 
-            return practicaEncontrada;
+                context.SaveChanges();
+                return practicaEncontrada;
+            }
         }
 
         public bool EliminarPractica(int id)
@@ -46,8 +60,12 @@ namespace Services
             var practica = GetByIdPractica(id);
             if (practica == null) return false;
 
-            Practica.ListaPracticas.Remove(practica);
-            return true;
+            using (var context = new TurneroContext())
+            {
+                context.Practicas.Remove(practica);
+                context.SaveChanges();
+                return true;
+            }
         }
     }
 }

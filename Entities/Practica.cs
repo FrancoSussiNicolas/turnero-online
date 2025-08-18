@@ -9,24 +9,16 @@ namespace Entities
 { 
     public class Practica
     {
-        public int IdPractica { get; set; }
+        public int PracticaId { get; set; }
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
-        public static List<Practica> ListaPracticas  = new();
-
-        public static List<PlanObraSocial> listaPlanesObraSocial = new();
+        public static List<PlanObraSocial> PlanObraSocial {  get; set; }
 
         public Practica(string nombre, string descripcion)
         {
-            IdPractica = ObtenerProximoId();
             Nombre = nombre;
             Descripcion = descripcion;
-        }
-
-        private static int ObtenerProximoId()
-        {
-            return ListaPracticas.Count == 0 ? 1 : ListaPracticas.Max(a => a.IdPractica) + 1;
         }
     }
 }

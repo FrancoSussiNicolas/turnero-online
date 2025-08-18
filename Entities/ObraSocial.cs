@@ -9,34 +9,17 @@ namespace Entities
 {
     public class ObraSocial
     {
-        public int IdObraSocial {  get; set; }
+        public int ObraSocialId {  get; set; }
         public string NombreObraSocial { get; set; }
-
-        public static List<ObraSocial> ListaObraSociales = new List<ObraSocial>();
-
-        public List<Profesional> Profesionales {  get; set; }
-        public List<PlanObraSocial> PlanesObraSocial { get; set; }
-
+        public List<Profesional> Profesional {  get; set; }
+        public PlanObraSocial PlanesObraSocial { get; set; }
 
         public ObraSocial(string nombreObraSocial) {
-
-            IdObraSocial = ObtenerProximoId();
             NombreObraSocial = nombreObraSocial;
         }
-
-        public void AddPlanes(PlanObraSocial planObraSocial)
-        {
-            PlanesObraSocial.Add(planObraSocial);
-        }
-
         public void AddProfesionales (Profesional profesional)
         {
-            Profesionales.Add(profesional);
-        }
-
-        private static int ObtenerProximoId()
-        {
-            return ListaObraSociales.Count == 0 ? 1 : ListaObraSociales.Max(a => a.IdObraSocial) + 1;
+            Profesional.Add(profesional);
         }
     }
 }

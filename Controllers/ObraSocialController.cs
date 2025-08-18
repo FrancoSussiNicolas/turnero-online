@@ -39,7 +39,7 @@ namespace Controllers
             {
                 var newOS = obraSocialService.CrearObraSocial(obraSocial);
 
-                return Created($"https://localhost:7119/especialidades/{newOS.IdObraSocial}", newOS);
+                return Created($"https://localhost:7119/especialidades/{newOS.ObraSocialId}", newOS);
             }
 
             [HttpPut("{id}")]

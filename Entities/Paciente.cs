@@ -16,20 +16,17 @@ namespace Entities
 
         public string Telefono { get; set; }
 
-        public static List<Paciente> listaPaciente = new();
+        public List<PlanObraSocial>  PlanObraSocial { get; set; }
+
+        public Turno Turno { get; set; }
 
         public Paciente(string apellidoNombre, string mail, string contrasenia, string dni, string sexo, DateOnly fechaNacimiento, string telefono)
-            : base(apellidoNombre, mail, contrasenia, ObtenerProximoId())
+            : base(apellidoNombre, mail, contrasenia)
         {
             DNI = dni;
             Sexo = sexo; 
             FechaNacimiento = fechaNacimiento;
             Telefono = telefono;
-        }
-
-        private static int ObtenerProximoId()
-        {
-            return listaPaciente.Count == 0 ? 1 : listaPaciente.Max(a => a.IdPersona) + 1;
         }
 
     }

@@ -11,24 +11,34 @@ namespace Services
     public class ObraSocialService
     {
 
-        public IEnumerable<ObraSocial> GetAll()
+        public List<ObraSocial> GetAll()
         {
-            return ObraSocial.ListaObraSociales;
+            using (var context = new TurneroContext())
+            {
+                return context.ObrasSociales.ToList();
+            }
         }
 
         public ObraSocial? GetByIdObraSocial(int id)
         {
-            return ObraSocial.ListaObraSociales.FirstOrDefault(pro => pro.IdObraSocial == id);
+            using (var context = new TurneroContext())
+            {
+                return context.ObrasSociales.FirstOrDefault(pro => pro.ObraSocialId == id);
+            }
         }
 
         public ObraSocial CrearObraSocial(ObraSocialDTO obraSocial)
         {
-            var newObraSocial = new ObraSocial(
+            using (var context = new TurneroContext())
+            {
+                var newObraSocial = new ObraSocial(
                   obraSocial.NombreObraSocial
-            );
+                );
 
-            ObraSocial.ListaObraSociales.Add(newObraSocial);
-            return newObraSocial;
+                context.ObrasSociales.Add(newObraSocial);
+                context.SaveChanges();
+                return newObraSocial;
+            }
 
         }
 
@@ -38,9 +48,13 @@ namespace Services
 
             if (obraSocialEncontrado is null) return null;
 
-            obraSocialEncontrado.NombreObraSocial = os.NombreObraSocial;
+            using (var context = new TurneroContext())
+            {
+                obraSocialEncontrado.NombreObraSocial = os.NombreObraSocial;
 
-            return obraSocialEncontrado;
+                context.SaveChanges();
+                return obraSocialEncontrado;
+            }
         }
 
         public bool EliminarObraSocial(int id)
@@ -48,8 +62,12 @@ namespace Services
             var os = GetByIdObraSocial(id);
             if (os == null) return false;
 
-            ObraSocial.ListaObraSociales.Remove(os);
-            return true;
+            using (var context = new TurneroContext())
+            {
+                context.ObrasSociales.Remove(os);
+                context.SaveChanges();
+                return true;
+            }
         }
 
     }

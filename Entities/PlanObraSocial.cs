@@ -9,35 +9,24 @@ namespace Entities
 {
     public class PlanObraSocial
     {
-        public int NroPlan {  get; set; }
+        public int PlanObraSocialId {  get; set; }
 
         public string NombrePlan { get; set; }
 
         public string DescripcionPlan { get; set; }
 
-        public List<Paciente> Pacientes { get; set; }
+        public Paciente Paciente { get; set; }
 
-        public static List<PlanObraSocial> listaPlanesObraSocial = new List<PlanObraSocial>();
+        public List<ObraSocial> ObraSocial { get; set; }
 
+        public List<Practica> Practica { get; set; }
 
 
         public PlanObraSocial(string nombrePlan, string descripcion) {
 
-            NroPlan = ObtenerProximoId(); 
             NombrePlan = nombrePlan;
             DescripcionPlan = descripcion;
 
         }
-
-        public void AddPaciente(Paciente paciente)
-        {
-            Pacientes.Add(paciente);
-        }
-
-        private static int ObtenerProximoId()
-        {
-            return listaPlanesObraSocial.Count == 0 ? 1 : listaPlanesObraSocial.Max(e => e.NroPlan) + 1;
-        }
-
     }
 }

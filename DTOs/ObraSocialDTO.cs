@@ -10,7 +10,7 @@ namespace DTOs
     public class ObraSocialDTO
     {
         [Required]
-        public int IdObraSocial { get; set; }
+        public int ObraSocialId { get; set; }
 
         [Required]
         public string NombreObraSocial { get; set; }

@@ -11,38 +11,51 @@ namespace Services
     public class PlanObraSocialService
     {
 
-        public IEnumerable<PlanObraSocial> GetAll()
+        public List<PlanObraSocial> GetAll()
         {
-            return PlanObraSocial.listaPlanesObraSocial;
+            using (var context = new TurneroContext())
+            {
+                return context.PlanesObrasSociales.ToList();
+            }
         }
 
         public PlanObraSocial? GetByNroPlan(int nro)
         {
-            return PlanObraSocial.listaPlanesObraSocial.FirstOrDefault(p => p.NroPlan == nro);
+            using (var context = new TurneroContext())
+            {
+                return context.PlanesObrasSociales.FirstOrDefault(p => p.PlanObraSocialId == nro);
+            }
         }
 
         public PlanObraSocial CrearPlanObraSocial(PlanObraSocialDTO planObraSocial)
         {
-            var newPlanObraSocial = new PlanObraSocial(
+            using (var context = new TurneroContext())
+            {
+                var newPlanObraSocial = new PlanObraSocial(
                   planObraSocial.NombrePlan,
                   planObraSocial.DescripcionPlan
             );
 
-            PlanObraSocial.listaPlanesObraSocial.Add(newPlanObraSocial);
-            return newPlanObraSocial;
+                context.PlanesObrasSociales.Add(newPlanObraSocial);
+                context.SaveChanges();
+                return newPlanObraSocial;
+            }
 
         }
 
         public PlanObraSocial? UpdatePlanObraSocial(PlanObraSocialDTO planOS, int nro)
         {
             var planObraSocialEncontrado = GetByNroPlan(nro);
-
             if (planObraSocialEncontrado is null) return null;
 
-            planObraSocialEncontrado.NombrePlan = planOS.NombrePlan;
-            planObraSocialEncontrado.DescripcionPlan = planOS.DescripcionPlan;
+            using (var context = new TurneroContext())
+            {
+                planObraSocialEncontrado.NombrePlan = planOS.NombrePlan;
+                planObraSocialEncontrado.DescripcionPlan = planOS.DescripcionPlan;
 
-            return planObraSocialEncontrado;
+                context.SaveChanges();
+                return planObraSocialEncontrado;
+            }
         }
 
         public bool EliminarPlanObraSocial(int nro)
@@ -50,8 +63,12 @@ namespace Services
             var planOS = GetByNroPlan(nro);
             if (planOS == null) return false;
 
-            PlanObraSocial.listaPlanesObraSocial.Remove(planOS);
-            return true;
+            using (var context = new TurneroContext())
+            {
+
+                context.PlanesObrasSociales.Remove(planOS);
+                return true;
+            }
         }
 
     }

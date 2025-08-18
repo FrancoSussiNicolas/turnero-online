@@ -10,7 +10,7 @@ namespace DTOs
     public class PlanObraSocialDTO
     {
         [Required]
-        public int IdPlanObraSocial { get; set; }
+        public int PlanObraSocialId { get; set; }
 
         [Required]
         public string NombrePlan { get; set; }

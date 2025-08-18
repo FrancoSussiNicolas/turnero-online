@@ -36,7 +36,7 @@ namespace Controllers
         {
             var nuevaPractica = practicaService.CrearPractica(practica);
             return Created(
-                $"https://localhost:7119/practica/{nuevaPractica.IdPractica}",
+                $"https://localhost:7119/practica/{nuevaPractica.PracticaId}",
                 nuevaPractica
             );
         }

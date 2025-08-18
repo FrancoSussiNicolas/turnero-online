@@ -6,7 +6,7 @@ namespace DTOs
     public class PracticaDTO
     {
         [Required]
-        public int IdPractica { get; set; }
+        public int PracticaId { get; set; }
 
         [Required]
         public string Nombre { get; set; }
