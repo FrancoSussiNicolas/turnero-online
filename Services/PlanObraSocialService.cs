@@ -45,11 +45,12 @@ namespace Services
 
         public PlanObraSocial? UpdatePlanObraSocial(PlanObraSocialDTO planOS, int nro)
         {
-            var planObraSocialEncontrado = GetByNroPlan(nro);
-            if (planObraSocialEncontrado is null) return null;
 
             using (var context = new TurneroContext())
             {
+                var planObraSocialEncontrado = context.PlanesObrasSociales.FirstOrDefault(p => p.PlanObraSocialId == nro);
+                if (planObraSocialEncontrado is null) return null;
+
                 planObraSocialEncontrado.NombrePlan = planOS.NombrePlan;
                 planObraSocialEncontrado.DescripcionPlan = planOS.DescripcionPlan;
 

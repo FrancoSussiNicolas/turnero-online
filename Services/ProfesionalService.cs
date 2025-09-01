@@ -40,12 +40,13 @@ namespace Services
 
         public Profesional? UpdateProfesional(ProfesionalDTO pro, int idPro)
         {
-            var proEncontrado = GetByIdProfesional(idPro);
-            if (proEncontrado is null) return null;
 
             using (var context = new TurneroContext())
             {
-                proEncontrado.PersonaId = pro.PersonaId;
+
+                var proEncontrado = context.Profesionales.FirstOrDefault(P => P.PersonaId == idPro);
+                if (proEncontrado is null) return null;
+
                 proEncontrado.ApellidoNombre = pro.ApellidoNombre;
                 proEncontrado.Mail = pro.Mail;
                 proEncontrado.Contrasenia = pro.Contrasenia;

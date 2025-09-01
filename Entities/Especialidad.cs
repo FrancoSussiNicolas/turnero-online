@@ -12,9 +12,9 @@ namespace Entities
         public string Descripcion { get; set; }
         public List<Profesional> Profesionales { get; set; }
 
-        public Especialidad(string desc) 
+        public Especialidad(string descripcion) 
         {
-            Descripcion = desc;
+            Descripcion = descripcion;
             Profesionales = [];
         }
     }

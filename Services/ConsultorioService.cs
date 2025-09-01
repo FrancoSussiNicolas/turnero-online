@@ -40,12 +40,12 @@ namespace Services
 
         public Consultorio? UpdateConsultorio(ConsultorioDTO consultorio, int id)
         {
-            var consulFound = GetById(id);
-            if (consulFound is null) return null;
 
             using (var context = new TurneroContext())
             {
-                consulFound.ConsultorioId = consultorio.ConsultorioId;
+                var consulFound = context.Consultorios.FirstOrDefault(c => c.ConsultorioId == id);
+                if (consulFound is null) return null;
+
                 consulFound.Ubicacion = consultorio.Ubicacion;
 
                 context.SaveChanges();

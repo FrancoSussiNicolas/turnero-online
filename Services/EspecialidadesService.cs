@@ -22,7 +22,7 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Especialidades.FirstOrDefault(esp => esp.IdEspecialidad == id);
+                return context.Especialidades.FirstOrDefault(esp => esp.EspecialidadId == id);
             }
         }
 
@@ -42,12 +42,12 @@ namespace Services
 
         public Especialidad? UpdateEspecialidad(EspecialidadDTO esp, int id)
         {
-            var espFound = GetById(id);
-            if (espFound is null) return null;
 
             using (var context = new TurneroContext())
             {
-                espFound.EspecialidadId = esp.EspecialidadId;
+                var espFound = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
+                if (espFound is null) return null;
+
                 espFound.Descripcion = esp.Descripcion;
 
                 context.SaveChanges();

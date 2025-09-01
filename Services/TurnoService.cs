@@ -54,12 +54,12 @@ namespace Services
 
         public Turno? UpdateTurno(TurnoDTO turno, int id)
         {
-            var turnoFound = GetById(id);
-            if (turnoFound is null) return null;
 
             using (var context = new TurneroContext())
             {
-                turnoFound.TurnoId = turno.TurnoId;
+                var turnoFound = context.Turnos.FirstOrDefault(t => t.TurnoId == id);
+                if (turnoFound is null) return null;
+
                 turnoFound.FechaTurno = turno.FechaTurno;
                 turnoFound.HoraTurno = turno.HoraTurno;
                 turnoFound.Estado = turno.Estado;

@@ -15,17 +15,17 @@ namespace Entities
 
         public string DescripcionPlan { get; set; }
 
-        public Paciente Paciente { get; set; }
+        public List<Paciente> Paciente { get; set; }
 
-        public List<ObraSocial> ObraSocial { get; set; }
+        public ObraSocial ObraSocial { get; set; }
 
         public List<Practica> Practica { get; set; }
 
 
-        public PlanObraSocial(string nombrePlan, string descripcion) {
+        public PlanObraSocial(string nombrePlan, string descripcionPlan) {
 
             NombrePlan = nombrePlan;
-            DescripcionPlan = descripcion;
+            DescripcionPlan = descripcionPlan;
 
         }
     }

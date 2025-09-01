@@ -27,8 +27,17 @@ namespace Services
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=PAD_SANTIKELLEM\SQLEXPRESS;Database=turnero_db;Trusted_Connection=True;");
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=turnero_db;Trusted_Connection=True;TrustServerCertificate=True;");
             optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<Paciente>()
+                .HasKey(p => p.PersonaId);
+
+            modelBuilder.Entity<Profesional>()
+                .HasKey(p => p.PersonaId);
         }
     }
 }

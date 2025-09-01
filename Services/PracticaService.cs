@@ -41,12 +41,13 @@ namespace Services
 
         public Practica? UpdatePractica(PracticaDTO practica, int idPractica)
         {
-            var practicaEncontrada = GetByIdPractica(idPractica);
-
-            if (practicaEncontrada is null) return null;
 
             using (var context = new TurneroContext())
             {
+                var practicaEncontrada = context.Practicas.FirstOrDefault(p => p.PracticaId == idPractica);
+
+                if (practicaEncontrada is null) return null;
+
                 practicaEncontrada.Nombre = practica.Nombre;
                 practicaEncontrada.Descripcion = practica.Descripcion;
 

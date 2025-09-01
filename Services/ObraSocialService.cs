@@ -44,12 +44,14 @@ namespace Services
 
         public ObraSocial? UpdateObraSocial(ObraSocialDTO os, int idOs)
         {
-            var obraSocialEncontrado = GetByIdObraSocial(idOs);
-
-            if (obraSocialEncontrado is null) return null;
 
             using (var context = new TurneroContext())
             {
+
+                var obraSocialEncontrado = context.ObrasSociales.FirstOrDefault(os => os.ObraSocialId == idOs);
+
+                if (obraSocialEncontrado is null) return null;
+
                 obraSocialEncontrado.NombreObraSocial = os.NombreObraSocial;
 
                 context.SaveChanges();

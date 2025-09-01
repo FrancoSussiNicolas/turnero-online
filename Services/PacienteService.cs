@@ -44,16 +44,16 @@ namespace Services
 
         public Paciente? UpdatePaciente(PacienteDTO pac, int idPac)
         {
-            var pacEncontrado = GetByIdPaciente(idPac);
-            if (pacEncontrado is null) return null;
 
             using (var context = new TurneroContext())
             {
+                var pacEncontrado = context.Pacientes.FirstOrDefault(p => p.PersonaId == idPac);
+                if (pacEncontrado is null) return null;
 
                 pacEncontrado.ApellidoNombre = pac.ApellidoNombre;
                 pacEncontrado.Mail = pac.Mail;
                 pacEncontrado.Contrasenia = pac.Contrasenia;
-                pacEncontrado.DNI = pac.DNI;
+                pacEncontrado.Dni = pac.DNI;
                 pacEncontrado.Sexo = pac.Sexo;
                 pacEncontrado.FechaNacimiento = pac.FechaNacimiento;
                 pacEncontrado.Telefono = pac.Telefono;

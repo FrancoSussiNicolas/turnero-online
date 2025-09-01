@@ -21,11 +21,13 @@ namespace Entities
         public EstadoTurno Estado { get; set; }
         public int ConsultorioId { get; set; }
         public Consultorio Consultorio { get; set; }
+
+        public Turno() { }
            
-        public Turno(DateOnly fecha, TimeOnly hora, EstadoTurno estado, Consultorio consultorio) 
+        public Turno(DateOnly fechaTurno, TimeOnly horaTurno, EstadoTurno estado, Consultorio consultorio) 
         {
-            FechaTurno = fecha;
-            HoraTurno = hora;
+            FechaTurno = fechaTurno;
+            HoraTurno = horaTurno;
             Estado = estado;
             Consultorio = consultorio;
         }

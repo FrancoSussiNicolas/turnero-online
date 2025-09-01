@@ -12,7 +12,7 @@ namespace Entities
         public int ObraSocialId {  get; set; }
         public string NombreObraSocial { get; set; }
         public List<Profesional> Profesional {  get; set; }
-        public PlanObraSocial PlanesObraSocial { get; set; }
+        public List<PlanObraSocial> PlanesObraSocial { get; set; }
 
         public ObraSocial(string nombreObraSocial) {
             NombreObraSocial = nombreObraSocial;
