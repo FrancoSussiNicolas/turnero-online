@@ -28,8 +28,9 @@ namespace Services
                 var newProfesional = new Profesional(
                     profesional.ApellidoNombre,
                     profesional.Mail,
-                    profesional.Contrasenia, 
-                    profesional.Matricula
+                    profesional.Contrasenia,
+                    profesional.Matricula,
+                    profesional.EspecialidadId
                 );
 
                 context.Profesionales.Add(newProfesional);
@@ -59,12 +60,14 @@ namespace Services
 
         public bool EliminarProfesional(int id)
         {
-            var pro = GetByIdProfesional(id);
-            if (pro == null) return false;
 
             using (var context = new TurneroContext())
             {
+                var pro = context.Profesionales.FirstOrDefault(P => P.PersonaId == id);
+                if (pro == null) return false;
+
                 context.Profesionales.Remove(pro);
+                context.SaveChanges();
                 return true;
             }
         }

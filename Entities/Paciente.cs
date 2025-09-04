@@ -16,9 +16,11 @@ namespace Entities
 
         public string Telefono { get; set; }
 
+        public int? PlanObraSocialId { get; set; }
+
         public PlanObraSocial? PlanObraSocial { get; set; }
 
-        public Turno Turno { get; set; }
+        public List<Turno> Turno { get; set; }
 
         public Paciente(string apellidoNombre, string mail, string contrasenia, string dni, string sexo, DateOnly fechaNacimiento, string telefono)
             : base(apellidoNombre, mail, contrasenia)

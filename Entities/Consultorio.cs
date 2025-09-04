@@ -7,15 +7,22 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
+    public enum EstadoConsultorio
+    {
+        Habilitado,
+        Desabilitado
+    }
     public class Consultorio
     {
         public int ConsultorioId { get; set; }
         public string Ubicacion { get; set; }
-        public List<Turno> Turnos { get; set; }
 
+        public EstadoConsultorio Estado { get; set; }
+        public List<Turno> Turnos { get; set; }
         public Consultorio(string ubicacion)
         {
             Ubicacion = ubicacion;
+            Estado = EstadoConsultorio.Habilitado;
             Turnos = [];
         }
 

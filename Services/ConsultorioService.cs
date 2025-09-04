@@ -55,11 +55,12 @@ namespace Services
 
         public bool DeleteConsultorio(int id)
         {
-            var consul = GetById(id);
-            if (consul == null) return false;
 
             using (var context = new TurneroContext())
             {
+                var consul = context.Consultorios.FirstOrDefault(c => c.ConsultorioId == id);
+                if (consul == null) return false;
+
                 context.Consultorios.Remove(consul);
                 context.SaveChanges();
                 return true;

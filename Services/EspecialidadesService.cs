@@ -57,11 +57,12 @@ namespace Services
 
         public bool DeleteEspecialidad(int id)
         {
-            var esp = GetById(id);
-            if (esp == null) return false;
 
             using (var context = new TurneroContext())
             {
+                var esp = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
+                if (esp == null) return false;
+
                 context.Especialidades.Remove(esp);
                 context.SaveChanges();
                 return true;
