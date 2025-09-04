@@ -120,21 +120,21 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"profesionales/{profesional.IdPersona}", profesional);
+                HttpResponseMessage response = await client.PutAsJsonAsync($"profesionales/{profesional.PersonaId}", profesional);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar profesional con Id {profesional.IdPersona}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al actualizar profesional con Id {profesional.PersonaId}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar profesional con Id {profesional.IdPersona}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al actualizar profesional con Id {profesional.PersonaId}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar profesional con Id {profesional.IdPersona}: {ex.Message}", ex);
+                throw new Exception($"Timeout al actualizar profesional con Id {profesional.PersonaId}: {ex.Message}", ex);
             }
         }
     }

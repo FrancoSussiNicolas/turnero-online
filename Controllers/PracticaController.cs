@@ -50,6 +50,15 @@ namespace Controllers
             return NoContent();
         }
 
+        [HttpPut("deshabilitar/{id}")]
+        public ActionResult DisablePractica(int id)
+        {
+            var disabledEsp = practicaService.DisablePractica(id);
+            if (!disabledEsp) return NotFound();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public ActionResult DeletePractica(int id)
         {

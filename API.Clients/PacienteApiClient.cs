@@ -116,21 +116,21 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"pacientes/{paciente.IdPersona}", paciente);
+                HttpResponseMessage response = await client.PutAsJsonAsync($"pacientes/{paciente.PersonaId}", paciente);
 
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar paciente con Id {paciente.IdPersona}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al actualizar paciente con Id {paciente.PersonaId}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar paciente con Id {paciente.IdPersona}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al actualizar paciente con Id {paciente.PersonaId}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar paciente con Id {paciente.IdPersona}: {ex.Message}", ex);
+                throw new Exception($"Timeout al actualizar paciente con Id {paciente.PersonaId}: {ex.Message}", ex);
             }
         }
     }

@@ -14,10 +14,11 @@ namespace Entities
         public List<Turno> Turnos { get; set; }
         public List<ObraSocial> ObraSociales { get; set; }
 
-        public Profesional(string apellidoNombre, string mail, string contrasenia, string matricula) 
+        public Profesional(string apellidoNombre, string mail, string contrasenia, string matricula, int especialidadId) 
             : base (apellidoNombre, mail, contrasenia)
         {
             Matricula = matricula;
+            EspecialidadId = especialidadId;
             Turnos = new();
         }
 

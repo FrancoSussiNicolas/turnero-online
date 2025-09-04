@@ -27,6 +27,14 @@ namespace Controllers
             return Ok(consultorioService.GetAll());
         }
 
+        [HttpGet("disponibles")]
+        public ActionResult<IEnumerable<Consultorio>> GetAvailable()
+        {
+            var disponibles = consultorioService.GetAvailable();
+            if (!disponibles.Any()) return NotFound("No hay consultorios disponibles");
+            return Ok(disponibles);
+        }
+
         [HttpGet("{nro}")]
         public ActionResult<Consultorio> GetById(int nro)
         {
@@ -50,6 +58,15 @@ namespace Controllers
         {
             var updatedConsul = consultorioService.UpdateConsultorio(consultorio, nro);
             if (updatedConsul is null) return NotFound();
+
+            return NoContent();
+        }
+
+        [HttpPut("deshabilitar/{id}")]
+        public ActionResult DisableConsultorio(int id)
+        {
+            var disabledConsul = consultorioService.DisableConsultorio(id);
+            if (!disabledConsul) return NotFound();
 
             return NoContent();
         }

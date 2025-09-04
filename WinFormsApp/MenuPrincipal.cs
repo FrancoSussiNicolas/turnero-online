@@ -30,5 +30,14 @@ namespace WinFormsApp
         {
 
         }
+
+        private void MenuPrincipal_Shown(object sender, EventArgs e)
+        {
+            Login appLogin = new Login();
+            if (appLogin.ShowDialog() != DialogResult.OK)
+            {
+                this.Dispose();
+            }
+        }
     }
 }

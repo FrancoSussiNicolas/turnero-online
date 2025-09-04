@@ -42,7 +42,6 @@ namespace Services
 
         public Especialidad? UpdateEspecialidad(EspecialidadDTO esp, int id)
         {
-
             using (var context = new TurneroContext())
             {
                 var espFound = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
@@ -57,12 +56,26 @@ namespace Services
 
         public bool DeleteEspecialidad(int id)
         {
-            var esp = GetById(id);
-            if (esp == null) return false;
 
             using (var context = new TurneroContext())
             {
+                var esp = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
+                if (esp == null) return false;
+
                 context.Especialidades.Remove(esp);
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool DisableEspecialidad(int id)
+        {
+            using (var context = new TurneroContext())
+            {
+                var espFound = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
+                if (espFound is null) return false;
+
+                espFound.Estado = EstadoEspecialidad.Deshabilitado;
                 context.SaveChanges();
                 return true;
             }

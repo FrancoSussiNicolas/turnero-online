@@ -58,12 +58,26 @@ namespace Services
 
         public bool EliminarPractica(int id)
         {
-            var practica = GetByIdPractica(id);
-            if (practica == null) return false;
 
             using (var context = new TurneroContext())
             {
+                var practica = context.Practicas.FirstOrDefault(p => p.PracticaId == id);
+                if (practica == null) return false;
+
                 context.Practicas.Remove(practica);
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool DisablePractica(int id)
+        {
+            using (var context = new TurneroContext())
+            {
+                var practica = context.Practicas.FirstOrDefault(p => p.PracticaId == id);
+                if (practica is null) return false;
+
+                practica.Estado = EstadoPractica.Deshabilitado;
                 context.SaveChanges();
                 return true;
             }
