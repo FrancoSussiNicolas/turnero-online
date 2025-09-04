@@ -18,6 +18,14 @@ namespace Services
             }
         }
 
+        public List<Consultorio> GetAvailable()
+        {
+            using (var context = new TurneroContext())
+            {
+                return context.Consultorios.Where(c => c.Estado == EstadoConsultorio.Habilitado).ToList();
+            }
+        }
+
         public Consultorio? GetById(int id)
         {
             using (var context = new TurneroContext())
@@ -61,6 +69,19 @@ namespace Services
             using (var context = new TurneroContext())
             {
                 context.Consultorios.Remove(consul);
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool DisableConsultorio(int id)
+        {
+            using (var context = new TurneroContext())
+            {
+                var consulFound = context.Consultorios.FirstOrDefault(c => c.ConsultorioId == id);
+                if (consulFound is null) return false;
+
+                consulFound.Estado = EstadoConsultorio.Deshabilitado;
                 context.SaveChanges();
                 return true;
             }

@@ -51,6 +51,15 @@ namespace Controllers
             return NoContent();
         }
 
+        [HttpPut("deshabilitar/{id}")]
+        public ActionResult DisableEspecialidad(int id)
+        {
+            var disabledEsp = especialidadService.DisableEspecialidad(id);
+            if (!disabledEsp) return NotFound();
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public ActionResult DeleteEspecialidad(int id)
         {

@@ -35,9 +35,10 @@
             // 
             // pacienteBtn
             // 
-            pacienteBtn.Location = new Point(322, 160);
+            pacienteBtn.Location = new Point(282, 120);
+            pacienteBtn.Margin = new Padding(3, 2, 3, 2);
             pacienteBtn.Name = "pacienteBtn";
-            pacienteBtn.Size = new Size(127, 47);
+            pacienteBtn.Size = new Size(111, 35);
             pacienteBtn.TabIndex = 0;
             pacienteBtn.Text = " Pacientes";
             pacienteBtn.UseVisualStyleBackColor = true;
@@ -45,9 +46,10 @@
             // 
             // profesionalBtn
             // 
-            profesionalBtn.Location = new Point(322, 224);
+            profesionalBtn.Location = new Point(282, 168);
+            profesionalBtn.Margin = new Padding(3, 2, 3, 2);
             profesionalBtn.Name = "profesionalBtn";
-            profesionalBtn.Size = new Size(127, 47);
+            profesionalBtn.Size = new Size(111, 35);
             profesionalBtn.TabIndex = 1;
             profesionalBtn.Text = "Profesionales";
             profesionalBtn.UseVisualStyleBackColor = true;
@@ -55,23 +57,25 @@
             // 
             // label1
             // 
-            label1.Location = new Point(322, 123);
+            label1.Location = new Point(282, 92);
             label1.Name = "label1";
-            label1.Size = new Size(143, 23);
+            label1.Size = new Size(125, 17);
             label1.TabIndex = 0;
             label1.Text = "Menu Principal";
             // 
             // MenuPrincipal
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(700, 338);
             Controls.Add(label1);
             Controls.Add(profesionalBtn);
             Controls.Add(pacienteBtn);
+            Margin = new Padding(3, 2, 3, 2);
             Name = "MenuPrincipal";
             Text = "Menu";
             Load += MenuPrincipal_Load;
+            Shown += MenuPrincipal_Shown;
             ResumeLayout(false);
         }
 

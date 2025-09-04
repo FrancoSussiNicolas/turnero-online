@@ -68,5 +68,18 @@ namespace Services
                 return true;
             }
         }
+
+        public bool DisablePractica(int id)
+        {
+            using (var context = new TurneroContext())
+            {
+                var practica = context.Practicas.FirstOrDefault(p => p.PracticaId == id);
+                if (practica is null) return false;
+
+                practica.Estado = EstadoPractica.Deshabilitado;
+                context.SaveChanges();
+                return true;
+            }
+        }
     }
 }
