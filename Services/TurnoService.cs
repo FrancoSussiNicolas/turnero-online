@@ -42,8 +42,8 @@ namespace Services
                 var newTurno = new Turno(
                     turno.FechaTurno,
                     turno.HoraTurno,
-                    EstadoTurno.Disponible,
-                    consultorio
+                    consultorio,
+                    turno.ProfesionalId
                 );
 
                 context.Turnos.Add(newTurno);
@@ -71,11 +71,12 @@ namespace Services
 
         public bool ConfirmarTurno(int id)
         {
-            var turnoFound = GetById(id);
-            if (turnoFound is null) return false;
 
             using (var context = new TurneroContext())
             {
+                var turnoFound = context.Turnos.FirstOrDefault(t => t.TurnoId == id);
+                if (turnoFound is null) return false;
+
                 turnoFound.Estado = EstadoTurno.Ocupado;
                 return true;
             }
@@ -83,11 +84,12 @@ namespace Services
 
         public bool DeleteTurno(int id)
         {
-            var turno = GetById(id);
-            if (turno == null) return false;
 
             using (var context = new TurneroContext())
             {
+                var turno = context.Turnos.FirstOrDefault(t => t.TurnoId == id);
+                if (turno == null) return false;
+
                 context.Turnos.Remove(turno);
                 return true;
             }

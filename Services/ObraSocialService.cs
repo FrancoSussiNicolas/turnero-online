@@ -61,11 +61,12 @@ namespace Services
 
         public bool EliminarObraSocial(int id)
         {
-            var os = GetByIdObraSocial(id);
-            if (os == null) return false;
 
             using (var context = new TurneroContext())
             {
+                var os = context.ObrasSociales.FirstOrDefault(os => os.ObraSocialId == id);
+                if (os == null) return false;
+
                 context.ObrasSociales.Remove(os);
                 context.SaveChanges();
                 return true;

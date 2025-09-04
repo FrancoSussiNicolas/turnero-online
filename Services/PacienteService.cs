@@ -65,11 +65,11 @@ namespace Services
 
         public bool EliminarPaciente(int id)
         {
-            var pac = GetByIdPaciente(id);
-            if (pac == null) return false;
 
             using (var context = new TurneroContext())
-            { 
+            {
+                var pac = context.Pacientes.FirstOrDefault(p => p.PersonaId == id);
+                if (pac == null) return false;
 
                 context.Pacientes.Remove(pac);
                 context.SaveChanges();

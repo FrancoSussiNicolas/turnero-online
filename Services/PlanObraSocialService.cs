@@ -33,9 +33,9 @@ namespace Services
             {
                 var newPlanObraSocial = new PlanObraSocial(
                   planObraSocial.NombrePlan,
-                  planObraSocial.DescripcionPlan
+                  planObraSocial.DescripcionPlan,
+                  planObraSocial.ObraSocialId
             );
-
                 context.PlanesObrasSociales.Add(newPlanObraSocial);
                 context.SaveChanges();
                 return newPlanObraSocial;
@@ -61,13 +61,14 @@ namespace Services
 
         public bool EliminarPlanObraSocial(int nro)
         {
-            var planOS = GetByNroPlan(nro);
-            if (planOS == null) return false;
 
-            using (var context = new TurneroContext())
+            using (var context = new TurneroContext()) 
             {
+                var planOS = context.PlanesObrasSociales.FirstOrDefault(p => p.PlanObraSocialId == nro); ;
+                if (planOS == null) return false;
 
                 context.PlanesObrasSociales.Remove(planOS);
+                context.SaveChanges();
                 return true;
             }
         }

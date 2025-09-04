@@ -22,14 +22,22 @@ namespace Entities
         public int ConsultorioId { get; set; }
         public Consultorio Consultorio { get; set; }
 
+        public int? PacienteId { get; set; }
+        public Paciente? Paciente { get; set; }
+
+        public int ProfesionalId { get; set; }
+
+        public Profesional? Profesional { get; set; }
+
         public Turno() { }
            
-        public Turno(DateOnly fechaTurno, TimeOnly horaTurno, EstadoTurno estado, Consultorio consultorio) 
+        public Turno(DateOnly fechaTurno, TimeOnly horaTurno, Consultorio consultorio, int profesionalId) 
         {
             FechaTurno = fechaTurno;
             HoraTurno = horaTurno;
-            Estado = estado;
+            Estado = EstadoTurno.Disponible;
             Consultorio = consultorio;
+            ProfesionalId = profesionalId;
         }
     }
 }

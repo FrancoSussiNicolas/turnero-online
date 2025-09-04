@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -13,5 +14,7 @@ namespace DTOs
 
         [Required]
         public string Descripcion { get; set; }
+
+        public EstadoEspecialidad Estado { get; set; }
     }
 }

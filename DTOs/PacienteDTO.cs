@@ -26,5 +26,8 @@ namespace DTOs
 
         [Required]
         public string Telefono { get; set; }
+
+        public int? PlanObraSocialId { get; set; }
+
     }
 }

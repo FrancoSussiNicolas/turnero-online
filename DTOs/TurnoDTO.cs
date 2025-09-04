@@ -22,5 +22,11 @@ namespace DTOs
 
         [Required]
         public int NroConsultorio { get; set; }
+
+        public int? PacienteId { get; set; }
+
+        [Required]
+
+        public int ProfesionalId { get; set; }
     }
 }

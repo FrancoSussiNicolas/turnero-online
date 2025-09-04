@@ -1,11 +1,11 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.ComponentModel.DataAnnotations;
 
 namespace DTOs
 {
     public class PracticaDTO
     {
-        [Required]
         public int PracticaId { get; set; }
 
         [Required]
@@ -13,5 +13,7 @@ namespace DTOs
 
         [Required]
         public string Descripcion { get; set; }
+
+        public EstadoPractica Estado { get; set; }
     }
 }

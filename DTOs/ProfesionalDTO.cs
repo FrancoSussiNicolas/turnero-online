@@ -22,5 +22,9 @@ namespace DTOs
 
         [Required]
         public string Matricula { get; set; }
+
+        [Required]
+
+        public int EspecialidadId { get; set; }
     }
 }
