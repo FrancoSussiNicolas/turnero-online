@@ -10,27 +10,23 @@ namespace WinFormsApp
             InitializeComponent();
         }
 
-        private void pacientesBtn_Click(object sender, EventArgs e)
+        private void btnverTurnos_Click(object sender, EventArgs e)
         {
-            var pacForm = new PacienteForm();
-            pacForm.ShowDialog();
+            VerTurnosForm verTurnos = new VerTurnosForm();
+            verTurnos.Show();
         }
 
-        private void profesionalesBtn_Click(object sender, EventArgs e)
+        private void button3_Click(object sender, EventArgs e)
         {
-            var profForm = new ProfesionalForm();
-            profForm.ShowDialog();
 
-            //var newProf = new PacienteDTO();
-
-            //profForm.AutoScaleMode = FormMode.Add;
-            //profForm.Paciente = newProf;
-            //profForm.ShowDialog();
-
-            //this.GetAllAndLoad();
         }
 
-        private void MenuPrincipal_Load(object sender, EventArgs e)
+        private void btncrearTurnos_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void btnAddObraSocial_Click(object sender, EventArgs e)
         {
 
         }

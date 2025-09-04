@@ -87,7 +87,7 @@ namespace WinFormsApp
             {
                 var profesionalDetalle = new ProfesionalDetalle();
 
-                int id = this.SelectedItem().IdPersona;
+                int id = this.SelectedItem().PersonaId;
 
                 var prof = await ProfesionalApiClient.GetAsync(id);
 
@@ -108,7 +108,7 @@ namespace WinFormsApp
         {
             try
             {
-                int id = this.SelectedItem().IdPersona;
+                int id = this.SelectedItem().PersonaId;
 
                 var result = MessageBox.Show($"¿Está seguro que desea eliminar el profesional con Id {id}?", "Confirmar eliminación", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
 
@@ -123,5 +123,6 @@ namespace WinFormsApp
                 MessageBox.Show($"Error al eliminar profesional: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
     }
 }

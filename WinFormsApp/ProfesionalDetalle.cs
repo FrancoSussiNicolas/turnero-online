@@ -60,7 +60,7 @@ namespace WinFormsApp
 
                     if (this.Mode == FormMode.Update)
                     {
-                        this.Profesional.IdPersona = int.Parse(idTextBox.Text);
+                        this.Profesional.PersonaId = int.Parse(idTextBox.Text);
                         await ProfesionalApiClient.UpdateAsync(this.Profesional);
                     }
                     else
@@ -88,7 +88,7 @@ namespace WinFormsApp
 
         private void SetProfesional()
         {
-            this.idTextBox.Text = this.Profesional.IdPersona.ToString();
+            this.idTextBox.Text = this.Profesional.PersonaId.ToString();
             this.nombreTextBox.Text = this.Profesional.ApellidoNombre;
             this.emailTextBox.Text = this.Profesional.Mail;
             this.contraseniaTextBox.Text = this.Profesional.Contrasenia;
