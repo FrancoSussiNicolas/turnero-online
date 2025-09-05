@@ -1,7 +1,6 @@
 ﻿using API.Clients;
 using DTOs;
 using Entities;
-using Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +31,7 @@ namespace WinFormsApp
 
         private void btnRegistrarTurno_Click(object sender, EventArgs e)
         {
-            if (comboConsultorio.SelectedItem == null)
+            if (comboConsultorio.SelectedItem is null)
             {
                 MessageBox.Show("Debe seleccionar un consultorio.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 comboConsultorio.Focus();

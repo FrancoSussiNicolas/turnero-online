@@ -185,6 +185,7 @@
             Controls.Add(emailTextBox);
             Name = "ProfesionalDetalle";
             Text = "ProfesionalDetalle";
+            Load += ProfesionalDetalle_Load;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();

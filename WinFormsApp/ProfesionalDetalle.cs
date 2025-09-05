@@ -161,6 +161,9 @@ namespace WinFormsApp
             return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
         }
 
+        private void ProfesionalDetalle_Load(object sender, EventArgs e)
+        {
 
+        }
     }
 }
