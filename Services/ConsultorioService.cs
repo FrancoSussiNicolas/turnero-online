@@ -16,7 +16,7 @@ namespace Services
             using (var context = new TurneroContext())
             {
                 return context.Consultorios
-                    .Include(c => c.Turnos)
+                    //.Include(c => c.Turnos)
                     .ToList();
             }
         }
