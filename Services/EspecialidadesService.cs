@@ -75,7 +75,7 @@ namespace Services
                 var espFound = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
                 if (espFound is null) return false;
 
-                espFound.Estado = EstadoEspecialidad.Deshabilitado;
+                espFound.Estado = EstadoEspecialidad.Deshabilitada;
                 context.SaveChanges();
                 return true;
             }

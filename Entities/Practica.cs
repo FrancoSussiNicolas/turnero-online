@@ -10,7 +10,7 @@ namespace Entities
     public enum EstadoPractica
     {
         Habilitada,
-        Deshabilitada
+        Deshabilitado
     }
     public class Practica
     {

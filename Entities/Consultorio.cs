@@ -10,7 +10,7 @@ namespace Entities
     public enum EstadoConsultorio
     {
         Habilitado,
-        Desabilitado
+        Deshabilitado
     }
     public class Consultorio
     {

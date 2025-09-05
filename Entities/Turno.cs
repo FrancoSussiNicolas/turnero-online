@@ -31,12 +31,13 @@ namespace Entities
 
         public Turno() { }
            
-        public Turno(DateOnly fechaTurno, TimeOnly horaTurno, Consultorio consultorio, int profesionalId) 
+        public Turno(DateOnly fechaTurno, TimeOnly horaTurno, int consultorioId,int pacienteId, int profesionalId) 
         {
             FechaTurno = fechaTurno;
             HoraTurno = horaTurno;
             Estado = EstadoTurno.Disponible;
-            Consultorio = consultorio;
+            ConsultorioId = consultorioId;
+            PacienteId = pacienteId;
             ProfesionalId = profesionalId;
         }
     }
