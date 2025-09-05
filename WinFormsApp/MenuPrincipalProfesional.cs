@@ -3,9 +3,9 @@ using DTOs;
 
 namespace WinFormsApp
 {
-    public partial class MenuPrincipal : Form
+    public partial class MenuPrincipalProfesional : Form
     {
-        public MenuPrincipal()
+        public MenuPrincipalProfesional()
         {
             InitializeComponent();
         }
@@ -33,11 +33,7 @@ namespace WinFormsApp
 
         private void MenuPrincipal_Shown(object sender, EventArgs e)
         {
-            Login appLogin = new Login();
-            if (appLogin.ShowDialog() != DialogResult.OK)
-            {
-                this.Dispose();
-            }
+
         }
     }
 }

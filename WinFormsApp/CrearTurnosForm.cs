@@ -29,7 +29,7 @@ namespace WinFormsApp
             comboConsultorio.ValueMember = "ConsultorioId";
         }
 
-        private void btnRegistrarTurno_Click(object sender, EventArgs e)
+        private async void btnRegistrarTurno_Click(object sender, EventArgs e)
         {
             if (comboConsultorio.SelectedItem is null)
             {
@@ -50,8 +50,7 @@ namespace WinFormsApp
                 return;
             }
 
-            this.guardarTurno(fechaSeleccionada, horaSeleccionada,(Consultorio)comboConsultorio.SelectedItem);
-
+            await this.guardarTurno(fechaSeleccionada, horaSeleccionada,(Consultorio)comboConsultorio.SelectedItem);
         }
 
         private async Task guardarTurno(DateOnly fechaTurno, TimeOnly horaTurno, Consultorio consultorio)

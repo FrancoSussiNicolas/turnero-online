@@ -35,7 +35,7 @@ namespace WinFormsApp
             this.Close();
         }
 
-        private void VerTurnos_Load(object sender, EventArgs e)
+        private async void VerTurnos_Load(object sender, EventArgs e)
         {
 
             try
@@ -59,7 +59,7 @@ namespace WinFormsApp
             }
         }
 
-        private void btnEliminarTurno_Click(object sender, EventArgs e)
+        private async void btnEliminarTurno_Click(object sender, EventArgs e)
         {
             try
             {
@@ -76,6 +76,24 @@ namespace WinFormsApp
             catch (Exception ex)
             {
                 MessageBox.Show($"Error al cancelar el turno: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private async Task GetAllAndLoad()
+        {
+            try
+            {
+                this.TurnosDataGridView.DataSource = null;
+                this.TurnosDataGridView.DataSource = await TurnoApiClient.GetAllAsync();
+
+                if (this.TurnosDataGridView.Rows.Count > 0)
+                {
+                    this.TurnosDataGridView.Rows[0].Selected = true;
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al cargar la lista de profesionales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
     }

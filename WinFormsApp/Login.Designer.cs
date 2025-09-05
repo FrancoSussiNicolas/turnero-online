@@ -35,6 +35,7 @@
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
+            sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             SuspendLayout();
             // 
             // lnkOlvidaPass
@@ -101,6 +102,11 @@
             label1.Text = "¡Bienvenido al Sistema!\r\nPor favor digite su información de Ingreso";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
+            // sqlCommand1
+            // 
+            sqlCommand1.CommandTimeout = 30;
+            sqlCommand1.EnableOptimizedParameterBinding = false;
+            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -132,5 +138,6 @@
         private Label label3;
         private Label label2;
         private Label label1;
+        private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
     }
 }

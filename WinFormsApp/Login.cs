@@ -10,8 +10,16 @@ using System.Windows.Forms;
 
 namespace WinFormsApp
 {
+    public enum TipoUsuario
+    {
+        Admin,
+        Profesional
+    }
+
     public partial class Login : Form
     {
+        public TipoUsuario TipoUsuario { get; set; }
+
         public Login()
         {
             InitializeComponent();
@@ -22,6 +30,12 @@ namespace WinFormsApp
             if (this.txtUsuario.Text == "Admin" && this.txtPass.Text == "admin")
             {
                 this.DialogResult = DialogResult.OK;
+                this.TipoUsuario = TipoUsuario.Admin;
+            }
+            else if (this.txtUsuario.Text == "Profesional" && this.txtPass.Text == "profesional")
+            {
+                this.DialogResult = DialogResult.OK;
+                this.TipoUsuario = TipoUsuario.Profesional;
             }
             else
             {
