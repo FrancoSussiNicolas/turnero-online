@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Consultorios.ToList();
+                return context.Consultorios
+                    .Include(c => c.Turnos)
+                    .ToList();
             }
         }
 

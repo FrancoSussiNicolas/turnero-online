@@ -42,7 +42,8 @@ namespace Services
                 var newTurno = new Turno(
                     turno.FechaTurno,
                     turno.HoraTurno,
-                    consultorio,
+                    consultorio.ConsultorioId,
+                    turno.PacienteId,
                     turno.ProfesionalId
                 );
 
@@ -63,6 +64,8 @@ namespace Services
                 turnoFound.FechaTurno = turno.FechaTurno;
                 turnoFound.HoraTurno = turno.HoraTurno;
                 turnoFound.Estado = turno.Estado;
+                turnoFound.ConsultorioId = turno.NroConsultorio;
+                turnoFound.PacienteId = turno.PacienteId;
 
                 context.SaveChanges();
                 return turnoFound;
@@ -78,6 +81,7 @@ namespace Services
                 if (turnoFound is null) return false;
 
                 turnoFound.Estado = EstadoTurno.Ocupado;
+                context.SaveChanges();
                 return true;
             }
         }
@@ -91,6 +95,7 @@ namespace Services
                 if (turno == null) return false;
 
                 context.Turnos.Remove(turno);
+                context.SaveChanges();
                 return true;
             }
         }
