@@ -1,5 +1,6 @@
 ﻿using Entities;
 using DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
@@ -9,7 +10,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Profesionales.ToList();
+                return context.Profesionales
+                    .Include(p => p.ObraSociales)
+                    .ToList();
             }
         }
 
@@ -17,7 +20,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Profesionales.FirstOrDefault(pro => pro.PersonaId == id);
+                return context.Profesionales
+                    .Include(p => p.ObraSociales)
+                    .FirstOrDefault(pro => pro.PersonaId == id);
             }
         }
 

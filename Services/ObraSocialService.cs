@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 using DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
@@ -15,7 +16,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.ObrasSociales.ToList();
+                return context.ObrasSociales
+                    .Include(o => o.PlanesObraSocial)
+                    .ToList();
             }
         }
 
@@ -23,7 +26,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.ObrasSociales.FirstOrDefault(pro => pro.ObraSocialId == id);
+                return context.ObrasSociales
+                    .Include(o => o.PlanesObraSocial)
+                    .FirstOrDefault(pro => pro.ObraSocialId == id);
             }
         }
 

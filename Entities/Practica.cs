@@ -4,7 +4,7 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore;
 
 namespace Entities
 {
@@ -13,11 +13,11 @@ namespace Entities
         Habilitada,
         Deshabilitada
     }
+    [Index(nameof(Nombre), IsUnique = true)]
     public class Practica
     {
         public int PracticaId { get; set; }
 
-        [Index(IsUnique = true)]
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 

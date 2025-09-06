@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.EntityFrameworkCore; 
 
 namespace Entities
 {
@@ -12,13 +13,14 @@ namespace Entities
         Habilitada,
         Deshabilitada
     }
+    [Index(nameof(Descripcion), IsUnique = true)]
     public class Especialidad
     {
         public int EspecialidadId { get; set; }
 
-        [Index(IsUnique = true)]
         public string Descripcion { get; set; }
-        public List<Profesional> Profesionales { get; set; }
+
+        public List<Profesional> Profesionales { get; set; } = new();
 
         public EstadoEspecialidad Estado { get; set; }
 

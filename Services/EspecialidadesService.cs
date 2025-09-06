@@ -2,6 +2,7 @@
 using Entities;
 using System;
 using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -14,7 +15,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Especialidades.ToList();
+                return context.Especialidades
+                    .Include(e => e.Profesionales)
+                    .ToList();
             }
         }
 
@@ -22,7 +25,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Especialidades.FirstOrDefault(esp => esp.EspecialidadId == id);
+                return context.Especialidades
+                    .Include(e => e.Profesionales)
+                    .FirstOrDefault(esp => esp.EspecialidadId == id);
             }
         }
 

@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using Entities;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,13 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Turnos.ToList();
+                return context.Turnos
+                    .Include(t => t.Consultorio)
+                    .Include(t => t.Paciente)
+                    .ThenInclude(p => p.PlanObraSocial)
+                    .Include(t => t.Profesional)
+                    .ThenInclude(p => p.ObraSociales)
+                    .ToList();
             }
         }
 
@@ -22,7 +29,13 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Turnos.FirstOrDefault(turno => turno.TurnoId == id);
+                return context.Turnos
+                    .Include(t => t.Consultorio)
+                    .Include(t => t.Paciente)
+                    .ThenInclude(p => p.PlanObraSocial)
+                    .Include(t => t.Profesional)
+                    .ThenInclude(p => p.ObraSociales)
+                    .FirstOrDefault(turno => turno.TurnoId == id);
             }
         }
 
@@ -30,7 +43,14 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Turnos.ToList().FindAll(turno => turno.Estado == EstadoTurno.Disponible);
+                return context.Turnos
+                    .Include(t => t.Consultorio)
+                    .Include(t => t.Paciente)
+                    .ThenInclude(p => p.PlanObraSocial)
+                    .Include(t => t.Profesional)
+                    .ThenInclude(p => p.ObraSociales)
+                    .ToList()
+                    .FindAll(turno => turno.Estado == EstadoTurno.Disponible);
             }
 
         }

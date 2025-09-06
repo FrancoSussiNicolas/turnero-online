@@ -9,7 +9,9 @@ namespace Services
         public List<Paciente> GetAll() {
             using (var context = new TurneroContext())
             {
-                return context.Pacientes.ToList();
+                return context.Pacientes
+                    .Include(p => p.PlanObraSocial)
+                    .ToList();
             }
         }
 
@@ -17,7 +19,9 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Pacientes.FirstOrDefault(pac => pac.PersonaId == idPaciente);
+                return context.Pacientes
+                    .Include(p => p.PlanObraSocial)
+                    .FirstOrDefault(pac => pac.PersonaId == idPaciente);
             }
         }
 

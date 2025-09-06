@@ -1,18 +1,23 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
+    [Index(nameof(Matricula), IsUnique = true)]
     public class Profesional : Persona
     {
-        [Index(IsUnique = true)]
         public string Matricula { get; set; }
         public int EspecialidadId { get; set; }
+
+        [JsonIgnore]
         public Especialidad Especialidad { get; set; }
+
+        [JsonIgnore]
         public List<Turno> Turnos { get; set; }
         public List<ObraSocial> ObraSociales { get; set; }
 

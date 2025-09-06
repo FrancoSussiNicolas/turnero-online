@@ -1,16 +1,18 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
+    [Index(nameof(Dni), IsUnique = true)]
     public class Paciente : Persona
     {
-        [Index(IsUnique = true)]
         public string Dni { get; set; }
         public string Sexo { get; set; } 
 
@@ -22,6 +24,7 @@ namespace Entities
 
         public PlanObraSocial PlanObraSocial { get; set; }
 
+        [JsonIgnore]
         public List<Turno> Turno { get; set; }
 
         public Paciente(string apellidoNombre, string mail, string contrasenia, string dni, string sexo, DateOnly fechaNacimiento, string telefono, int planObraSocialId)

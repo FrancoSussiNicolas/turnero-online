@@ -7,6 +7,7 @@ using Entities;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 
+
 namespace Services
 {
     public class TurneroContext : DbContext
@@ -27,8 +28,11 @@ namespace Services
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=turnero_db;Trusted_Connection=True;TrustServerCertificate=True;");
-            optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+            if (!optionsBuilder.IsConfigured)
+            {
+                optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=turnero_db;Trusted_Connection=True;TrustServerCertificate=True;");
+                optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
+            }
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
@@ -38,6 +42,61 @@ namespace Services
 
             modelBuilder.Entity<Profesional>()
                 .HasKey(p => p.PersonaId);
+            // --- CONFIGURACIÓN DE RELACIONES ---
+
+            // Relación Paciente <-> Turno (Uno a Muchos - Opcional)
+            modelBuilder.Entity<Paciente>()
+                .HasMany(paciente => paciente.Turno)
+                .WithOne(turno => turno.Paciente)
+                .HasForeignKey("PacienteId")
+                .IsRequired(false); // Un turno puede no tener un paciente asignado
+
+            // Relación Paciente <-> PlanObraSocial (Uno a Muchos)
+            modelBuilder.Entity<Paciente>()
+                .HasOne(paciente => paciente.PlanObraSocial)
+                .WithMany(plan => plan.Paciente)
+                .HasForeignKey("PlanObraSocialId")
+                .IsRequired();
+
+            // Relación ObraSocial <-> PlanObraSocial (Uno a Muchos)
+            modelBuilder.Entity<PlanObraSocial>()
+                .HasOne(plan => plan.ObraSocial)
+                .WithMany(obraSocial => obraSocial.PlanesObraSocial)
+                .HasForeignKey("ObraSocialId")
+                .IsRequired();
+
+            // Relación Profesional <-> Turno (Uno a Muchos)
+            modelBuilder.Entity<Profesional>()
+                .HasMany(profesional => profesional.Turnos)
+                .WithOne(turno => turno.Profesional)
+                .HasForeignKey("ProfesionalId")
+                .IsRequired();
+
+            // Relación Consultorio <-> Turno (Uno a Muchos)
+            modelBuilder.Entity<Consultorio>()
+                .HasMany(consultorio => consultorio.Turnos)
+                .WithOne(turno => turno.Consultorio)
+                .HasForeignKey("ConsultorioId")
+                .IsRequired();
+
+            // Relación Especialidad <-> Profesional (Uno a Muchos)
+            modelBuilder.Entity<Profesional>()
+                .HasOne(profesional => profesional.Especialidad)
+                .WithMany(especialidad => especialidad.Profesionales)
+                .HasForeignKey("EspecialidadId")
+                .IsRequired();
+
+            // Relación Profesional <-> ObraSocial (Muchos a Muchos)
+            modelBuilder.Entity<Profesional>()
+                .HasMany(profesional => profesional.ObraSociales)
+                .WithMany(obraSocial => obraSocial.Profesional)
+                .UsingEntity(j => j.ToTable("ProfesionalObraSocial")); // Tabla intermedia
+
+            // Relación PlanObraSocial <-> Practica (Muchos a Muchos)
+            modelBuilder.Entity<PlanObraSocial>()
+                .HasMany(plan => plan.Practica)
+                .WithMany(practica => practica.PlanObraSocial)
+                .UsingEntity(j => j.ToTable("PlanPractica")); // Tabla intermedia
         }
     }
 }

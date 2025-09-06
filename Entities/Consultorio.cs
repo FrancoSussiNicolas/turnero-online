@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Text.Json.Serialization;
 
 namespace Entities
 {
@@ -18,6 +19,8 @@ namespace Entities
         public string Ubicacion { get; set; }
 
         public EstadoConsultorio Estado { get; set; }
+
+        [JsonIgnore]
         public List<Turno> Turnos { get; set; }
         public Consultorio(string ubicacion)
         {

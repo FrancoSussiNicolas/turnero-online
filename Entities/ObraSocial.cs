@@ -1,19 +1,23 @@
 ﻿using Microsoft.AspNetCore.JsonPatch.Internal;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
+    [Index(nameof(NombreObraSocial), IsUnique = true)]
     public class ObraSocial
     {
         public int ObraSocialId {  get; set; }
 
-        [Index(IsUnique = true)]
         public string NombreObraSocial { get; set; }
+
+        [JsonIgnore]
         public List<Profesional> Profesional {  get; set; }
         public List<PlanObraSocial> PlanesObraSocial { get; set; }
 
