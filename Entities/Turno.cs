@@ -31,7 +31,7 @@ namespace Entities
 
         public Turno() { }
            
-        public Turno(DateOnly fechaTurno, TimeOnly horaTurno, int consultorioId,int pacienteId, int profesionalId) 
+        public Turno(DateOnly fechaTurno, TimeOnly horaTurno, int consultorioId, int? pacienteId, int profesionalId) 
         {
             FechaTurno = fechaTurno;
             HoraTurno = horaTurno;

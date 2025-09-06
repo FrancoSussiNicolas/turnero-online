@@ -28,7 +28,7 @@ namespace Controllers
         {
 
             var e = especialidadService.GetById(id);
-            if (e is null) return NotFound();
+            if (e is null) return NotFound("Especialidad no encontrada");
 
             return Ok(e);
         }
@@ -46,16 +46,16 @@ namespace Controllers
         public ActionResult UpdateEspecialidad([FromBody] EspecialidadDTO especialidad, int id)
         {
             var updatedEsp = especialidadService.UpdateEspecialidad(especialidad, id);
-            if (updatedEsp is null) return NotFound();
+            if (updatedEsp is null) return NotFound("Especialidad no encontrada");
 
             return NoContent();
         }
 
-        [HttpPut("deshabilitar/{id}")]
-        public ActionResult DisableEspecialidad(int id)
+        [HttpPut("cambiarEstado/{id}")]
+        public ActionResult CambiarEstadoEspecialidad(int id)
         {
-            var disabledEsp = especialidadService.DisableEspecialidad(id);
-            if (!disabledEsp) return NotFound();
+            var estadoCambiado = especialidadService.CambiarEstadoEspecialidad(id);
+            if (!estadoCambiado) return NotFound("Especialidad no encontrada");
 
             return NoContent();
         }
@@ -64,7 +64,7 @@ namespace Controllers
         public ActionResult DeleteEspecialidad(int id)
         {
             var deletedEsp = especialidadService.DeleteEspecialidad(id);
-            if (!deletedEsp) return NotFound();
+            if (!deletedEsp) return NotFound("Especialidad no encontrada");
 
             return NoContent();
         }

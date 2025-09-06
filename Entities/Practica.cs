@@ -4,23 +4,26 @@ using System.Linq;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Entities
 {
     public enum EstadoPractica
     {
         Habilitada,
-        Deshabilitado
+        Deshabilitada
     }
     public class Practica
     {
         public int PracticaId { get; set; }
+
+        [Index(IsUnique = true)]
         public string Nombre { get; set; }
         public string Descripcion { get; set; }
 
         public EstadoPractica Estado { get; set; }
 
-        public static List<PlanObraSocial> PlanObraSocial {  get; set; }
+        public List<PlanObraSocial> PlanObraSocial {  get; set; }
 
         public Practica(string nombre, string descripcion)
         {

@@ -70,14 +70,14 @@ namespace Services
             }
         }
 
-        public bool DisablePractica(int id)
+        public bool CambiarEstadoPractica(int id)
         {
             using (var context = new TurneroContext())
             {
                 var practica = context.Practicas.FirstOrDefault(p => p.PracticaId == id);
                 if (practica is null) return false;
 
-                practica.Estado = EstadoPractica.Deshabilitado;
+                practica.Estado = practica.Estado == EstadoPractica.Deshabilitada ? EstadoPractica.Habilitada : EstadoPractica.Deshabilitada;
                 context.SaveChanges();
                 return true;
             }

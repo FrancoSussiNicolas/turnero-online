@@ -26,7 +26,7 @@ namespace Controllers
         public ActionResult<Practica> GetById(int id)
         {
             var practica = practicaService.GetByIdPractica(id);
-            if (practica is null) return NotFound();
+            if (practica is null) return NotFound("Practica no encontrada");
 
             return Ok(practica);
         }
@@ -45,16 +45,16 @@ namespace Controllers
         public ActionResult UpdatePractica([FromBody] PracticaDTO practica, int id)
         {
             var practicaActualizada = practicaService.UpdatePractica(practica, id);
-            if (practicaActualizada is null) return NotFound();
+            if (practicaActualizada is null) return NotFound("Practica no encontrada");
 
             return NoContent();
         }
 
-        [HttpPut("deshabilitar/{id}")]
-        public ActionResult DisablePractica(int id)
+        [HttpPut("cambiarEstado/{id}")]
+        public ActionResult CambiarEstadoPractica(int id)
         {
-            var disabledEsp = practicaService.DisablePractica(id);
-            if (!disabledEsp) return NotFound();
+            var estadoCambiado = practicaService.CambiarEstadoPractica(id);
+            if (!estadoCambiado) return NotFound("Practica no encontrada");
 
             return NoContent();
         }
@@ -63,7 +63,7 @@ namespace Controllers
         public ActionResult DeletePractica(int id)
         {
             var practicaEliminada = practicaService.EliminarPractica(id);
-            if (!practicaEliminada) return NotFound();
+            if (!practicaEliminada) return NotFound("Practica no encontrada");
 
             return NoContent();
         }

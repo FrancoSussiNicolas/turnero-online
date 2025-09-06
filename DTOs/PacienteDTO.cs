@@ -10,6 +10,7 @@ namespace DTOs
         public string ApellidoNombre { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Mail { get; set; }
 
         [Required]
@@ -27,7 +28,8 @@ namespace DTOs
         [Required]
         public string Telefono { get; set; }
 
-        public int? PlanObraSocialId { get; set; }
+        [Required]
+        public int PlanObraSocialId { get; set; }
 
     }
 }

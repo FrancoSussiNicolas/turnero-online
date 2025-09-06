@@ -68,14 +68,14 @@ namespace Services
             }
         }
 
-        public bool DisableEspecialidad(int id)
+        public bool CambiarEstadoEspecialidad(int id)
         {
             using (var context = new TurneroContext())
             {
                 var espFound = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
                 if (espFound is null) return false;
 
-                espFound.Estado = EstadoEspecialidad.Deshabilitada;
+                espFound.Estado = espFound.Estado == EstadoEspecialidad.Habilitada ? EstadoEspecialidad.Deshabilitada : EstadoEspecialidad.Habilitada;
                 context.SaveChanges();
                 return true;
             }

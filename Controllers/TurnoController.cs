@@ -16,11 +16,15 @@ namespace Controllers
     {
         private readonly TurnoService turnoService;
         private readonly ConsultorioService consultorioService;
+        private readonly ProfesionalService profesionalService;
+        private readonly PacienteService pacienteService;
 
-        public TurnoController(TurnoService turnoService, ConsultorioService consultorioService)
+        public TurnoController(TurnoService turnoService, ConsultorioService consultorioService, ProfesionalService profesionalService, PacienteService pacienteService)
         {
             this.turnoService = turnoService;
             this.consultorioService = consultorioService;
+            this.profesionalService = profesionalService;
+            this.pacienteService = pacienteService;
         }
 
         [HttpGet]
@@ -34,7 +38,7 @@ namespace Controllers
         {
 
             var turno = turnoService.GetById(id);
-            if (turno is null) return NotFound();
+            if (turno is null) return NotFound("Turno no encontrado");
 
             return Ok(turno);
         }
@@ -49,8 +53,20 @@ namespace Controllers
         public ActionResult<Turno> CrearTurno([FromBody] TurnoDTO turno)
         {
             var consultorio = consultorioService.GetById(turno.NroConsultorio);
-            if (consultorio is null) return NotFound();
-            if (!consultorio.EstaLibre(turno.FechaTurno, turno.HoraTurno)) return UnprocessableEntity();
+            if (consultorio is null) return NotFound("Consultorio no encontrado");
+            if (!consultorio.EstaLibre(turno.FechaTurno, turno.HoraTurno)) return UnprocessableEntity("El Consultorio no está libre para esa fecha y hora");
+            if (consultorio.Estado == EstadoConsultorio.Deshabilitado) return UnprocessableEntity("El Consultorio está deshabilitado");
+            if (turno.FechaTurno < DateOnly.FromDateTime(DateTime.Now)) return UnprocessableEntity("La fecha debe ser mayor o igual a hoy");
+            if (turno.HoraTurno < TimeOnly.FromDateTime(DateTime.Now) && turno.FechaTurno == DateOnly.FromDateTime(DateTime.Now)) return UnprocessableEntity("La hora debe ser mayor o igual a la hora actual");
+
+            if (turno.PacienteId.HasValue)
+            {
+                var paciente = pacienteService.GetByIdPaciente(turno.PacienteId.Value);
+                if (paciente is null) return NotFound("Paciente no encontrado");
+            }
+
+            var profesional = profesionalService.GetByIdProfesional(turno.ProfesionalId);
+            if (profesional is null) return NotFound("Profesional no encontrado");
 
             var newTurno = turnoService.CreateTurno(turno, consultorio);
 
@@ -61,16 +77,16 @@ namespace Controllers
         public ActionResult UpdateTurno([FromBody] TurnoDTO turno, int id)
         {
             var updatedTurno = turnoService.UpdateTurno(turno, id);
-            if (updatedTurno is null) return NotFound();
+            if (updatedTurno is null) return NotFound("Turno no encontrado");
 
             return NoContent();
         }
 
-        [HttpPut("confirmar/{id}")]
-        public ActionResult ConfirmarTurno(int id)
+        [HttpPut("cambiarEstado/{id}")]
+        public ActionResult CambiarEstadoTurno(int id)
         {
-            var turnoConfirmado = turnoService.ConfirmarTurno(id);
-            if (!turnoConfirmado) return NotFound();
+            var turnoConfirmado = turnoService.CambiarEstadoTurno(id);
+            if (!turnoConfirmado) return NotFound("Turno no encontrado");
 
             return NoContent();
         }
@@ -79,7 +95,7 @@ namespace Controllers
         public ActionResult DeleteTurno(int id)
         {
             var deletedTurno = turnoService.DeleteTurno(id);
-            if (!deletedTurno) return NotFound();
+            if (!deletedTurno) return NotFound("Turno no encontrado");
 
             return NoContent();
         }

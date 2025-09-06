@@ -78,14 +78,14 @@ namespace Services
             }
         }
 
-        public bool DisableConsultorio(int id)
+        public bool CambiarEstadoConsultorio(int id)
         {
             using (var context = new TurneroContext())
             {
                 var consulFound = context.Consultorios.FirstOrDefault(c => c.ConsultorioId == id);
                 if (consulFound is null) return false;
 
-                consulFound.Estado = EstadoConsultorio.Deshabilitado;
+                consulFound.Estado = consulFound.Estado == EstadoConsultorio.Deshabilitado ? EstadoConsultorio.Habilitado : EstadoConsultorio.Deshabilitado;
                 context.SaveChanges();
                 return true;
             }

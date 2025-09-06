@@ -32,7 +32,8 @@ namespace Services
                     paciente.DNI,
                     paciente.Sexo,
                     paciente.FechaNacimiento,
-                    paciente.Telefono
+                    paciente.Telefono,
+                    paciente.PlanObraSocialId
                 );
 
                 context.Pacientes.Add(newPaciente);

@@ -43,7 +43,7 @@ namespace Services
                     turno.FechaTurno,
                     turno.HoraTurno,
                     consultorio.ConsultorioId,
-                    turno.PacienteId,
+                    turno.PacienteId.HasValue ? turno.PacienteId.Value : null,
                     turno.ProfesionalId
                 );
 
@@ -72,15 +72,14 @@ namespace Services
             }
         }
 
-        public bool ConfirmarTurno(int id)
+        public bool CambiarEstadoTurno(int id)
         {
-
             using (var context = new TurneroContext())
             {
                 var turnoFound = context.Turnos.FirstOrDefault(t => t.TurnoId == id);
                 if (turnoFound is null) return false;
 
-                turnoFound.Estado = EstadoTurno.Ocupado;
+                turnoFound.Estado = turnoFound.Estado == EstadoTurno.Ocupado ? EstadoTurno.Disponible : EstadoTurno.Ocupado;
                 context.SaveChanges();
                 return true;
             }

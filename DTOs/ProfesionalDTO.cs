@@ -15,6 +15,7 @@ namespace DTOs
         public string ApellidoNombre { get; set; }
 
         [Required]
+        [EmailAddress]
         public string Mail { get; set; }
 
         [Required]

@@ -40,7 +40,7 @@ namespace Controllers
         {
 
             var consultorio = consultorioService.GetById(nro);
-            if (consultorio is null) return NotFound();
+            if (consultorio is null) return NotFound("Consultorio no encontrado");
 
             return Ok(consultorio);
         }
@@ -57,16 +57,16 @@ namespace Controllers
         public ActionResult UpdateConsultorio([FromBody] ConsultorioDTO consultorio, int nro)
         {
             var updatedConsul = consultorioService.UpdateConsultorio(consultorio, nro);
-            if (updatedConsul is null) return NotFound();
+            if (updatedConsul is null) return NotFound("Consultorio no encontrado");
 
             return NoContent();
         }
 
-        [HttpPut("deshabilitar/{id}")]
-        public ActionResult DisableConsultorio(int id)
+        [HttpPut("cambiarEstado/{id}")]
+        public ActionResult CambiarEstadoConsultorio(int id)
         {
-            var disabledConsul = consultorioService.DisableConsultorio(id);
-            if (!disabledConsul) return NotFound();
+            var estadoCambiado = consultorioService.CambiarEstadoConsultorio(id);
+            if (!estadoCambiado) return NotFound("Consultorio no encontrado");
 
             return NoContent();
         }
@@ -75,7 +75,7 @@ namespace Controllers
         public ActionResult DeleteConsultorio(int nro)
         {
             var deletedConsul = consultorioService.DeleteConsultorio(nro);
-            if (!deletedConsul) return NotFound();
+            if (!deletedConsul) return NotFound("Consultorio no encontrado");
 
             return NoContent();
         }

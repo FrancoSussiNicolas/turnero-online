@@ -11,10 +11,12 @@ namespace Controllers
     {
 
         private readonly ProfesionalService profesionalService;
+        private readonly EspecialidadesService especialidadService;
 
-        public ProfesionalController(ProfesionalService profesionalService)
+        public ProfesionalController(ProfesionalService profesionalService, EspecialidadesService especialidadService)
         {
             this.profesionalService = profesionalService;
+            this.especialidadService = especialidadService;
         }
 
         [HttpGet]
@@ -28,7 +30,7 @@ namespace Controllers
         {
 
             var p = profesionalService.GetByIdProfesional(id);
-            if (p is null) return NotFound();
+            if (p is null) return NotFound("Profesional no encontrado");
 
             return Ok(p);
         }
@@ -37,6 +39,12 @@ namespace Controllers
         [HttpPost]
         public ActionResult<Profesional> CrearProfesional([FromBody] ProfesionalDTO profesional)
         {
+            var especialidad = especialidadService.GetById(profesional.EspecialidadId);
+            if (especialidad is null || especialidad.Estado == EstadoEspecialidad.Deshabilitada)
+            {
+                return BadRequest("La especialidad no existe o está deshabilitada.");
+            }
+
             var newProfesional = profesionalService.CrearProfesional(profesional);
 
             //return CreatedAtAction(nameof(GetById), new { id = newProfesional.IdPersona }, newProfesional);
@@ -47,7 +55,7 @@ namespace Controllers
         public ActionResult UpdateProfesional([FromBody] ProfesionalDTO profesional, int id)
         {
             var updatePro = profesionalService.UpdateProfesional(profesional, id);
-            if (updatePro is null) return NotFound();
+            if (updatePro is null) return NotFound("Profesional no encontrado");
 
             return NoContent();
         }
@@ -56,7 +64,7 @@ namespace Controllers
         public ActionResult DeleteProfesional(int id)
         {
             var deletedPro = profesionalService.EliminarProfesional(id);
-            if (!deletedPro) return NotFound();
+            if (!deletedPro) return NotFound("Profesional no encontrado");
 
             return NoContent();
         }

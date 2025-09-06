@@ -28,7 +28,7 @@ namespace Controllers
             {
 
                 var os = obraSocialService.GetByIdObraSocial(id);
-                if (os is null) return NotFound();
+                if (os is null) return NotFound("Obra Social no encontrada");
 
                 return Ok(os);
             }
@@ -46,7 +46,7 @@ namespace Controllers
             public ActionResult UpdateObraSocial([FromBody] ObraSocialDTO obraSocial, int id)
             {
                 var updatedOS = obraSocialService.UpdateObraSocial(obraSocial, id);
-                if (updatedOS is null) return NotFound();
+                if (updatedOS is null) return NotFound("Obra Social no encontrada");
 
                 return NoContent();
             }
@@ -55,7 +55,7 @@ namespace Controllers
             public ActionResult DeleteObraSocial(int id)
             {
                 var deletedOS = obraSocialService.EliminarObraSocial(id);
-                if (!deletedOS) return NotFound();
+                if (!deletedOS) return NotFound("Obra Social no encontrada");
 
                 return NoContent();
             }

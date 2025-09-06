@@ -35,7 +35,8 @@ namespace Services
                   planObraSocial.NombrePlan,
                   planObraSocial.DescripcionPlan,
                   planObraSocial.ObraSocialId
-            );
+                );
+
                 context.PlanesObrasSociales.Add(newPlanObraSocial);
                 context.SaveChanges();
                 return newPlanObraSocial;
