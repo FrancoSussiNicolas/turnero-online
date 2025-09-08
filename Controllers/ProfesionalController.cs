@@ -12,11 +12,13 @@ namespace Controllers
 
         private readonly ProfesionalService profesionalService;
         private readonly EspecialidadesService especialidadService;
+        private readonly ObraSocialService obraSocialService;   
 
-        public ProfesionalController(ProfesionalService profesionalService, EspecialidadesService especialidadService)
+        public ProfesionalController(ProfesionalService profesionalService, EspecialidadesService especialidadService, ObraSocialService obraSocialService)
         {
             this.profesionalService = profesionalService;
             this.especialidadService = especialidadService;
+            this.obraSocialService = obraSocialService;
         }
 
         [HttpGet]
@@ -69,6 +71,21 @@ namespace Controllers
             return NoContent();
         }
 
+        [HttpPut("agregarObraSocial/{profesionald}/{obraSocialId}")]
+        public ActionResult NuevaObraSocialProfesional(int profesionald, int obraSocialId)
+        {
+            var profesional = profesionalService.GetByIdProfesional(profesionald);
+            if (profesional is null) return NotFound(new { message = "Profesional no encontrado" });
+
+            var obraSocial = obraSocialService.GetByIdObraSocial(obraSocialId);
+            if (obraSocial is null) return NotFound(new { message = "Obra Social no encontrada" });
+
+            var profObra = profesionalService.AgregarObraSocial(obraSocial, profesional);
+
+            if (profObra is null ) return NotFound(new { message = "Hubo un problema a la hora de agendar la obra social" });
+
+            return Ok(profObra);
+        }
     }
 }
 

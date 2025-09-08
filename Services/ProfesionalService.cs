@@ -63,6 +63,17 @@ namespace Services
             }
         }
 
+        public Profesional AgregarObraSocial(ObraSocial obraSocial, Profesional profesional ) 
+        {
+            using (var context = new TurneroContext()) 
+            { 
+                profesional.AddObraSocial(obraSocial);
+                context.SaveChanges();
+                return profesional;
+
+            }
+        }
+
         public bool EliminarProfesional(int id)
         {
 
