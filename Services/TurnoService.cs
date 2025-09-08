@@ -105,6 +105,20 @@ namespace Services
             }
         }
 
+        public List<Turno> GetTurnsByPacient(Paciente paciente)
+        {
+            using (var context = new TurneroContext())
+            {
+                return context.Turnos
+                    .Include(t => t.Consultorio)
+                    .Include(t => t.Paciente)
+                    .ThenInclude(p => p.PlanObraSocial)
+                    .Include(t => t.Profesional)
+                    .ThenInclude(p => p.ObraSociales)
+                    .Where(t => t.PacienteId == paciente.PersonaId)
+                    .ToList();
+            }
+        }
         public bool DeleteTurno(int id)
         {
 

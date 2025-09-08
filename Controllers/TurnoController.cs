@@ -49,6 +49,19 @@ namespace Controllers
             return Ok(turnoService.GetDisponibles());
         }
 
+        [HttpGet("paciente/{pacienteId}")]
+        public ActionResult<Turno> GetTurnoByPacienteId(int pacienteId)
+        {
+            var paciente = pacienteService.GetByIdPaciente(pacienteId);
+            if (paciente is null) return NotFound("Paciente no encontrado");
+            
+            var turnos = turnoService.GetTurnsByPacient(paciente); 
+
+            if(turnos.Count == 0) return NotFound("El paciente no tiene turnos asignados");
+
+            return Ok(turnos);
+        }
+
         [HttpPost]
         public ActionResult<Turno> CrearTurno([FromBody] TurnoDTO turno)
         {
