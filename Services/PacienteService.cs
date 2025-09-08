@@ -1,12 +1,14 @@
 ﻿using DTOs;
 using Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
     public class PacienteService
     {
-        public List<Paciente> GetAll() {
+        public List<Paciente> GetAll() 
+        {
             using (var context = new TurneroContext())
             {
                 return context.Pacientes
@@ -29,6 +31,16 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
+                if (context.Pacientes.Any(p => p.Mail == paciente.Mail))
+                {
+                    throw new InvalidOperationException("Ya existe un paciente con el mail ingresado");
+                }
+
+                if (context.Pacientes.Any(p => p.Dni == paciente.DNI))
+                {
+                    throw new InvalidOperationException("Ya existe un paciente con el DNI ingresado");
+                }
+
                 var newPaciente = new Paciente(
                     paciente.ApellidoNombre,
                     paciente.Mail,
@@ -41,15 +53,27 @@ namespace Services
                 );
 
                 context.Pacientes.Add(newPaciente);
-                context.SaveChanges();
+                
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe un paciente con el dni o mail ingresados");
+                    }
+
+                    throw;
+                }
+
                 return newPaciente;
             }
-
         }
 
         public Paciente? UpdatePaciente(PacienteDTO pac, int idPac)
         {
-
             using (var context = new TurneroContext())
             {
                 var pacEncontrado = context.Pacientes.FirstOrDefault(p => p.PersonaId == idPac);
@@ -63,14 +87,26 @@ namespace Services
                 pacEncontrado.FechaNacimiento = pac.FechaNacimiento;
                 pacEncontrado.Telefono = pac.Telefono;
 
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una paciente con el dni o mail ingresados.");
+                    }
+
+                    throw;
+                }
+
                 return pacEncontrado;
             }
         }
 
         public bool EliminarPaciente(int id)
         {
-
             using (var context = new TurneroContext())
             {
                 var pac = context.Pacientes.FirstOrDefault(p => p.PersonaId == id);
@@ -81,6 +117,5 @@ namespace Services
                 return true;
             }
         }
-
     }
 }

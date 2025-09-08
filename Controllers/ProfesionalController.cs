@@ -32,7 +32,7 @@ namespace Controllers
         {
 
             var p = profesionalService.GetByIdProfesional(id);
-            if (p is null) return NotFound("Profesional no encontrado");
+            if (p is null) return NotFound(new { message = "Profesional no encontrado" });
 
             return Ok(p);
         }
@@ -41,32 +41,46 @@ namespace Controllers
         [HttpPost]
         public ActionResult<Profesional> CrearProfesional([FromBody] ProfesionalDTO profesional)
         {
-            var especialidad = especialidadService.GetById(profesional.EspecialidadId);
-            if (especialidad is null || especialidad.Estado == EstadoEspecialidad.Deshabilitada)
+            try
             {
-                return BadRequest("La especialidad no existe o está deshabilitada.");
+                var especialidad = especialidadService.GetById(profesional.EspecialidadId);
+                if (especialidad is null || especialidad.Estado == EstadoEspecialidad.Deshabilitada)
+                {
+                    return BadRequest(new { message = "La especialidad no existe o está deshabilitada." });
+                }
+
+                var newProfesional = profesionalService.CrearProfesional(profesional);
+
+                //return CreatedAtAction(nameof(GetById), new { id = newProfesional.IdPersona }, newProfesional);
+                return Created($"https://localhost:5078/profesionales/{newProfesional.PersonaId}", newProfesional);
             }
-
-            var newProfesional = profesionalService.CrearProfesional(profesional);
-
-            //return CreatedAtAction(nameof(GetById), new { id = newProfesional.IdPersona }, newProfesional);
-            return Created($"https://localhost:5078/profesionales/{newProfesional.PersonaId}", newProfesional);
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
         public ActionResult UpdateProfesional([FromBody] ProfesionalDTO profesional, int id)
         {
-            var updatePro = profesionalService.UpdateProfesional(profesional, id);
-            if (updatePro is null) return NotFound("Profesional no encontrado");
+            try
+            {
+                var updatePro = profesionalService.UpdateProfesional(profesional, id);
+                if (updatePro is null) return NotFound(new { message = "Profesional no encontrado" });
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]
         public ActionResult DeleteProfesional(int id)
         {
             var deletedPro = profesionalService.EliminarProfesional(id);
-            if (!deletedPro) return NotFound("Profesional no encontrado");
+            if (!deletedPro) return NotFound(new { message = "Profesional no encontrado" });
 
             return NoContent();
         }

@@ -1,11 +1,12 @@
-﻿using System;
+﻿using DTOs;
+using Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using Entities;
-using DTOs;
-using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
@@ -36,12 +37,31 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
+                if (context.ObrasSociales.Any(o => o.NombreObraSocial == obraSocial.NombreObraSocial)) 
+                {
+                    throw new InvalidOperationException("Ya existe una obra social con el nombre ingresado");
+                }
+
                 var newObraSocial = new ObraSocial(
                   obraSocial.NombreObraSocial
                 );
 
                 context.ObrasSociales.Add(newObraSocial);
-                context.SaveChanges();
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una obra social con el nombre ingresado");
+                    }
+
+                    throw;
+                }
+
                 return newObraSocial;
             }
 
@@ -59,7 +79,20 @@ namespace Services
 
                 obraSocialEncontrado.NombreObraSocial = os.NombreObraSocial;
 
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una obra social con el nombre ingresado");
+                    }
+
+                    throw;
+                }
+
                 return obraSocialEncontrado;
             }
         }
@@ -79,7 +112,5 @@ namespace Services
                 return true;
             }
         }
-
     }
 }
-

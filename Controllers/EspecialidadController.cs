@@ -26,9 +26,8 @@ namespace Controllers
         [HttpGet("{id}")]
         public ActionResult<Especialidad> GetById(int id)
         {
-
             var e = especialidadService.GetById(id);
-            if (e is null) return NotFound("Especialidad no encontrada");
+            if (e is null) return NotFound(new { message = "Especialidad no encontrada" });
 
             return Ok(e);
         }
@@ -37,25 +36,39 @@ namespace Controllers
         [HttpPost]
         public ActionResult<Especialidad> CrearEspecialidad([FromBody] EspecialidadDTO especialidad)
         {
-            var newEsp = especialidadService.CreateEspecialidad(especialidad);
+            try
+            {
+                var newEsp = especialidadService.CreateEspecialidad(especialidad);
 
-            return Created($"https://localhost:7119/especialidades/{newEsp.EspecialidadId}", newEsp);
+                return Created($"https://localhost:7119/especialidades/{newEsp.EspecialidadId}", newEsp);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
         }
 
         [HttpPut("{id}")]
         public ActionResult UpdateEspecialidad([FromBody] EspecialidadDTO especialidad, int id)
         {
-            var updatedEsp = especialidadService.UpdateEspecialidad(especialidad, id);
-            if (updatedEsp is null) return NotFound("Especialidad no encontrada");
+            try
+            {
+                var updatedEsp = especialidadService.UpdateEspecialidad(especialidad, id);
+                if (updatedEsp is null) return NotFound(new { message = "Especialidad no encontrada" });
 
-            return NoContent();
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
         }
 
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoEspecialidad(int id)
         {
             var estadoCambiado = especialidadService.CambiarEstadoEspecialidad(id);
-            if (!estadoCambiado) return NotFound("Especialidad no encontrada");
+            if (!estadoCambiado) return NotFound(new { message = "Especialidad no encontrada" });
 
             return NoContent();
         }
@@ -64,10 +77,9 @@ namespace Controllers
         public ActionResult DeleteEspecialidad(int id)
         {
             var deletedEsp = especialidadService.DeleteEspecialidad(id);
-            if (!deletedEsp) return NotFound("Especialidad no encontrada");
+            if (!deletedEsp) return NotFound(new { message = "Especialidad no encontrada" });
 
             return NoContent();
         }
-
     }
 }

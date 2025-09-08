@@ -1,5 +1,6 @@
-﻿using Entities;
-using DTOs;
+﻿using DTOs;
+using Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 
 namespace Services
@@ -30,6 +31,16 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
+                if (context.Profesionales.Any(p => p.Mail == profesional.Mail))
+                {
+                    throw new InvalidOperationException("Ya existe un profesional con el mail ingresado");
+                }
+
+                if (context.Profesionales.Any(p => p.Matricula == profesional.Matricula))
+                {
+                    throw new InvalidOperationException("Ya existe un profesional con la matrícula ingresada");
+                }
+
                 var newProfesional = new Profesional(
                     profesional.ApellidoNombre,
                     profesional.Mail,
@@ -39,7 +50,21 @@ namespace Services
                 );
 
                 context.Profesionales.Add(newProfesional);
-                context.SaveChanges();
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe un profesional con el mail o matricula ingresada.");
+                    }
+
+                    throw;
+                }
+
                 return newProfesional;
             }
         }
@@ -58,7 +83,20 @@ namespace Services
                 proEncontrado.Contrasenia = pro.Contrasenia;
                 proEncontrado.Matricula = pro.Matricula;
 
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una especialidad con ese valor único.");
+                    }
+
+                    throw;
+                }
+
                 return proEncontrado;
             }
         }
@@ -76,7 +114,6 @@ namespace Services
 
         public bool EliminarProfesional(int id)
         {
-
             using (var context = new TurneroContext())
             {
                 var pro = context.Profesionales

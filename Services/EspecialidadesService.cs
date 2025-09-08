@@ -1,8 +1,9 @@
 ﻿using DTOs;
 using Entities;
+using Microsoft.Data.SqlClient;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -35,12 +36,31 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
+                if (context.Especialidades.Any(e => e.Descripcion == esp.Descripcion))
+                {
+                    throw new InvalidOperationException("Ya existe una especialidad con la descripcion ingresada");
+                }
+
                 var newEsp = new Especialidad(
                     esp.Descripcion
                 );
 
                 context.Especialidades.Add(newEsp);
-                context.SaveChanges();
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una especialidad con la descripción ingresada");
+                    }
+
+                    throw;
+                }
+
                 return newEsp;
             }
         }
@@ -54,7 +74,19 @@ namespace Services
 
                 espFound.Descripcion = esp.Descripcion;
 
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una especialidad con la descripción ingresada");
+                    }
+
+                    throw;
+                }
                 return espFound;
             }
         }

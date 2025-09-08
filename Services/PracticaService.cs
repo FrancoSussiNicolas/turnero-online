@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using Entities;
+using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -33,13 +34,32 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
+                if (context.Practicas.Any(p => p.Nombre == practica.Nombre))
+                {
+                    throw new InvalidOperationException("Ya existe una práctica con el nombre ingresado");
+                }
+
                 var nuevaPractica = new Practica(
-                practica.Nombre,
-                practica.Descripcion
-            );
+                    practica.Nombre,
+                    practica.Descripcion
+                );
 
                 context.Practicas.Add(nuevaPractica);
-                context.SaveChanges();
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una práctica con el nombre ingresado");
+                    }
+
+                    throw;
+                }
+
                 return nuevaPractica;
             }
         }
@@ -56,7 +76,20 @@ namespace Services
                 practicaEncontrada.Nombre = practica.Nombre;
                 practicaEncontrada.Descripcion = practica.Descripcion;
 
-                context.SaveChanges();
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("Ya existe una práctica con el nombre ingresado");
+                    }
+
+                    throw;
+                }
+
                 return practicaEncontrada;
             }
         }

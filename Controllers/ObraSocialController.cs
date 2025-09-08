@@ -9,7 +9,6 @@ namespace Controllers
         [Route("obraSocial")]
         public class ObraSocialController : ControllerBase
         {
-
             private readonly ObraSocialService obraSocialService;
 
             public ObraSocialController (ObraSocialService obraSocialService)
@@ -26,40 +25,51 @@ namespace Controllers
             [HttpGet("{id}")]
             public ActionResult<ObraSocial> GetById(int id)
             {
-
                 var os = obraSocialService.GetByIdObraSocial(id);
-                if (os is null) return NotFound("Obra Social no encontrada");
+                if (os is null) return NotFound(new { message = "Obra Social no encontrada" });
 
                 return Ok(os);
             }
 
-
             [HttpPost]
             public ActionResult<ObraSocial> CrearObraSocial([FromBody] ObraSocialDTO obraSocial)
             {
-                var newOS = obraSocialService.CrearObraSocial(obraSocial);
+                try
+                {
+                    var newOS = obraSocialService.CrearObraSocial(obraSocial);
 
-                return Created($"https://localhost:7119/especialidades/{newOS.ObraSocialId}", newOS);
+                    return Created($"https://localhost:7119/especialidades/{newOS.ObraSocialId}", newOS);
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return Conflict(new { message = "Error al guardar: " + ex.Message });
+                }
             }
 
             [HttpPut("{id}")]
             public ActionResult UpdateObraSocial([FromBody] ObraSocialDTO obraSocial, int id)
             {
-                var updatedOS = obraSocialService.UpdateObraSocial(obraSocial, id);
-                if (updatedOS is null) return NotFound("Obra Social no encontrada");
+                try
+                {
+                    var updatedOS = obraSocialService.UpdateObraSocial(obraSocial, id);
+                    if (updatedOS is null) return NotFound(new { message = "Obra Social no encontrada" });
 
-                return NoContent();
+                    return NoContent();
+                }
+                catch (InvalidOperationException ex)
+                {
+                    return Conflict(new { message = "Error al guardar: " + ex.Message });
+                }
             }
 
             [HttpDelete("{id}")]
             public ActionResult DeleteObraSocial(int id)
             {
                 var deletedOS = obraSocialService.EliminarObraSocial(id);
-                if (!deletedOS) return NotFound("Obra Social no encontrada");
-
+                if (!deletedOS) return NotFound(new { message = "Obra Social no encontrada" });
+            
                 return NoContent();
             }
-
         }
     }
 
