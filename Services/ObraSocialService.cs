@@ -69,7 +69,9 @@ namespace Services
 
             using (var context = new TurneroContext())
             {
-                var os = context.ObrasSociales.FirstOrDefault(os => os.ObraSocialId == id);
+                var os = context.ObrasSociales
+                    .Include(o => o.PlanesObraSocial)
+                    .FirstOrDefault(os => os.ObraSocialId == id);
                 if (os == null) return false;
 
                 context.ObrasSociales.Remove(os);

@@ -68,7 +68,9 @@ namespace Services
 
             using (var context = new TurneroContext())
             {
-                var pro = context.Profesionales.FirstOrDefault(P => P.PersonaId == id);
+                var pro = context.Profesionales
+                    .Include(p => p.Turnos)
+                    .FirstOrDefault(P => P.PersonaId == id);
                 if (pro == null) return false;
 
                 context.Profesionales.Remove(pro);

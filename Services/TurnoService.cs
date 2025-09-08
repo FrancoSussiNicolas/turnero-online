@@ -55,6 +55,22 @@ namespace Services
 
         }
 
+        public List<Turno> GetByProfesional(int id)
+        {
+            using (var context = new TurneroContext()) 
+            {
+                return context.Turnos
+                    .Include(t => t.Consultorio)
+                    .Include(t => t.Paciente)
+                    .ThenInclude(p => p.PlanObraSocial)
+                    .Include(t => t.Profesional)
+                    .ThenInclude(p => p.ObraSociales)
+                    .ToList()
+                    .FindAll(turno => turno.Estado == EstadoTurno.Disponible && turno.PacienteId == null && turno.ProfesionalId == id);
+            }
+
+        }
+
         public Turno CreateTurno(TurnoDTO turno, Consultorio consultorio)
         {
             using (var context = new TurneroContext())
@@ -85,21 +101,24 @@ namespace Services
                 turnoFound.HoraTurno = turno.HoraTurno;
                 turnoFound.Estado = turno.Estado;
                 turnoFound.ConsultorioId = turno.NroConsultorio;
-                turnoFound.PacienteId = turno.PacienteId;
 
                 context.SaveChanges();
                 return turnoFound;
             }
         }
 
-        public bool CambiarEstadoTurno(int id)
+        public bool CambiarEstadoTurno(int idTurno, int idPaciente)
         {
             using (var context = new TurneroContext())
             {
-                var turnoFound = context.Turnos.FirstOrDefault(t => t.TurnoId == id);
+                var turnoFound = context.Turnos.FirstOrDefault(t => t.TurnoId == idTurno);
                 if (turnoFound is null) return false;
 
+                var pacienteFound = context.Pacientes.FirstOrDefault(p => p.PersonaId == idPaciente);
+                if (pacienteFound is null) return false;
+
                 turnoFound.Estado = turnoFound.Estado == EstadoTurno.Ocupado ? EstadoTurno.Disponible : EstadoTurno.Ocupado;
+                turnoFound.PacienteId = turnoFound.Estado == EstadoTurno.Ocupado ? idPaciente : null;
                 context.SaveChanges();
                 return true;
             }
