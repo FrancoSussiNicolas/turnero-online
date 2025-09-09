@@ -10,10 +10,12 @@ namespace Controllers
     public class PracticaController : ControllerBase
     {
         private readonly PracticaService practicaService;
+        private readonly PlanObraSocialService planObraSocialService;
 
-        public PracticaController(PracticaService practicaService)
+        public PracticaController(PracticaService practicaService, PlanObraSocialService planObraSocialService)
         {
             this.practicaService = practicaService;
+            this.planObraSocialService = planObraSocialService;
         }
 
         [HttpGet]
@@ -71,6 +73,25 @@ namespace Controllers
             if (!estadoCambiado) return NotFound(new { message = "Practica no encontrada" });
 
             return NoContent();
+        }
+
+        [HttpPut("agregarPlanOS/{practicaId}/{planObraSocialId}")]
+        public ActionResult<Practica> AgregarPlanObraSocial(int practicaId, int planObraSocialId)
+        {
+            try
+            {
+                var planOs = planObraSocialService.GetByNroPlan(planObraSocialId);
+                if (planOs is null) return NotFound(new { message = "Plan de Obra Social no encontrado" });
+
+                var practicaActualizada = practicaService.AgregarPlanObraSocial(planOs, practicaId);
+                if (practicaActualizada is null) return NotFound(new { message = "Practica o Plan de Obra Social no encontrado" });
+
+                return Ok(practicaActualizada);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
         }
 
         [HttpDelete("{id}")]

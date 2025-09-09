@@ -69,7 +69,9 @@ namespace Services
 
             using (var context = new TurneroContext())
             {
-                var practicaEncontrada = context.Practicas.FirstOrDefault(p => p.PracticaId == idPractica);
+                var practicaEncontrada = context.Practicas
+                    .Include(p => p.PlanObraSocial)
+                    .FirstOrDefault(p => p.PracticaId == idPractica);
 
                 if (practicaEncontrada is null) return null;
 
@@ -96,15 +98,43 @@ namespace Services
 
         public bool EliminarPractica(int id)
         {
-
             using (var context = new TurneroContext())
             {
                 var practica = context.Practicas.FirstOrDefault(p => p.PracticaId == id);
-                if (practica == null) return false;
+                if (practica is null) return false;
 
                 context.Practicas.Remove(practica);
                 context.SaveChanges();
                 return true;
+            }
+        }
+
+        public Practica? AgregarPlanObraSocial(PlanObraSocial planOs, int practicaId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var practica = context.Practicas
+                    .Include(p => p.PlanObraSocial)
+                    .FirstOrDefault(p => p.PracticaId == practicaId);
+                if (practica is null) return null;
+
+                practica.AddPlanOs(planOs);
+
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("El plan de la obra social ya está asociado a la práctica");
+                    }
+
+                    throw;
+                }
+
+                return practica;
             }
         }
 

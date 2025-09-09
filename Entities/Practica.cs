@@ -5,6 +5,7 @@ using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 
 namespace Entities
 {
@@ -13,6 +14,7 @@ namespace Entities
         Habilitada,
         Deshabilitada
     }
+
     [Index(nameof(Nombre), IsUnique = true)]
     public class Practica
     {
@@ -23,13 +25,18 @@ namespace Entities
 
         public EstadoPractica Estado { get; set; }
 
-        public List<PlanObraSocial> PlanObraSocial {  get; set; }
+        public List<PlanObraSocial> PlanObraSocial { get; set; } = new();
 
         public Practica(string nombre, string descripcion)
         {
             Nombre = nombre;
             Descripcion = descripcion;
             Estado = EstadoPractica.Habilitada;
+        }
+
+        public void AddPlanOs(PlanObraSocial planOs)
+        {
+            this.PlanObraSocial.Add(planOs);
         }
     }
 }

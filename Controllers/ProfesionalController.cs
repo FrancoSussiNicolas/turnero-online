@@ -88,17 +88,21 @@ namespace Controllers
         [HttpPut("agregarObraSocial/{profesionald}/{obraSocialId}")]
         public ActionResult NuevaObraSocialProfesional(int profesionald, int obraSocialId)
         {
-            var profesional = profesionalService.GetByIdProfesional(profesionald);
-            if (profesional is null) return NotFound(new { message = "Profesional no encontrado" });
+            try
+            {
+                var obraSocial = obraSocialService.GetByIdObraSocial(obraSocialId);
+                if (obraSocial is null) return NotFound(new { message = "Obra Social no encontrada" });
 
-            var obraSocial = obraSocialService.GetByIdObraSocial(obraSocialId);
-            if (obraSocial is null) return NotFound(new { message = "Obra Social no encontrada" });
+                var profObra = profesionalService.AgregarObraSocial(obraSocial, profesionald);
 
-            var profObra = profesionalService.AgregarObraSocial(obraSocial, profesional);
+                if (profObra is null) return NotFound(new { message = "Profesional no encontrado" });
 
-            if (profObra is null ) return NotFound(new { message = "Hubo un problema a la hora de agendar la obra social" });
-
-            return Ok(profObra);
+                return Ok(profObra);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
         }
     }
 }

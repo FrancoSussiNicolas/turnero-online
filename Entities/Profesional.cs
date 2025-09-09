@@ -27,6 +27,7 @@ namespace Entities
             Matricula = matricula;
             EspecialidadId = especialidadId;
             Turnos = new();
+            ObraSociales = new();
         }
 
         public void AddTurno(Turno turno)

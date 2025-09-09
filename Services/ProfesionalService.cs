@@ -59,7 +59,7 @@ namespace Services
                 {
                     if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
                     {
-                        throw new InvalidOperationException("Ya existe un profesional con el mail o matricula ingresada.");
+                        throw new InvalidOperationException("Ya existe un profesional con el mail o matricula ingresada");
                     }
 
                     throw;
@@ -75,7 +75,9 @@ namespace Services
             using (var context = new TurneroContext())
             {
 
-                var proEncontrado = context.Profesionales.FirstOrDefault(P => P.PersonaId == idPro);
+                var proEncontrado = context.Profesionales
+                    .Include(p => p.ObraSociales)
+                    .FirstOrDefault(P => P.PersonaId == idPro);
                 if (proEncontrado is null) return null;
 
                 proEncontrado.ApellidoNombre = pro.ApellidoNombre;
@@ -91,7 +93,7 @@ namespace Services
                 {
                     if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
                     {
-                        throw new InvalidOperationException("Ya existe una especialidad con ese valor único.");
+                        throw new InvalidOperationException("Ya existe un profesional con el mail o matricula ingresada");
                     }
 
                     throw;
@@ -101,14 +103,32 @@ namespace Services
             }
         }
 
-        public Profesional AgregarObraSocial(ObraSocial obraSocial, Profesional profesional ) 
+        public Profesional? AgregarObraSocial(ObraSocial obraSocial, int profesionalId) 
         {
             using (var context = new TurneroContext()) 
             { 
-                profesional.AddObraSocial(obraSocial);
-                context.SaveChanges();
-                return profesional;
+                var proEncontrado = context.Profesionales
+                    .Include(p => p.ObraSociales)
+                    .FirstOrDefault(p => p.PersonaId == profesionalId);
+                if (proEncontrado is null) return null;
+                
+                proEncontrado.AddObraSocial(obraSocial);
 
+                try
+                {
+                    context.SaveChanges();
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    {
+                        throw new InvalidOperationException("El profesional ya tiene la obra social asignada");
+                    }
+
+                    throw;
+                }
+
+                return proEncontrado;
             }
         }
 
