@@ -12,7 +12,6 @@ namespace Services
 {
     public class ObraSocialService
     {
-
         public List<ObraSocial> GetAll()
         {
             using (var context = new TurneroContext())
@@ -69,7 +68,6 @@ namespace Services
 
         public ObraSocial? UpdateObraSocial(ObraSocialDTO os, int idOs)
         {
-
             using (var context = new TurneroContext())
             {
 
@@ -97,14 +95,36 @@ namespace Services
             }
         }
 
-        public bool EliminarObraSocial(int id)
+        public bool CambiarEstadoObraSocial(int id)
         {
-
             using (var context = new TurneroContext())
             {
                 var os = context.ObrasSociales
                     .Include(o => o.PlanesObraSocial)
                     .FirstOrDefault(os => os.ObraSocialId == id);
+
+                if (os is null) return false;
+
+                os.Estado = os.Estado == EstadoObraSocial.Habilitada ? EstadoObraSocial.Deshabilitada : EstadoObraSocial.Habilitada;
+
+                foreach (var plan in os.PlanesObraSocial)
+                {
+                    plan.Estado = os.Estado == EstadoObraSocial.Habilitada ? EstadoPlanObraSocial.Habilitado : EstadoPlanObraSocial.Deshabilitado;
+                }
+
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool EliminarObraSocial(int id)
+        {
+            using (var context = new TurneroContext())
+            {
+                var os = context.ObrasSociales
+                    .Include(o => o.PlanesObraSocial)
+                    .FirstOrDefault(os => os.ObraSocialId == id);
+
                 if (os == null) return false;
 
                 context.ObrasSociales.Remove(os);

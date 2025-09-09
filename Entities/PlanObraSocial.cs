@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
+    public enum EstadoPlanObraSocial
+    {
+        Habilitado,
+        Deshabilitado
+    }
+
     public class PlanObraSocial
     {
         public int PlanObraSocialId {  get; set; }
@@ -17,6 +23,8 @@ namespace Entities
         public string NombrePlan { get; set; }
 
         public string DescripcionPlan { get; set; }
+
+        public EstadoPlanObraSocial Estado { get; set; }
 
         [JsonIgnore]
         public List<Paciente> Paciente { get; set; }
@@ -29,13 +37,11 @@ namespace Entities
         [JsonIgnore]
         public List<Practica> Practica { get; set; }
 
-
         public PlanObraSocial(string nombrePlan, string descripcionPlan, int obraSocialId) {
-
             NombrePlan = nombrePlan;
             DescripcionPlan = descripcionPlan;
             ObraSocialId = obraSocialId;
-
+            Estado = EstadoPlanObraSocial.Habilitado;
         }
     }
 }

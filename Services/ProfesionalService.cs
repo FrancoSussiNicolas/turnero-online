@@ -132,13 +132,24 @@ namespace Services
             }
         }
 
+        public bool CambiarEstadoProfesional(int profesionalId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var prof = context.Profesionales.FirstOrDefault(p => p.PersonaId == profesionalId);
+                if (prof is null) return false;
+
+                prof.Estado = prof.Estado == EstadoProfesional.Habilitado ? EstadoProfesional.Deshabilitado : EstadoProfesional.Habilitado;
+                context.SaveChanges();
+                return true;
+            }
+        }
+
         public bool EliminarProfesional(int id)
         {
             using (var context = new TurneroContext())
             {
-                var pro = context.Profesionales
-                    .Include(p => p.Turnos)
-                    .FirstOrDefault(P => P.PersonaId == id);
+                var pro = context.Profesionales.FirstOrDefault(P => P.PersonaId == id);
                 if (pro == null) return false;
 
                 context.Profesionales.Remove(pro);

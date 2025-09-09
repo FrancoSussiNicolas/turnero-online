@@ -76,6 +76,15 @@ namespace Controllers
             }
         }
 
+        [HttpPatch("cambiarEstado/{id}")]
+        public ActionResult CambiarEstadoProfesional(int id)
+        {
+            var profDisabled = profesionalService.CambiarEstadoProfesional(id);
+            if (!profDisabled) return NotFound(new { message = "Profesional no encontrado" });
+
+            return NoContent();
+        }
+
         [HttpDelete("{id}")]
         public ActionResult DeleteProfesional(int id)
         {

@@ -8,17 +8,27 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
+    public enum EstadoProfesional
+    {
+        Habilitado,
+        Deshabilitado
+    }
+
     [Index(nameof(Matricula), IsUnique = true)]
     public class Profesional : Persona
     {
         public string Matricula { get; set; }
+
         public int EspecialidadId { get; set; }
+
+        public EstadoProfesional Estado { get; set; }
 
         [JsonIgnore]
         public Especialidad Especialidad { get; set; }
 
         [JsonIgnore]
         public List<Turno> Turnos { get; set; }
+
         public List<ObraSocial> ObraSociales { get; set; }
 
         public Profesional(string apellidoNombre, string mail, string contrasenia, string matricula, int especialidadId) 
@@ -28,6 +38,7 @@ namespace Entities
             EspecialidadId = especialidadId;
             Turnos = new();
             ObraSociales = new();
+            Estado = EstadoProfesional.Habilitado;
         }
 
         public void AddTurno(Turno turno)

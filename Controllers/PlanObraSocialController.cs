@@ -33,7 +33,6 @@ namespace Controllers
             return Ok(planOS);
         }
 
-
         [HttpPost]
         public ActionResult<PlanObraSocial> CrearPlanObraSocial([FromBody] PlanObraSocialDTO planObraSocial)
         {
@@ -55,6 +54,22 @@ namespace Controllers
             if (updatedPlanOS is null) return NotFound(new { message = "Plan no encontrado" });
 
             return NoContent();
+        }
+
+        [HttpPatch("cambiarEstado/{id}")]
+        public ActionResult CambiarEstadoPlan(int id)
+        {
+            try
+            {
+                var planDisabled = planObraSocialService.CambiarEstadoPlan(id);
+                if (!planDisabled) return NotFound(new { message = "Plan no encontrado" });
+
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
         }
 
         [HttpDelete("{nro}")]

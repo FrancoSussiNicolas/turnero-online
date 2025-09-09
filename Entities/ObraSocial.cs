@@ -10,6 +10,12 @@ using System.Threading.Tasks;
 
 namespace Entities
 {
+    public enum EstadoObraSocial
+    {
+        Habilitada,
+        Deshabilitada
+    }
+
     [Index(nameof(NombreObraSocial), IsUnique = true)]
     public class ObraSocial
     {
@@ -17,13 +23,18 @@ namespace Entities
 
         public string NombreObraSocial { get; set; }
 
+        public EstadoObraSocial Estado { get; set; }
+
         [JsonIgnore]
         public List<Profesional> Profesional {  get; set; }
+
         public List<PlanObraSocial> PlanesObraSocial { get; set; }
 
         public ObraSocial(string nombreObraSocial) {
             NombreObraSocial = nombreObraSocial;
+            Estado = EstadoObraSocial.Habilitada;
         }
+
         public void AddProfesionales (Profesional profesional)
         {
             Profesional.Add(profesional);

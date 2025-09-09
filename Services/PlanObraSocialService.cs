@@ -5,12 +5,12 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 using DTOs;
+using Microsoft.EntityFrameworkCore;
 
 namespace Services
 {
     public class PlanObraSocialService
     {
-
         public List<PlanObraSocial> GetAll()
         {
             using (var context = new TurneroContext())
@@ -46,7 +46,6 @@ namespace Services
 
         public PlanObraSocial? UpdatePlanObraSocial(PlanObraSocialDTO planOS, int nro)
         {
-
             using (var context = new TurneroContext())
             {
                 var planObraSocialEncontrado = context.PlanesObrasSociales.FirstOrDefault(p => p.PlanObraSocialId == nro);
@@ -60,9 +59,26 @@ namespace Services
             }
         }
 
+        public bool CambiarEstadoPlan(int idPlan)
+        {
+            using (var context = new TurneroContext())
+            {
+                var plan = context.PlanesObrasSociales
+                    .Include(p => p.ObraSocial)
+                    .FirstOrDefault(p => p.PlanObraSocialId == idPlan);
+                if (plan is null) return false;
+
+                if (plan.ObraSocial.Estado == EstadoObraSocial.Deshabilitada)
+                    throw new InvalidOperationException("No puede cambiarse el estado del plan, pues la Obra Social está deshabilitada");
+
+                plan.Estado = plan.Estado == EstadoPlanObraSocial.Habilitado ? EstadoPlanObraSocial.Deshabilitado : EstadoPlanObraSocial.Habilitado;
+                context.SaveChanges();
+                return true;
+            }
+        }
+
         public bool EliminarPlanObraSocial(int nro)
         {
-
             using (var context = new TurneroContext()) 
             {
                 var planOS = context.PlanesObrasSociales.FirstOrDefault(p => p.PlanObraSocialId == nro); ;
