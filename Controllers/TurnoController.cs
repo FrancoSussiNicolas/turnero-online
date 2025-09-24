@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using System;
@@ -27,12 +28,14 @@ namespace Controllers
             this.pacienteService = pacienteService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Turno>> GetAll()
         {
             return Ok(turnoService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Turno> GetById(int id)
         {
@@ -43,12 +46,14 @@ namespace Controllers
             return Ok(turno);
         }
 
+        [Authorize]
         [HttpGet("disponibles")]
         public ActionResult<IEnumerable<Turno>> GetDisponibles()
         {
             return Ok(turnoService.GetDisponibles());
         }
 
+        [Authorize]
         [HttpGet("paciente/{pacienteId}")]
         public ActionResult<Turno> GetTurnoByPacienteId(int pacienteId)
         {
@@ -61,6 +66,7 @@ namespace Controllers
             return Ok(turnos);
         }
 
+        [Authorize]
         [HttpGet("profesional/{id}")] 
         public ActionResult<IEnumerable<Turno>> GetByProfesional(int id)
         {
@@ -70,6 +76,7 @@ namespace Controllers
             return Ok(turnos);
         }
 
+        [Authorize(Roles = "Profesional")] 
         [HttpPost]
         public ActionResult<Turno> CrearTurno([FromBody] TurnoDTO turno)
         {
@@ -94,6 +101,7 @@ namespace Controllers
             return Created($"https://localhost:7119/turnos/{newTurno.TurnoId}", newTurno);
         }
 
+        [Authorize(Roles = "Profesional")]
         [HttpPut("{id}")]
         public ActionResult UpdateTurno([FromBody] TurnoDTO turno, int id)
         {
@@ -103,6 +111,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Paciente")]
         [HttpPut("cambiarEstado/{idTurno}")]
         public ActionResult CambiarEstadoTurno([FromBody] int idPaciente, int idTurno)
         {
@@ -112,6 +121,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Profesional")]
         [HttpDelete("{id}")]
         public ActionResult DeleteTurno(int id)
         {

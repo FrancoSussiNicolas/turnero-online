@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DTOs;
 using Entities;
-using DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services;
 
 namespace Controllers
@@ -16,12 +17,14 @@ namespace Controllers
             this.obraSocialService = obraSocialService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<ObraSocial>> GetAll()
         {
             return Ok(obraSocialService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<ObraSocial> GetById(int id)
         {
@@ -31,6 +34,7 @@ namespace Controllers
             return Ok(os);
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPost]
         public ActionResult<ObraSocial> CrearObraSocial([FromBody] ObraSocialDTO obraSocial)
         {
@@ -46,6 +50,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("{id}")]
         public ActionResult UpdateObraSocial([FromBody] ObraSocialDTO obraSocial, int id)
         {
@@ -62,6 +67,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPatch("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoObraSocial(int id)
         {
@@ -71,6 +77,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{id}")]
         public ActionResult DeleteObraSocial(int id)
         {

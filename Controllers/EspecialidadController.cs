@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DTOs;
 using Entities;
-using DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services;
 
 namespace Controllers
@@ -17,12 +18,14 @@ namespace Controllers
             this.especialidadService = especialidadService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Especialidad>> GetAll()
         {
             return Ok(especialidadService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Especialidad> GetById(int id)
         {
@@ -32,7 +35,7 @@ namespace Controllers
             return Ok(e);
         }
 
-
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPost]
         public ActionResult<Especialidad> CrearEspecialidad([FromBody] EspecialidadDTO especialidad)
         {
@@ -48,6 +51,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("{id}")]
         public ActionResult UpdateEspecialidad([FromBody] EspecialidadDTO especialidad, int id)
         {
@@ -64,6 +68,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoEspecialidad(int id)
         {
@@ -73,6 +78,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{id}")]
         public ActionResult DeleteEspecialidad(int id)
         {

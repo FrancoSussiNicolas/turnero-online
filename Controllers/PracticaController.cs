@@ -2,6 +2,7 @@
 using Entities;
 using DTOs;
 using Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Controllers
 {
@@ -18,12 +19,14 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Practica>> GetAll()
         {
             return Ok(practicaService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Practica> GetById(int id)
         {
@@ -33,6 +36,7 @@ namespace Controllers
             return Ok(practica);
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPost]
         public ActionResult<Practica> CrearPractica([FromBody] PracticaDTO practica)
         {
@@ -50,6 +54,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("{id}")]
         public ActionResult UpdatePractica([FromBody] PracticaDTO practica, int id)
         {
@@ -66,6 +71,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoPractica(int id)
         {
@@ -75,6 +81,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("agregarPlanOS/{practicaId}/{planObraSocialId}")]
         public ActionResult<Practica> AgregarPlanObraSocial(int practicaId, int planObraSocialId)
         {
@@ -94,6 +101,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{id}")]
         public ActionResult DeletePractica(int id)
         {

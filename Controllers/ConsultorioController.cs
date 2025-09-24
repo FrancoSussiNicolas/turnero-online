@@ -1,5 +1,6 @@
 ﻿using DTOs;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 using System;
@@ -21,12 +22,14 @@ namespace Controllers
             this.consultorioService = consultorioService;
         }
 
+        [Authorize(Roles = "Profesional")]
         [HttpGet]
         public ActionResult<IEnumerable<Consultorio>> GetAll()
         {
             return Ok(consultorioService.GetAll());
         }
 
+        [Authorize(Roles = "Profesional")]
         [HttpGet("disponibles")]
         public ActionResult<IEnumerable<Consultorio>> GetAvailable()
         {
@@ -35,6 +38,7 @@ namespace Controllers
             return Ok(disponibles);
         }
 
+        [Authorize(Roles = "Profesional")]
         [HttpGet("{nro}")]
         public ActionResult<Consultorio> GetById(int nro)
         {
@@ -44,6 +48,7 @@ namespace Controllers
             return Ok(consultorio);
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPost]
         public ActionResult<Consultorio> CrearConsultorio([FromBody] ConsultorioDTO consultorio)
         {
@@ -52,6 +57,7 @@ namespace Controllers
             return Created($"https://localhost:7119/consultorios/{newConsul.ConsultorioId}", newConsul);
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("{nro}")]
         public ActionResult UpdateConsultorio([FromBody] ConsultorioDTO consultorio, int nro)
         {
@@ -61,6 +67,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoConsultorio(int id)
         {
@@ -70,6 +77,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{nro}")]
         public ActionResult DeleteConsultorio(int nro)
         {

@@ -20,13 +20,14 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
-        [Authorize]
+        [Authorize(Roles = "Profesional,Administrador")] // ver si se agrega usertype Administrador
         [HttpGet]
         public ActionResult<IEnumerable<Paciente>> GetAll()
         {
             return Ok(pacienteService.GetAll());
         }
 
+        [Authorize(Roles = "Profesional,Administrador")] // ver si se agrega usertype Administrador
         [HttpGet("{id}")]
         public ActionResult<Paciente> GetById(int id)
         {
@@ -55,6 +56,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Paciente")]
         [HttpPut("{id}")]
         public ActionResult UpdatePaciente([FromBody] PacienteDTO paciente, int id)
         {
@@ -71,6 +73,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{id}")]
         public ActionResult DeletePaciente (int id) 
         {

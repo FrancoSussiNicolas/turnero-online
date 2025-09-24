@@ -1,6 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using DTOs;
 using Entities;
-using DTOs;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Services;
 
 namespace Controllers
@@ -18,12 +19,14 @@ namespace Controllers
             this.obraSocialService = obraSocialService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<PlanObraSocial>> GetAll()
         {
             return Ok(planObraSocialService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{nro}")]
         public ActionResult<PlanObraSocial> GetByNro(int nro)
         {
@@ -33,6 +36,7 @@ namespace Controllers
             return Ok(planOS);
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPost]
         public ActionResult<PlanObraSocial> CrearPlanObraSocial([FromBody] PlanObraSocialDTO planObraSocial)
         {
@@ -47,6 +51,7 @@ namespace Controllers
             return Created($"https://localhost:7119/especialidades/{newPlanOS.PlanObraSocialId}", newPlanOS);
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("{nro}")]
         public ActionResult UpdatePlanObraSocial([FromBody] PlanObraSocialDTO planObraSocial, int nro)
         {
@@ -56,6 +61,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPatch("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoPlan(int id)
         {
@@ -72,6 +78,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{nro}")]
         public ActionResult DeletePlanObraSocial(int nro)
         {

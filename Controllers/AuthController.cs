@@ -34,16 +34,20 @@ namespace Controllers
         {
             if (string.IsNullOrWhiteSpace(request.Mail) || string.IsNullOrWhiteSpace(request.Password))
                 return Unauthorized();
-            
+
+            string usertype = "Paciente";
             Persona? user = pacienteService.GetByEmail(request.Mail);
             if (user is null)
+            {
                 user = profesionalService.GetByEmail(request.Mail);
+                usertype = "Profesional";
+            }
 
             if (user is null || !user.ValidatePassword(request.Password))
                 return Unauthorized();
 
             var jwtService = new JwtService(configuration);
-            var token = jwtService.GenerateJwtToken(user);
+            var token = jwtService.GenerateJwtToken(user, usertype);
             var expiresAt = DateTime.UtcNow.AddMinutes(jwtService.GetExpirationMinutes());
 
             return Ok(new { token, expiresAt });

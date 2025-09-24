@@ -20,7 +20,7 @@ namespace Services
             this.configuration = configuration;
         }
 
-        public string GenerateJwtToken(Persona user)
+        public string GenerateJwtToken(Persona user, string usertype)
         {
             var jwtSettings = configuration.GetSection("JwtSettings");
             var secretKey = jwtSettings["SecretKey"];
@@ -34,6 +34,7 @@ namespace Services
             {
                 new Claim(ClaimTypes.NameIdentifier, user.PersonaId.ToString()),
                 new Claim(ClaimTypes.Name, user.ApellidoNombre),
+                new Claim(ClaimTypes.Role, usertype),
                 new Claim(ClaimTypes.Email, user.Mail),
                 new Claim("jti", Guid.NewGuid().ToString())
             };

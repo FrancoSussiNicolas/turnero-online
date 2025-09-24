@@ -2,6 +2,7 @@
 using Entities;
 using DTOs;
 using Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Controllers
 {
@@ -21,12 +22,14 @@ namespace Controllers
             this.obraSocialService = obraSocialService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Profesional>> GetAll()
         {
             return Ok(profesionalService.GetAll());
         }
 
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Profesional> GetById(int id)
         {
@@ -60,6 +63,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Profesional")]
         [HttpPut("{id}")]
         public ActionResult UpdateProfesional([FromBody] ProfesionalDTO profesional, int id)
         {
@@ -76,6 +80,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPatch("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoProfesional(int id)
         {
@@ -85,6 +90,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{id}")]
         public ActionResult DeleteProfesional(int id)
         {
@@ -94,6 +100,7 @@ namespace Controllers
             return NoContent();
         }
 
+        [Authorize(Roles = "Profesional")] 
         [HttpPut("agregarObraSocial/{profesionald}/{obraSocialId}")]
         public ActionResult NuevaObraSocialProfesional(int profesionald, int obraSocialId)
         {
