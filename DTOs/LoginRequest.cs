@@ -10,5 +10,11 @@ namespace DTOs
     {
         public string Mail { get; set; } = string.Empty; 
         public string Password { get; set; } = string.Empty;
+
+        public LoginRequest(string mail, string password)
+        {
+            Mail = mail;
+            Password = password;
+        }
     }
 }

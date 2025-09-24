@@ -28,20 +28,23 @@
         /// </summary>
         private void InitializeComponent()
         {
+            components = new System.ComponentModel.Container();
             lnkOlvidaPass = new LinkLabel();
             txtPass = new TextBox();
-            txtUsuario = new TextBox();
+            txtMail = new TextBox();
             btnIngresar = new Button();
             label3 = new Label();
             label2 = new Label();
             label1 = new Label();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
+            errorProvider = new ErrorProvider(components);
+            ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
             // lnkOlvidaPass
             // 
             lnkOlvidaPass.AutoSize = true;
-            lnkOlvidaPass.Location = new Point(138, 217);
+            lnkOlvidaPass.Location = new Point(138, 212);
             lnkOlvidaPass.Name = "lnkOlvidaPass";
             lnkOlvidaPass.Size = new Size(119, 15);
             lnkOlvidaPass.TabIndex = 13;
@@ -51,22 +54,22 @@
             // 
             // txtPass
             // 
-            txtPass.Location = new Point(202, 172);
+            txtPass.Location = new Point(183, 168);
             txtPass.Name = "txtPass";
             txtPass.PasswordChar = '*';
-            txtPass.Size = new Size(100, 23);
+            txtPass.Size = new Size(155, 23);
             txtPass.TabIndex = 12;
             // 
-            // txtUsuario
+            // txtMail
             // 
-            txtUsuario.Location = new Point(202, 128);
-            txtUsuario.Name = "txtUsuario";
-            txtUsuario.Size = new Size(100, 23);
-            txtUsuario.TabIndex = 11;
+            txtMail.Location = new Point(183, 129);
+            txtMail.Name = "txtMail";
+            txtMail.Size = new Size(155, 23);
+            txtMail.TabIndex = 11;
             // 
             // btnIngresar
             // 
-            btnIngresar.Location = new Point(146, 260);
+            btnIngresar.Location = new Point(146, 255);
             btnIngresar.Name = "btnIngresar";
             btnIngresar.Size = new Size(104, 30);
             btnIngresar.TabIndex = 10;
@@ -77,7 +80,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(83, 175);
+            label3.Location = new Point(64, 171);
             label3.Name = "label3";
             label3.Size = new Size(70, 15);
             label3.TabIndex = 9;
@@ -86,11 +89,11 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(83, 131);
+            label2.Location = new Point(64, 132);
             label2.Name = "label2";
-            label2.Size = new Size(113, 15);
+            label2.Size = new Size(108, 15);
             label2.TabIndex = 8;
-            label2.Text = "Nombre de Usuario:";
+            label2.Text = "Correo Electrónico:";
             // 
             // label1
             // 
@@ -107,6 +110,10 @@
             sqlCommand1.CommandTimeout = 30;
             sqlCommand1.EnableOptimizedParameterBinding = false;
             // 
+            // errorProvider
+            // 
+            errorProvider.ContainerControl = this;
+            // 
             // Login
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -114,7 +121,7 @@
             ClientSize = new Size(395, 361);
             Controls.Add(lnkOlvidaPass);
             Controls.Add(txtPass);
-            Controls.Add(txtUsuario);
+            Controls.Add(txtMail);
             Controls.Add(btnIngresar);
             Controls.Add(label3);
             Controls.Add(label2);
@@ -125,6 +132,7 @@
             Name = "Login";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Login";
+            ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();
             ResumeLayout(false);
             PerformLayout();
         }
@@ -133,11 +141,12 @@
 
         private LinkLabel lnkOlvidaPass;
         private TextBox txtPass;
-        private TextBox txtUsuario;
+        private TextBox txtMail;
         private Button btnIngresar;
         private Label label3;
         private Label label2;
         private Label label1;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
+        private ErrorProvider errorProvider;
     }
 }

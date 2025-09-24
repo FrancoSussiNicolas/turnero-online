@@ -1,3 +1,5 @@
+using Shared;
+
 namespace WinFormsApp
 {
     internal static class Program
@@ -16,8 +18,8 @@ namespace WinFormsApp
             {
                 if (login.ShowDialog() == DialogResult.OK)
                 {
-                    if (login.TipoUsuario == TipoUsuario.Profesional) Application.Run(new MenuPrincipalProfesional());
-                    else if (login.TipoUsuario == TipoUsuario.Admin) Application.Run(new MenuPrincipalAdmin());
+                    if (SessionManager.UserType == "Profesional") Application.Run(new MenuPrincipalProfesional());
+                    else if (SessionManager.UserType == "Administrador") Application.Run(new MenuPrincipalAdmin());
                 }
             }
         }

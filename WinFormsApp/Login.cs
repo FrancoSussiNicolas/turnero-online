@@ -1,47 +1,85 @@
-﻿using System;
+﻿using API.Clients;
+using DTOs;
+using Shared;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace WinFormsApp
 {
-    public enum TipoUsuario
-    {
-        Admin,
-        Profesional
-    }
-
     public partial class Login : Form
     {
-        public TipoUsuario TipoUsuario { get; set; }
-
         public Login()
         {
             InitializeComponent();
         }
 
-        private void btnIngresar_Click(object sender, EventArgs e)
+        private async void btnIngresar_Click(object sender, EventArgs e)
         {
-            if (this.txtUsuario.Text == "Admin" && this.txtPass.Text == "admin")
+            if(this.ValidateLoginRequest())
             {
-                this.DialogResult = DialogResult.OK;
-                this.TipoUsuario = TipoUsuario.Admin;
+                try
+                {
+                    var loginData = new LoginRequest(txtMail.Text, txtPass.Text);
+                    var userToken = await AuthApiClient.LoginAsync(loginData);
+
+                    SessionManager.SetSession(userToken.Token);
+
+                    if (SessionManager.UserType == "Paciente")
+                    {
+                        MessageBox.Show("La aplicación es accesible únicamente para Profesionales y el Administrador", "Login", 
+                            MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        this.DialogResult = DialogResult.Abort;
+                    }
+
+                    this.DialogResult = DialogResult.OK;
+                }
+                catch
+                {
+                    MessageBox.Show("Usuario y/o contraseña incorrectos", "Login",
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
-            else if (this.txtUsuario.Text == "Profesional" && this.txtPass.Text == "profesional")
+        }
+
+        private bool ValidateLoginRequest()
+        {
+            bool isValid = true;
+
+            errorProvider.SetError(txtMail, string.Empty);
+            errorProvider.SetError(txtPass, string.Empty);
+
+            if (this.txtMail.Text == string.Empty)
             {
-                this.DialogResult = DialogResult.OK;
-                this.TipoUsuario = TipoUsuario.Profesional;
+                isValid = false;
+                errorProvider.SetError(txtMail, "El email es requerido");
             }
-            else
+            if (this.txtPass.Text == string.Empty)
             {
-                MessageBox.Show("Usuario y/o contraseña incorrectos", "Login",
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                isValid = false;
+                errorProvider.SetError(txtPass, "La contraseña es requerida");
             }
+            else if (!EsEmailValido(this.txtMail.Text))
+            {
+                isValid = false;
+                errorProvider.SetError(txtMail, "Ingrese un email válido");
+            }
+
+            return isValid;
+        }
+
+        private static bool EsEmailValido(string email)
+        {
+            if (string.IsNullOrWhiteSpace(email))
+                return false;
+            return Regex.IsMatch(email, @"^[^@\s]+@[^@\s]+\.[^@\s]+$");
         }
 
         private void lnkOlvidaPass_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
