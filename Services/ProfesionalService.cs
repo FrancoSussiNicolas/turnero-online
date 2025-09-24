@@ -27,6 +27,14 @@ namespace Services
             }
         }
 
+        public Profesional? GetByEmail(string email)
+        {
+            using (var context = new TurneroContext())
+            {
+                return context.Profesionales.FirstOrDefault(pro => pro.Mail == email);
+            }
+        }
+
         public Profesional CrearProfesional(ProfesionalDTO profesional)
         {
             using (var context = new TurneroContext())
@@ -41,7 +49,7 @@ namespace Services
                     throw new InvalidOperationException("Ya existe un profesional con la matrícula ingresada");
                 }
 
-                var newProfesional = new Profesional(
+                var newProfesional = Profesional.Crear(
                     profesional.ApellidoNombre,
                     profesional.Mail,
                     profesional.Contrasenia,
@@ -82,7 +90,7 @@ namespace Services
 
                 proEncontrado.ApellidoNombre = pro.ApellidoNombre;
                 proEncontrado.Mail = pro.Mail;
-                proEncontrado.Contrasenia = pro.Contrasenia;
+                proEncontrado.SetPassword(pro.Contrasenia);
                 proEncontrado.Matricula = pro.Matricula;
 
                 try

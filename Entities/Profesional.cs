@@ -41,6 +41,23 @@ namespace Entities
             Estado = EstadoProfesional.Habilitado;
         }
 
+        public Profesional(string apellidoNombre, string mail, string matricula, int especialidadId) 
+            : base (apellidoNombre, mail)
+        {
+            Matricula = matricula;
+            EspecialidadId = especialidadId;
+            Turnos = new();
+            ObraSociales = new();
+            Estado = EstadoProfesional.Habilitado;
+        }
+
+        public static Profesional Crear(string apellidoNombre, string mail, string contrasenia, string matricula, int especialidadId)
+        {
+            var p = new Profesional(apellidoNombre, mail, matricula, especialidadId);
+            p.SetPassword(contrasenia);
+            return p;
+        }
+
         public void AddTurno(Turno turno)
         {
             Turnos.Add(turno);

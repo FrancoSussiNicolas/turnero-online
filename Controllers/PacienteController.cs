@@ -2,6 +2,7 @@
 using Entities;
 using DTOs;
 using Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Controllers
 {
@@ -19,6 +20,7 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Paciente>> GetAll()
         {

@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
 
@@ -30,7 +31,13 @@ namespace Services
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(@"Server=(localdb)\MSSQLLocalDB;Database=turnero_db;Trusted_Connection=True;TrustServerCertificate=True;");
+                var configuration = new ConfigurationBuilder()
+                    .SetBasePath(Directory.GetCurrentDirectory())
+                    .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
+                    .Build();
+
+                string connectionString = configuration.GetConnectionString("DefaultConnection");
+                optionsBuilder.UseSqlServer(connectionString);
                 optionsBuilder.LogTo(Console.WriteLine, LogLevel.Information);
             }
         }
@@ -42,9 +49,8 @@ namespace Services
 
             modelBuilder.Entity<Profesional>()
                 .HasKey(p => p.PersonaId);
-            // --- CONFIGURACIÓN DE RELACIONES ---
 
-            // Relación Paciente <-> Turno (Uno a Muchos - Opcional)
+            // Relación Paciente <-> Turno (Uno a Muchos)
             modelBuilder.Entity<Paciente>()
                 .HasMany(paciente => paciente.Turno)
                 .WithOne(turno => turno.Paciente)

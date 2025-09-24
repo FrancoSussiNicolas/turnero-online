@@ -27,6 +27,14 @@ namespace Services
             }
         }
 
+        public Paciente? GetByEmail(string email)
+        {
+            using (var context = new TurneroContext())
+            {
+                return context.Pacientes.FirstOrDefault(pac => pac.Mail == email);
+            }
+        }
+
         public Paciente CrearPaciente(PacienteDTO paciente)
         {
             using (var context = new TurneroContext())
@@ -41,7 +49,7 @@ namespace Services
                     throw new InvalidOperationException("Ya existe un paciente con el DNI ingresado");
                 }
 
-                var newPaciente = new Paciente(
+                var newPaciente = Paciente.Crear(
                     paciente.ApellidoNombre,
                     paciente.Mail,
                     paciente.Contrasenia,
@@ -81,7 +89,7 @@ namespace Services
 
                 pacEncontrado.ApellidoNombre = pac.ApellidoNombre;
                 pacEncontrado.Mail = pac.Mail;
-                pacEncontrado.Contrasenia = pac.Contrasenia;
+                pacEncontrado.SetPassword(pac.Contrasenia);
                 pacEncontrado.Dni = pac.DNI;
                 pacEncontrado.Sexo = pac.Sexo;
                 pacEncontrado.FechaNacimiento = pac.FechaNacimiento;

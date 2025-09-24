@@ -3,10 +3,12 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Reflection.PortableExecutable;
 using System.Text;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace Entities
 {
@@ -37,5 +39,21 @@ namespace Entities
             PlanObraSocialId = planObraSocialId;
         }
 
+        public Paciente(string apellidoNombre, string mail, string dni, string sexo, DateOnly fechaNacimiento, string telefono, int planObraSocialId)
+            : base(apellidoNombre, mail)
+        {
+            Dni = dni;
+            Sexo = sexo; 
+            FechaNacimiento = fechaNacimiento;
+            Telefono = telefono;
+            PlanObraSocialId = planObraSocialId;
+        }
+
+        public static Paciente Crear(string apellidoNombre, string mail, string contrasenia, string dni, string sexo, DateOnly fechaNacimiento, string telefono, int planObraSocialId)
+        {
+            var p = new Paciente(apellidoNombre, mail, dni, sexo, fechaNacimiento, telefono, planObraSocialId);
+            p.SetPassword(contrasenia);
+            return p;
+        }
     }
 }
