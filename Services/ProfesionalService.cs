@@ -165,5 +165,28 @@ namespace Services
                 return true;
             }
         }
+        public bool CambiarEspecialidadProfesional(int profesionalId, int nuevaEspecialidadId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var profesional = context.Profesionales.FirstOrDefault(p => p.PersonaId == profesionalId);
+
+                if (profesional == null)
+                {
+                    return false;
+                }
+
+                var nuevaEspecialidad = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == nuevaEspecialidadId);
+
+                if (nuevaEspecialidad == null)
+                {
+                    return false;
+                }
+
+                profesional.EspecialidadId = nuevaEspecialidadId;
+                context.SaveChanges();
+                return true;
+            }
+        }
     }
 }

@@ -120,6 +120,21 @@ namespace Controllers
                 return Conflict(new { message = "Error al guardar: " + ex.Message });
             }
         }
+
+        [HttpPut("cambiarEspecialidad/{profesionalId}")]
+        public IActionResult CambiarEspecialidadProfesional(int profesionalId, [FromBody] int nuevaEspecialidadId)
+        {
+            var resultado = profesionalService.CambiarEspecialidadProfesional(profesionalId, nuevaEspecialidadId);
+
+            if (resultado)
+            {
+                return Ok(new { message = "Especialidad del profesional actualizada con éxito." });
+            }
+            else
+            {
+                return NotFound(new { message = "Profesional o especialidad no encontrada." });
+            }
+        }
     }
 }
 
