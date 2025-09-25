@@ -21,9 +21,21 @@ namespace WinFormsApp
             this.profesionalId = idProfesional;
         }
 
+        private void ConfigurarDataGridView()
+        {
+            dgvEspecialidades.Dock = DockStyle.Fill;
+
+            dgvEspecialidades.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+
+            dgvEspecialidades.AllowUserToResizeColumns = true;
+            dgvEspecialidades.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dgvEspecialidades.MultiSelect = false;
+
+        }
 
         private async void ModificarEspecialidad_Load(object sender, EventArgs e)
         {
+            ConfigurarDataGridView();
             await CargarEspecialidades();
         }
         private async Task CargarEspecialidades()
