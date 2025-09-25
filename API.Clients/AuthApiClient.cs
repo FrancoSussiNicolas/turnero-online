@@ -1,0 +1,53 @@
+﻿using DTOs;
+using Entities;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace API.Clients
+{
+    public class AuthApiClient
+    {
+        private static HttpClient client = new HttpClient();
+        static AuthApiClient()
+        {
+            client.BaseAddress = new Uri("https://localhost:7119/");
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(
+                new MediaTypeWithQualityHeaderValue("application/json"));
+        }
+
+        public static async Task<LoginResponse> LoginAsync(LoginRequest request)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.PostAsJsonAsync("auth/login", request);
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<LoginResponse>();
+                }
+                else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    throw new Exception("Correo electrónico o contraseña incorrectos");
+                }
+                else 
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al iniciar sesión. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al iniciar sesión: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al iniciar sesión: {ex.Message}", ex);
+            }
+        }
+    }
+}

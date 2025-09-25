@@ -1,3 +1,5 @@
+using Shared;
+
 namespace WinFormsApp
 {
     internal static class Program

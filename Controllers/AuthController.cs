@@ -50,7 +50,7 @@ namespace Controllers
             var token = jwtService.GenerateJwtToken(user, usertype);
             var expiresAt = DateTime.UtcNow.AddMinutes(jwtService.GetExpirationMinutes());
 
-            return Ok(new { token, expiresAt });
+            return Ok(new LoginResponse(token, expiresAt));
         }
     }
 }

@@ -22,6 +22,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "WinFormsApp", "WinFormsApp\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "API.Clients", "API.Clients\API.Clients.csproj", "{7EC2256D-61A3-4ED4-80CB-6E0C66024175}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shared", "Shared\Shared.csproj", "{8F3D5DAF-0BF1-4854-80D3-6CB05419729D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -56,6 +58,10 @@ Global
 		{7EC2256D-61A3-4ED4-80CB-6E0C66024175}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7EC2256D-61A3-4ED4-80CB-6E0C66024175}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7EC2256D-61A3-4ED4-80CB-6E0C66024175}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8F3D5DAF-0BF1-4854-80D3-6CB05419729D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F3D5DAF-0BF1-4854-80D3-6CB05419729D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F3D5DAF-0BF1-4854-80D3-6CB05419729D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F3D5DAF-0BF1-4854-80D3-6CB05419729D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
