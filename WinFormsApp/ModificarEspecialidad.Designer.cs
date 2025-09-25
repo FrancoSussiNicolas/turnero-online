@@ -28,73 +28,61 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label1 = new Label();
             dgvEspecialidades = new DataGridView();
             btnGuardar = new Button();
             btnCancelar = new Button();
             ((System.ComponentModel.ISupportInitialize)dgvEspecialidades).BeginInit();
             SuspendLayout();
             // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(21, 26);
-            label1.Name = "label1";
-            label1.Size = new Size(229, 20);
-            label1.TabIndex = 0;
-            label1.Text = "Seleccione su nueva Especialidad";
-            label1.Click += label1_Click;
-            // 
             // dgvEspecialidades
             // 
             dgvEspecialidades.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dgvEspecialidades.Location = new Point(21, 61);
+            dgvEspecialidades.Location = new Point(0, 0);
             dgvEspecialidades.Name = "dgvEspecialidades";
             dgvEspecialidades.RowHeadersWidth = 51;
-            dgvEspecialidades.Size = new Size(705, 267);
+            dgvEspecialidades.Size = new Size(982, 267);
             dgvEspecialidades.TabIndex = 1;
             dgvEspecialidades.CellContentClick += dgvEspecialidades_CellContentClick;
             // 
             // btnGuardar
             // 
-            btnGuardar.Location = new Point(517, 377);
+            btnGuardar.BackColor = Color.FromArgb(255, 255, 128);
+            btnGuardar.Location = new Point(629, 405);
             btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(94, 29);
+            btnGuardar.Size = new Size(108, 43);
             btnGuardar.TabIndex = 2;
             btnGuardar.Text = "Guardar";
-            btnGuardar.UseVisualStyleBackColor = true;
-            btnGuardar.Click += btnGuardar_Click; // ¡Esta es la línea que faltaba!
+            btnGuardar.UseVisualStyleBackColor = false;
+            btnGuardar.Click += btnGuardar_Click;
             // 
             // btnCancelar
             // 
-            btnCancelar.Location = new Point(102, 377);
+            btnCancelar.BackColor = Color.IndianRed;
+            btnCancelar.Location = new Point(214, 405);
             btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(94, 29);
+            btnCancelar.Size = new Size(108, 43);
             btnCancelar.TabIndex = 4;
             btnCancelar.Text = "Cancelar";
-            btnCancelar.UseVisualStyleBackColor = true;
+            btnCancelar.UseVisualStyleBackColor = false;
             btnCancelar.Click += btnCancelar_Click;
             // 
             // ModificarEspecialidad
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(800, 450);
+            ClientSize = new Size(982, 553);
             Controls.Add(btnCancelar);
             Controls.Add(btnGuardar);
             Controls.Add(dgvEspecialidades);
-            Controls.Add(label1);
             Name = "ModificarEspecialidad";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Modificar Especialidad";
             Load += ModificarEspecialidad_Load;
             ((System.ComponentModel.ISupportInitialize)dgvEspecialidades).EndInit();
             ResumeLayout(false);
-            PerformLayout();
         }
 
         #endregion
-
-        private Label label1;
         private DataGridView dgvEspecialidades;
         private DataGridViewTextBoxColumn Id;
         private DataGridViewTextBoxColumn Column2;

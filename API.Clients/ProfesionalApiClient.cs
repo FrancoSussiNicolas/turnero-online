@@ -160,5 +160,33 @@ namespace API.Clients
                 throw new Exception($"Timeout al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
             }
         }
+
+        public static async Task<IEnumerable<ObraSocialDTO>> GetObrasSocialesAsync(int profesionalId)
+        {
+            try
+            {
+                string url = $"profesionales/{profesionalId}/obrasSociales";
+
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IEnumerable<ObraSocialDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener obras sociales del profesional con Id {profesionalId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener obras sociales del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener obras sociales del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+        }
     }
 }

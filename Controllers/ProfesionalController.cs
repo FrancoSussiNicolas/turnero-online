@@ -40,7 +40,6 @@ namespace Controllers
             return Ok(p);
         }
 
-
         [HttpPost]
         public ActionResult<Profesional> CrearProfesional([FromBody] ProfesionalDTO profesional)
         {
@@ -135,6 +134,22 @@ namespace Controllers
                 return NotFound(new { message = "Profesional o especialidad no encontrada." });
             }
         }
+
+        [Authorize]
+        [HttpGet("{id}/obrasSociales")]
+        public ActionResult<IEnumerable<ObraSocial>> GetObrasSocialesByProfesionalId(int id)
+        {
+            var profesional = profesionalService.GetByIdProfesional(id);
+            if (profesional is null)
+            {
+                return NotFound(new { message = "Profesional no encontrado" });
+            }
+
+            var obrasSociales = profesionalService.GetObrasSocialesByProfesionalId(id);
+
+            return Ok(obrasSociales);
+        }
+
     }
 }
 

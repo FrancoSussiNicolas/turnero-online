@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Shared;
+using System;
 using System.Windows.Forms;
 
 namespace WinFormsApp
@@ -11,7 +12,6 @@ namespace WinFormsApp
             this.Text = "Menú Principal del Profesional";
         }
 
-        // Métodos para las subopciones del menú "Turnos"
         private void VerTurnosToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form verTurnosForm = new Form();
@@ -44,10 +44,9 @@ namespace WinFormsApp
             borrarTurnosForm.Show();
         }
 
-        // Métodos para las opciones de "Modificar" en los menús principales
         private void ModificarEspecialidadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form modificarEspecialidadForm = new ModificarEspecialidad(1); // Cambiar por el valor que viene en la información del login
+            Form modificarEspecialidadForm = new ModificarEspecialidad((int)SessionManager.PersonaId); // Cambiar por el valor que viene en la información del login
             modificarEspecialidadForm.MdiParent = this;
             modificarEspecialidadForm.Text = "Modificar Especialidad";
             modificarEspecialidadForm.Show();
@@ -69,7 +68,6 @@ namespace WinFormsApp
             modificarPerfilForm.Show();
         }
 
-        // Métodos de control de ventanas MDI (no modificados)
         private void CascadeToolStripMenuItem_Click(object sender, EventArgs e)
         {
             LayoutMdi(MdiLayout.Cascade);
@@ -103,7 +101,6 @@ namespace WinFormsApp
             Application.Exit();
         }
 
-        // Eventos vacíos que se pueden eliminar o reutilizar
         private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
         }
@@ -114,6 +111,7 @@ namespace WinFormsApp
 
         private void MenuProfesional_Load(object sender, EventArgs e)
         {
+            
         }
     }
 }

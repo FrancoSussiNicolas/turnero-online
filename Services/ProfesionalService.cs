@@ -188,5 +188,18 @@ namespace Services
                 return true;
             }
         }
+
+        public IEnumerable<ObraSocial> GetObrasSocialesByProfesionalId(int profesionalId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var obrasSociales = context.Profesionales
+                    .Where(p => p.PersonaId == profesionalId)
+                    .SelectMany(p => p.ObraSociales) 
+                    .ToList();
+
+                return obrasSociales;
+            }
+        }
     }
 }
