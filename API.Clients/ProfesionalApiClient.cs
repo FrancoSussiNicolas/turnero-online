@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -135,6 +136,26 @@ namespace API.Clients
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al actualizar profesional con Id {profesional.PersonaId}: {ex.Message}", ex);
+            }
+        }
+        public static async Task DisableAsync(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.PatchAsync($"profesionales/cambiarEstado/{id}", null);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al deshabilitar profesional con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al deshabilitar profesional con Id {id}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al deshabilitar profesional con Id {id}: {ex.Message}", ex);
             }
         }
     }

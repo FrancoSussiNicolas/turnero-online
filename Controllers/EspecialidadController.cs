@@ -35,7 +35,7 @@ namespace Controllers
             return Ok(e);
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        //[Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPost]
         public ActionResult<Especialidad> CrearEspecialidad([FromBody] EspecialidadDTO especialidad)
         {

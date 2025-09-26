@@ -31,6 +31,7 @@
             TurnosDataGridView = new DataGridView();
             btnAceptar = new Button();
             btnEliminarTurno = new Button();
+            btnModificar = new Button();
             ((System.ComponentModel.ISupportInitialize)TurnosDataGridView).BeginInit();
             SuspendLayout();
             // 
@@ -44,7 +45,7 @@
             // 
             // btnAceptar
             // 
-            btnAceptar.Location = new Point(179, 395);
+            btnAceptar.Location = new Point(63, 395);
             btnAceptar.Name = "btnAceptar";
             btnAceptar.Size = new Size(168, 33);
             btnAceptar.TabIndex = 1;
@@ -54,7 +55,7 @@
             // 
             // btnEliminarTurno
             // 
-            btnEliminarTurno.Location = new Point(442, 395);
+            btnEliminarTurno.Location = new Point(581, 395);
             btnEliminarTurno.Name = "btnEliminarTurno";
             btnEliminarTurno.Size = new Size(193, 33);
             btnEliminarTurno.TabIndex = 2;
@@ -62,11 +63,22 @@
             btnEliminarTurno.UseVisualStyleBackColor = true;
             btnEliminarTurno.Click += btnEliminarTurno_Click;
             // 
+            // btnModificar
+            // 
+            btnModificar.Location = new Point(318, 395);
+            btnModificar.Name = "btnModificar";
+            btnModificar.Size = new Size(168, 33);
+            btnModificar.TabIndex = 3;
+            btnModificar.Text = "Modificar";
+            btnModificar.UseVisualStyleBackColor = true;
+            btnModificar.Click += btnModificar_Click;
+            // 
             // VerTurnosForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(800, 450);
+            Controls.Add(btnModificar);
             Controls.Add(btnEliminarTurno);
             Controls.Add(btnAceptar);
             Controls.Add(TurnosDataGridView);
@@ -82,5 +94,6 @@
         private DataGridView TurnosDataGridView;
         private Button btnAceptar;
         private Button btnEliminarTurno;
+        private Button btnModificar;
     }
 }

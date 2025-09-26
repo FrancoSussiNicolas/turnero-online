@@ -22,7 +22,7 @@ namespace Controllers
             this.obraSocialService = obraSocialService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Profesional>> GetAll()
         {
@@ -80,7 +80,7 @@ namespace Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        //[Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPatch("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoProfesional(int id)
         {
@@ -90,7 +90,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        //[Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{id}")]
         public ActionResult DeleteProfesional(int id)
         {

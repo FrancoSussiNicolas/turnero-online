@@ -12,14 +12,16 @@ namespace WinFormsApp
             // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
-            using (var login = new Login())
-            {
-                if (login.ShowDialog() == DialogResult.OK)
-                {
-                    if (login.TipoUsuario == TipoUsuario.Profesional) Application.Run(new MenuPrincipalProfesional());
-                    else if (login.TipoUsuario == TipoUsuario.Admin) Application.Run(new MenuPrincipalAdmin());
-                }
-            }
+            Application.Run(new MenuAdmin());
+
+            //using (var login = new Login())
+            //{
+            //    if (login.ShowDialog() == DialogResult.OK)
+            //    {
+            //        if (login.TipoUsuario == TipoUsuario.Profesional) Application.Run(new MenuAdmin());
+            //        else if (login.TipoUsuario == TipoUsuario.Admin) Application.Run(new MenuAdmin());
+            //    }
+            //}
         }
     }
 }

@@ -20,7 +20,7 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
-        [Authorize(Roles = "Profesional,Administrador")] // ver si se agrega usertype Administrador
+        //[Authorize(Roles = "Profesional,Administrador")] // ver si se agrega usertype Administrador
         [HttpGet]
         public ActionResult<IEnumerable<Paciente>> GetAll()
         {
