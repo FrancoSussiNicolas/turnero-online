@@ -96,5 +96,10 @@ namespace WinFormsApp
                 MessageBox.Show($"Error al cargar la lista de profesionales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
+
+        private void btnModificar_Click(object sender, EventArgs e)
+        {
+
+        }
     }
 }

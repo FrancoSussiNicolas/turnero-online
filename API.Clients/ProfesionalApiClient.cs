@@ -3,6 +3,7 @@ using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 using System.Text;
@@ -162,6 +163,26 @@ namespace API.Clients
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al cambiar la especialidad del profesional con Id {profesionalId}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
+                     catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+            }
+        }
+        public static async Task DisableAsync(int id)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.PatchAsync($"profesionales/cambiarEstado/{id}", null);
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al deshabilitar profesional con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
             }
             catch (HttpRequestException ex)
             {
@@ -254,6 +275,5 @@ namespace API.Clients
                 throw new Exception($"Timeout al agregar la obra social del profesional con Id {profesionalId}: {ex.Message}", ex);
             }
         }
-
     }
 }

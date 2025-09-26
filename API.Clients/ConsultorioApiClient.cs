@@ -166,7 +166,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsync($"consultorios/deshabilitar/{id}", null);
+                HttpResponseMessage response = await client.PutAsync($"consultorios/cambiarEstado/{id}", null);
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
