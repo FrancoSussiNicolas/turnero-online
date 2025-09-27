@@ -47,5 +47,26 @@ namespace WinFormsApp
             pacientes.MdiParent = this;
             pacientes.Show();
         }
+
+        private void especialidadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListaEspecialidad especialidades = new ListaEspecialidad();
+            especialidades.MdiParent = this;
+            especialidades.Show();
+        }
+
+        private void practicaToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListaPractica practica = new ListaPractica();
+            practica.MdiParent = this;
+            practica.Show();
+        }
+
+        private void planObraSocialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListaPlanObraSocial planObraSocial = new ListaPlanObraSocial();
+            planObraSocial.MdiParent = this;
+            planObraSocial.Show();
+        }
     }
 }

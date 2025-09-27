@@ -33,10 +33,6 @@
             verProfesionalesToolStripMenuItem = new ToolStripMenuItem();
             consultoriosToolStripMenuItem = new ToolStripMenuItem();
             especialidadToolStripMenuItem = new ToolStripMenuItem();
-            verEspecilidadToolStripMenuItem = new ToolStripMenuItem();
-            crearEspecilidadToolStripMenuItem = new ToolStripMenuItem();
-            modificarEspecialidadToolStripMenuItem = new ToolStripMenuItem();
-            eliminarEspecilidadToolStripMenuItem = new ToolStripMenuItem();
             obraSocialToolStripMenuItem = new ToolStripMenuItem();
             verObrasSocialesToolStripMenuItem = new ToolStripMenuItem();
             crearObraSocialToolStripMenuItem = new ToolStripMenuItem();
@@ -44,15 +40,7 @@
             eliminarObraSocialToolStripMenuItem = new ToolStripMenuItem();
             pacienteToolStripMenuItem = new ToolStripMenuItem();
             planObraSocialToolStripMenuItem = new ToolStripMenuItem();
-            verPlanesToolStripMenuItem = new ToolStripMenuItem();
-            crearPlanToolStripMenuItem = new ToolStripMenuItem();
-            modificarPlanToolStripMenuItem = new ToolStripMenuItem();
-            eliminarPlanToolStripMenuItem = new ToolStripMenuItem();
             practicaToolStripMenuItem = new ToolStripMenuItem();
-            verPracticasToolStripMenuItem = new ToolStripMenuItem();
-            crearPracticaToolStripMenuItem = new ToolStripMenuItem();
-            modificarPracticaToolStripMenuItem = new ToolStripMenuItem();
-            eliminarPracticaToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -87,34 +75,10 @@
             // 
             // especialidadToolStripMenuItem
             // 
-            especialidadToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verEspecilidadToolStripMenuItem, crearEspecilidadToolStripMenuItem, modificarEspecialidadToolStripMenuItem, eliminarEspecilidadToolStripMenuItem });
             especialidadToolStripMenuItem.Name = "especialidadToolStripMenuItem";
             especialidadToolStripMenuItem.Size = new Size(84, 20);
             especialidadToolStripMenuItem.Text = "Especialidad";
-            // 
-            // verEspecilidadToolStripMenuItem
-            // 
-            verEspecilidadToolStripMenuItem.Name = "verEspecilidadToolStripMenuItem";
-            verEspecilidadToolStripMenuItem.Size = new Size(193, 22);
-            verEspecilidadToolStripMenuItem.Text = "Ver especialidades";
-            // 
-            // crearEspecilidadToolStripMenuItem
-            // 
-            crearEspecilidadToolStripMenuItem.Name = "crearEspecilidadToolStripMenuItem";
-            crearEspecilidadToolStripMenuItem.Size = new Size(193, 22);
-            crearEspecilidadToolStripMenuItem.Text = "Crear especilidad";
-            // 
-            // modificarEspecialidadToolStripMenuItem
-            // 
-            modificarEspecialidadToolStripMenuItem.Name = "modificarEspecialidadToolStripMenuItem";
-            modificarEspecialidadToolStripMenuItem.Size = new Size(193, 22);
-            modificarEspecialidadToolStripMenuItem.Text = "Modificar especialidad";
-            // 
-            // eliminarEspecilidadToolStripMenuItem
-            // 
-            eliminarEspecilidadToolStripMenuItem.Name = "eliminarEspecilidadToolStripMenuItem";
-            eliminarEspecilidadToolStripMenuItem.Size = new Size(193, 22);
-            eliminarEspecilidadToolStripMenuItem.Text = "Eliminar especilidad";
+            especialidadToolStripMenuItem.Click += especialidadToolStripMenuItem_Click;
             // 
             // obraSocialToolStripMenuItem
             // 
@@ -156,66 +120,17 @@
             // 
             // planObraSocialToolStripMenuItem
             // 
-            planObraSocialToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verPlanesToolStripMenuItem, crearPlanToolStripMenuItem, modificarPlanToolStripMenuItem, eliminarPlanToolStripMenuItem });
             planObraSocialToolStripMenuItem.Name = "planObraSocialToolStripMenuItem";
             planObraSocialToolStripMenuItem.Size = new Size(105, 20);
             planObraSocialToolStripMenuItem.Text = "Plan Obra Social";
-            // 
-            // verPlanesToolStripMenuItem
-            // 
-            verPlanesToolStripMenuItem.Name = "verPlanesToolStripMenuItem";
-            verPlanesToolStripMenuItem.Size = new Size(151, 22);
-            verPlanesToolStripMenuItem.Text = "Ver planes";
-            verPlanesToolStripMenuItem.Click += verPlanesToolStripMenuItem_Click;
-            // 
-            // crearPlanToolStripMenuItem
-            // 
-            crearPlanToolStripMenuItem.Name = "crearPlanToolStripMenuItem";
-            crearPlanToolStripMenuItem.Size = new Size(151, 22);
-            crearPlanToolStripMenuItem.Text = "Crear plan ";
-            // 
-            // modificarPlanToolStripMenuItem
-            // 
-            modificarPlanToolStripMenuItem.Name = "modificarPlanToolStripMenuItem";
-            modificarPlanToolStripMenuItem.Size = new Size(151, 22);
-            modificarPlanToolStripMenuItem.Text = "Modificar plan";
-            // 
-            // eliminarPlanToolStripMenuItem
-            // 
-            eliminarPlanToolStripMenuItem.Name = "eliminarPlanToolStripMenuItem";
-            eliminarPlanToolStripMenuItem.Size = new Size(151, 22);
-            eliminarPlanToolStripMenuItem.Text = "Eliminar plan";
+            planObraSocialToolStripMenuItem.Click += planObraSocialToolStripMenuItem_Click;
             // 
             // practicaToolStripMenuItem
             // 
-            practicaToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verPracticasToolStripMenuItem, crearPracticaToolStripMenuItem, modificarPracticaToolStripMenuItem, eliminarPracticaToolStripMenuItem });
             practicaToolStripMenuItem.Name = "practicaToolStripMenuItem";
             practicaToolStripMenuItem.Size = new Size(61, 20);
             practicaToolStripMenuItem.Text = "Practica";
-            // 
-            // verPracticasToolStripMenuItem
-            // 
-            verPracticasToolStripMenuItem.Name = "verPracticasToolStripMenuItem";
-            verPracticasToolStripMenuItem.Size = new Size(170, 22);
-            verPracticasToolStripMenuItem.Text = "Ver practicas";
-            // 
-            // crearPracticaToolStripMenuItem
-            // 
-            crearPracticaToolStripMenuItem.Name = "crearPracticaToolStripMenuItem";
-            crearPracticaToolStripMenuItem.Size = new Size(170, 22);
-            crearPracticaToolStripMenuItem.Text = "Crear practica";
-            // 
-            // modificarPracticaToolStripMenuItem
-            // 
-            modificarPracticaToolStripMenuItem.Name = "modificarPracticaToolStripMenuItem";
-            modificarPracticaToolStripMenuItem.Size = new Size(170, 22);
-            modificarPracticaToolStripMenuItem.Text = "Modificar practica";
-            // 
-            // eliminarPracticaToolStripMenuItem
-            // 
-            eliminarPracticaToolStripMenuItem.Name = "eliminarPracticaToolStripMenuItem";
-            eliminarPracticaToolStripMenuItem.Size = new Size(170, 22);
-            eliminarPracticaToolStripMenuItem.Text = "Eliminar practica";
+            practicaToolStripMenuItem.Click += practicaToolStripMenuItem_Click;
             // 
             // MenuAdmin
             // 
@@ -241,10 +156,6 @@
         private ToolStripMenuItem verProfesionalesToolStripMenuItem;
         private ToolStripMenuItem consultoriosToolStripMenuItem;
         private ToolStripMenuItem especialidadToolStripMenuItem;
-        private ToolStripMenuItem verEspecilidadToolStripMenuItem;
-        private ToolStripMenuItem crearEspecilidadToolStripMenuItem;
-        private ToolStripMenuItem modificarEspecialidadToolStripMenuItem;
-        private ToolStripMenuItem eliminarEspecilidadToolStripMenuItem;
         private ToolStripMenuItem obraSocialToolStripMenuItem;
         private ToolStripMenuItem verObrasSocialesToolStripMenuItem;
         private ToolStripMenuItem crearObraSocialToolStripMenuItem;
@@ -252,14 +163,6 @@
         private ToolStripMenuItem eliminarObraSocialToolStripMenuItem;
         private ToolStripMenuItem pacienteToolStripMenuItem;
         private ToolStripMenuItem planObraSocialToolStripMenuItem;
-        private ToolStripMenuItem verPlanesToolStripMenuItem;
-        private ToolStripMenuItem crearPlanToolStripMenuItem;
-        private ToolStripMenuItem modificarPlanToolStripMenuItem;
-        private ToolStripMenuItem eliminarPlanToolStripMenuItem;
         private ToolStripMenuItem practicaToolStripMenuItem;
-        private ToolStripMenuItem verPracticasToolStripMenuItem;
-        private ToolStripMenuItem crearPracticaToolStripMenuItem;
-        private ToolStripMenuItem modificarPracticaToolStripMenuItem;
-        private ToolStripMenuItem eliminarPracticaToolStripMenuItem;
     }
 }

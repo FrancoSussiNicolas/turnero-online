@@ -21,6 +21,7 @@ namespace WinFormsApp
             InitializeComponent();
             this.Text = "Registrar Consultorio";
             Titulo.Text = this.Text;
+            btnRegistrarConsultorio.Text = "Registrar";
 
         }
         public CrearConsultorioForm(ConsultorioDTO consultorio) : this()
@@ -28,7 +29,8 @@ namespace WinFormsApp
             this.Text = "Modificar Consultorio";
             Titulo.Text = this.Text;
             _consultorioExistente = consultorio;
-            
+            btnRegistrarConsultorio.Text = "Modificar";
+
             // Precargar valores en los controles
             textUbicacion.Text = consultorio.Ubicacion;
             if (consultorio.Estado == EstadoConsultorio.Habilitado)
@@ -57,13 +59,12 @@ namespace WinFormsApp
 
                     await ConsultorioApiClient.AddAsync(consultorioDTO);
 
-                    MessageBox.Show("Consultorio registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Consultorio registradó correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-
                 else
                 {
                     _consultorioExistente.Ubicacion = textUbicacion.Text;
-
+                    
                     if (btnRadioHabilitado.Checked)
                     {
                         await ConsultorioApiClient.DisableAsync(_consultorioExistente.ConsultorioId);
@@ -77,7 +78,7 @@ namespace WinFormsApp
                     await ConsultorioApiClient.UpdateAsync(_consultorioExistente);
                 }
 
-                MessageBox.Show("Consultorio modificado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Consultorio modificadó correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

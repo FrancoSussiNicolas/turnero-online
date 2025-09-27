@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -140,7 +141,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsync($"practicas/deshabilitar/{id}", null);
+                HttpResponseMessage response = await client.PutAsync($"practicas/cambiarEstado/{id}", null);
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
@@ -156,5 +157,39 @@ namespace API.Clients
                 throw new Exception($"Timeout al deshabilitar práctica con Id {id}: {ex.Message}", ex);
             }
         }
+
+        public async static Task AddPlanAsync(int practicaId, int planObraSocialId)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.PutAsync($"practicas/agregarPlanOS/{practicaId}/{planObraSocialId}", null);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al agregar el plan a la práctica. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al agregar el plan a la práctica: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+            throw new Exception($"Timeout al agregar el plan a la práctica: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task RemovePlanAsync(int practicaId, int planObraSocialId)
+        {
+            HttpResponseMessage response = await client.PutAsync($"practicas/eliminarPlan/{practicaId}/{planObraSocialId}", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al eliminar el plan de la práctica. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
+        }
     }
 }
+

@@ -109,6 +109,28 @@ namespace Services
             }
         }
 
+        public bool EliminarPlanDePractica(int practicaId, int planId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var practica = context.Practicas
+                                      .Include(p => p.PlanObraSocial)
+                                      .FirstOrDefault(p => p.PracticaId == practicaId);
+
+                if (practica == null) return false;
+
+                var plan = practica.PlanObraSocial.FirstOrDefault(p => p.PlanObraSocialId == planId);
+                if (plan == null) return false;
+
+                // EF Core elimina la relación de la tabla intermedia
+                practica.PlanObraSocial.Remove(plan);
+
+                context.SaveChanges(); 
+                return true;
+            }
+        }
+
+
         public Practica? AgregarPlanObraSocial(PlanObraSocial planOs, int practicaId)
         {
             using (var context = new TurneroContext())

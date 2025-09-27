@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,52 +16,118 @@ namespace WinFormsApp
 {
     public partial class CrearEspecialidad : Form
     {
+        private EspecialidadDTO _especialidadExistente;
         public CrearEspecialidad()
         {
             InitializeComponent();
+            this.Text = "Registrar Nueva Especialidad";
+            Titulo.Text = this.Text;
+            btnRegistrarEspecialidad.Text = "Registrar";
         }
 
-        private void label1_Click(object sender, EventArgs e)
+        public CrearEspecialidad(EspecialidadDTO especialidad) : this()
         {
+            this.Text = "Modificar Especialidad";
+            Titulo.Text = this.Text;
+            _especialidadExistente = especialidad;
+            btnRegistrarEspecialidad.Text = "Modificar";
 
+            // Precargar valores en los controles
+            textDescripcion.Text = especialidad.Descripcion;
+            if (especialidad.Estado == EstadoEspecialidad.Habilitada)
+                btnRadioHabilitado.Checked = true;
+            else
+                btnRadioDeshabilitado.Checked = true;
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
+        public static string QuitarTildes(string texto)
         {
+            if (string.IsNullOrEmpty(texto)) return texto;
 
-        }
+            var normalized = texto.Normalize(NormalizationForm.FormD);
+            var sb = new StringBuilder();
 
-        private void groupBox1_Enter(object sender, EventArgs e)
-        {
-
-        }
-
-        private async void btnRegistrarTurno_Click(object sender, EventArgs e)
-        {
-            string descripcion = inputDescripcion.Text.Trim();
-
-            if (string.IsNullOrEmpty(descripcion))
+            foreach (var c in normalized)
             {
-                MessageBox.Show("Por favor, ingrese la descripción de la especialidad.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                var uc = CharUnicodeInfo.GetUnicodeCategory(c);
+                if (uc != UnicodeCategory.NonSpacingMark)
+                {
+                    sb.Append(c);
+                }
+            }
+
+            return sb.ToString().Normalize(NormalizationForm.FormC);
+        }
+
+        private void btnVolver_Click(object sender, EventArgs e)
+        {
+            this.Dispose();
+        }
+
+        private async void btnRegistrarEspecialidad_Click(object sender, EventArgs e)
+        {
+            if ((!btnRadioDeshabilitado.Checked || !btnRadioHabilitado.Checked) && string.IsNullOrWhiteSpace(textDescripcion.Text))
+            {
+                MessageBox.Show("Todos los campos son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
             }
 
-            EspecialidadDTO newEspecialidad = new EspecialidadDTO
+            try
             {
-                Descripcion = descripcion
-            };
+                if (_especialidadExistente == null)
+                {
+                    var especialidadesExistentes = await EspecialidadApiClient.GetAllAsync();
 
-            await EspecialidadApiClient.AddAsync(newEspecialidad);
-        }
+                    string textoNormalizado = QuitarTildes(textDescripcion.Text).ToLower();
 
-        private void btnCancelarTurno_Click(object sender, EventArgs e)
-        {
-            this.Close();
-        }
+                    bool existeDescripcion = especialidadesExistentes
+                        .Any(es => QuitarTildes(es.Descripcion).ToLower() == textoNormalizado);
 
-        private void CrearEspecialidad_Load(object sender, EventArgs e)
-        {
+                    if (existeDescripcion)
+                    {
+                        MessageBox.Show("Ya existe una especialidad con esa descripción.",
+                                        "Validación",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Warning);
+                        return;
+                    }
 
+                    EspecialidadDTO especialidadDTO = new EspecialidadDTO
+                    {
+                        Descripcion = textDescripcion.Text,
+                        Estado = btnRadioHabilitado.Checked ? EstadoEspecialidad.Habilitada : EstadoEspecialidad.Deshabilitada
+                    };
+
+                    await EspecialidadApiClient.AddAsync(especialidadDTO);
+
+                    MessageBox.Show("Especialidad registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+
+                else
+                {
+                    _especialidadExistente.Descripcion = textDescripcion.Text;
+
+                    if (btnRadioHabilitado.Checked)
+                    {
+                        await EspecialidadApiClient.DisableAsync(_especialidadExistente.EspecialidadId);
+                    }
+                    else if (btnRadioDeshabilitado.Checked)
+                    {
+                        await EspecialidadApiClient.DisableAsync(_especialidadExistente.EspecialidadId);
+                    }
+
+
+                    await EspecialidadApiClient.UpdateAsync(_especialidadExistente);
+                }
+
+                MessageBox.Show("Especialidad modificada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                this.DialogResult = DialogResult.OK;
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error al registrar: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
         }
     }
 }

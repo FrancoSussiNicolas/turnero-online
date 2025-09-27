@@ -18,7 +18,7 @@ namespace Controllers
             this.especialidadService = especialidadService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Especialidad>> GetAll()
         {
@@ -51,7 +51,7 @@ namespace Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        //[Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("{id}")]
         public ActionResult UpdateEspecialidad([FromBody] EspecialidadDTO especialidad, int id)
         {
@@ -68,7 +68,7 @@ namespace Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        //[Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoEspecialidad(int id)
         {
