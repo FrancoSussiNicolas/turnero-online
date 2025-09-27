@@ -90,7 +90,6 @@ namespace Services
 
                 proEncontrado.ApellidoNombre = pro.ApellidoNombre;
                 proEncontrado.Mail = pro.Mail;
-                proEncontrado.SetPassword(pro.Contrasenia);
                 proEncontrado.Matricula = pro.Matricula;
 
                 try

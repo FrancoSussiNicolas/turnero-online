@@ -25,7 +25,14 @@ namespace DTOs
         public string Matricula { get; set; }
 
         [Required]
-
         public int EspecialidadId { get; set; }
+
+        public ProfesionalDTO(string apellidoNombre, string mail, string contrasenia, string matricula)
+        {
+            ApellidoNombre = apellidoNombre;
+            Mail = mail;
+            Contrasenia = contrasenia;
+            Matricula = matricula;
+        }
     }
 }

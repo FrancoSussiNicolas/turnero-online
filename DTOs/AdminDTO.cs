@@ -20,5 +20,12 @@ namespace DTOs
 
         [Required]
         public string Contrasenia { get; set; }
+
+        public AdminDTO(string apellidoNombre, string mail, string contrasenia)
+        {
+            ApellidoNombre = apellidoNombre;
+            Mail = mail;
+            Contrasenia = contrasenia;
+        }
     }
 }

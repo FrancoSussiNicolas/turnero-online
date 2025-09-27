@@ -1,8 +1,11 @@
 ﻿using DTOs;
+using Entities;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +26,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("admin");
+                var request = new HttpRequestMessage(HttpMethod.Get, "admin");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -49,7 +55,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"admin", admin);
+                var request = new HttpRequestMessage(HttpMethod.Put, "admin")
+                {
+                    Content = JsonContent.Create(admin)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {

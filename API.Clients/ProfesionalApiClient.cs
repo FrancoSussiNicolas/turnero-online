@@ -1,8 +1,10 @@
 ﻿using DTOs;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -19,12 +21,14 @@ namespace API.Clients
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-
         public static async Task<ProfesionalDTO> GetAsync(int id)
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("profesionales/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"profesionales/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -120,7 +124,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"profesionales/{profesional.PersonaId}", profesional);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"profesionales/{profesional.PersonaId}")
+                {
+                    Content = JsonContent.Create(profesional)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -137,6 +148,7 @@ namespace API.Clients
                 throw new Exception($"Timeout al actualizar profesional con Id {profesional.PersonaId}: {ex.Message}", ex);
             }
         }
+
         public static async Task CambiarEspecialidadProfesional(int profesionalId, int nuevaEspecialidadId)
         {
             try
