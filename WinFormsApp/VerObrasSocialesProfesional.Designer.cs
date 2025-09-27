@@ -2,15 +2,8 @@
 {
     partial class VerObrasSocialesProfesional
     {
-        /// <summary>
-        /// Required designer variable.
-        /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary>
-        /// Clean up any resources being used.
-        /// </summary>
-        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -22,32 +15,33 @@
 
         #region Windows Form Designer generated code
 
-        /// <summary>
-        /// Required method for Designer support - do not modify
-        /// the contents of this method with the code editor.
-        /// </summary>
         private void InitializeComponent()
         {
             dvgObrasSociales = new DataGridView();
             btnVolver = new Button();
-            btnCancelar = new Button();
-            btnGuardar = new Button();
+            btnEliminar = new Button();
+            btnAgregar = new Button();
+            tableLayoutPanel1 = new TableLayoutPanel();
             ((System.ComponentModel.ISupportInitialize)dvgObrasSociales).BeginInit();
+            tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
             // 
             // dvgObrasSociales
             // 
             dvgObrasSociales.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dvgObrasSociales.Dock = DockStyle.Top;
             dvgObrasSociales.Location = new Point(0, 0);
             dvgObrasSociales.Name = "dvgObrasSociales";
+            dvgObrasSociales.ReadOnly = true;
             dvgObrasSociales.RowHeadersWidth = 51;
-            dvgObrasSociales.Size = new Size(982, 267);
+            dvgObrasSociales.Size = new Size(860, 267);
             dvgObrasSociales.TabIndex = 2;
             // 
             // btnVolver
             // 
+            btnVolver.Anchor = AnchorStyles.None;
             btnVolver.BackColor = SystemColors.ButtonShadow;
-            btnVolver.Location = new Point(145, 413);
+            btnVolver.Location = new Point(90, 17);
             btnVolver.Name = "btnVolver";
             btnVolver.Size = new Size(108, 43);
             btnVolver.TabIndex = 4;
@@ -55,40 +49,63 @@
             btnVolver.UseVisualStyleBackColor = false;
             btnVolver.Click += button2_Click;
             // 
-            // btnCancelar
+            // btnEliminar
             // 
-            btnCancelar.BackColor = Color.IndianRed;
-            btnCancelar.Location = new Point(419, 413);
-            btnCancelar.Name = "btnCancelar";
-            btnCancelar.Size = new Size(108, 43);
-            btnCancelar.TabIndex = 5;
-            btnCancelar.Text = "Eliminar";
-            btnCancelar.UseVisualStyleBackColor = false;
+            btnEliminar.Anchor = AnchorStyles.None;
+            btnEliminar.BackColor = Color.IndianRed;
+            btnEliminar.Location = new Point(389, 17);
+            btnEliminar.Name = "btnEliminar";
+            btnEliminar.Size = new Size(108, 43);
+            btnEliminar.TabIndex = 5;
+            btnEliminar.Text = "Eliminar";
+            btnEliminar.UseVisualStyleBackColor = false;
+            btnEliminar.Click += btnEliminar_Click;
             // 
-            // btnGuardar
+            // btnAgregar
             // 
-            btnGuardar.BackColor = Color.FromArgb(255, 255, 128);
-            btnGuardar.Location = new Point(684, 413);
-            btnGuardar.Name = "btnGuardar";
-            btnGuardar.Size = new Size(108, 43);
-            btnGuardar.TabIndex = 6;
-            btnGuardar.Text = "Agregar";
-            btnGuardar.UseVisualStyleBackColor = false;
-            btnGuardar.Click += btnGuardar_Click;
+            btnAgregar.Anchor = AnchorStyles.None;
+            btnAgregar.BackColor = Color.FromArgb(255, 255, 128);
+            btnAgregar.Location = new Point(675, 17);
+            btnAgregar.Name = "btnAgregar";
+            btnAgregar.Size = new Size(108, 43);
+            btnAgregar.TabIndex = 6;
+            btnAgregar.Text = "Agregar";
+            btnAgregar.UseVisualStyleBackColor = false;
+            btnAgregar.Click += btnAgregar_Click;
+            // 
+            // tableLayoutPanel1
+            // 
+            tableLayoutPanel1.BackColor = SystemColors.ControlDark;
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 48.1605339F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 51.8394661F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 261F));
+            tableLayoutPanel1.Controls.Add(btnVolver, 0, 0);
+            tableLayoutPanel1.Controls.Add(btnEliminar, 1, 0);
+            tableLayoutPanel1.Controls.Add(btnAgregar, 2, 0);
+            tableLayoutPanel1.Dock = DockStyle.Bottom;
+            tableLayoutPanel1.Location = new Point(0, 382);
+            tableLayoutPanel1.Name = "tableLayoutPanel1";
+            tableLayoutPanel1.RowCount = 1;
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.Size = new Size(860, 78);
+            tableLayoutPanel1.TabIndex = 7;
+            tableLayoutPanel1.Paint += tableLayoutPanel1_Paint_1;
             // 
             // VerObrasSocialesProfesional
             // 
             AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(982, 553);
-            Controls.Add(btnGuardar);
-            Controls.Add(btnCancelar);
-            Controls.Add(btnVolver);
+            ClientSize = new Size(860, 460);
+            Controls.Add(tableLayoutPanel1);
             Controls.Add(dvgObrasSociales);
             Name = "VerObrasSocialesProfesional";
             Text = "Ver Obras Sociales";
             Load += VerObrasSocialesProfesional_Load;
+            Click += VerObrasSocialesProfesional_Click;
             ((System.ComponentModel.ISupportInitialize)dvgObrasSociales).EndInit();
+            tableLayoutPanel1.ResumeLayout(false);
             ResumeLayout(false);
         }
 
@@ -96,7 +113,9 @@
 
         private DataGridView dvgObrasSociales;
         private Button btnVolver;
-        private Button btnCancelar;
+        private Button btnEliminar;
         private Button btnGuardar;
+        private TableLayoutPanel tableLayoutPanel1;
+        private Button btnAgregar;
     }
 }

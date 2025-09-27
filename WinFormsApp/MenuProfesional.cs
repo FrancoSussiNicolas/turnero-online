@@ -54,7 +54,7 @@ namespace WinFormsApp
 
         private void ModificarObrasSocialesToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form modificarObrasSocialesForm = new Form();
+            Form modificarObrasSocialesForm = new VerObrasSocialesProfesional();
             modificarObrasSocialesForm.MdiParent = this;
             modificarObrasSocialesForm.Text = "Modificar Obras Sociales";
             modificarObrasSocialesForm.Show();

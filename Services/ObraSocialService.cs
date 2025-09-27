@@ -132,5 +132,16 @@ namespace Services
                 return true;
             }
         }
+
+        public List<ObraSocial> GetObrasSocialesDisponibles()
+        {
+            using (var context = new TurneroContext())
+            {
+                return context.ObrasSociales
+                    .Include(o => o.PlanesObraSocial)
+                    .Where(os => os.Estado == EstadoObraSocial.Habilitada)
+                    .ToList();
+            }
+        }
     }
 }

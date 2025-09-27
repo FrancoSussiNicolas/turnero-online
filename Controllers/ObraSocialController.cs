@@ -86,6 +86,14 @@ namespace Controllers
         
             return NoContent();
         }
+
+
+        //[Authorize]
+        [HttpGet("disponibles")]
+        public ActionResult<IEnumerable<ObraSocial>> GetDisponibles()
+        {
+            return Ok(obraSocialService.GetObrasSocialesDisponibles());
+        }
     }
 }
 

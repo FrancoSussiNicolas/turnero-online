@@ -165,9 +165,8 @@ namespace API.Clients
         {
             try
             {
-                string url = $"profesionales/{profesionalId}/obrasSociales";
 
-                HttpResponseMessage response = await client.GetAsync(url);
+                HttpResponseMessage response = await client.GetAsync($"profesionales/obrasSociales/{profesionalId}");
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -188,5 +187,61 @@ namespace API.Clients
                 throw new Exception($"Timeout al obtener obras sociales del profesional con Id {profesionalId}: {ex.Message}", ex);
             }
         }
+
+        public static async Task EliminarObraSocialAsync(int profesionalId, int obraSocialId)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.DeleteAsync($"profesionales/eliminarObraSocial/{profesionalId}/{obraSocialId}");
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al eliminar la Obra Social {obraSocialId} del Profesional {profesionalId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al eliminar la obra social del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al eliminar la obra social del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task AgregarObraSocialAsync(int profesionalId, int obraSocialId)
+        {
+            try
+            {
+                var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
+                HttpResponseMessage response = await client.PutAsync($"profesionales/agregarObraSocial/{profesionalId}/{obraSocialId}", content);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+
+                    if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+                    {
+                        throw new InvalidOperationException("El profesional ya atiende por esta Obra Social. Por favor, seleccione otra.");
+                    }
+
+                    throw new Exception($"Error al agregar la Obra Social {obraSocialId} al Profesional {profesionalId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (InvalidOperationException)
+            {
+                throw;
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al agregar la obra social del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al agregar la obra social del profesional con Id {profesionalId}: {ex.Message}", ex);
+            }
+        }
+
     }
 }

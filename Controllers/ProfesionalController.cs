@@ -99,18 +99,18 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Profesional")] 
-        [HttpPut("agregarObraSocial/{profesionald}/{obraSocialId}")]
-        public ActionResult NuevaObraSocialProfesional(int profesionald, int obraSocialId)
+        //[Authorize(Roles = "Profesional")] 
+        [HttpPut("agregarObraSocial/{profesionalId}/{obraSocialId}")]
+        public ActionResult NuevaObraSocialProfesional(int profesionalId, int obraSocialId)
         {
             try
             {
                 var obraSocial = obraSocialService.GetByIdObraSocial(obraSocialId);
                 if (obraSocial is null) return NotFound(new { message = "Obra Social no encontrada" });
 
-                var profObra = profesionalService.AgregarObraSocial(obraSocial, profesionald);
-
-                if (profObra is null) return NotFound(new { message = "Profesional no encontrado" });
+                var profObra = profesionalService.AgregarObraSocial(obraSocial, profesionalId);
+                
+                if (profObra is null) return NotFound(new { message = $"Profesional no encontrado" });
 
                 return Ok(profObra);
             }
@@ -135,8 +135,8 @@ namespace Controllers
             }
         }
 
-        [Authorize]
-        [HttpGet("{id}/obrasSociales")]
+        //[Authorize]
+        [HttpGet("obrasSociales/{id}")]
         public ActionResult<IEnumerable<ObraSocial>> GetObrasSocialesByProfesionalId(int id)
         {
             var profesional = profesionalService.GetByIdProfesional(id);
@@ -149,6 +149,31 @@ namespace Controllers
 
             return Ok(obrasSociales);
         }
+
+        //[Authorize(Roles = "Profesional")]
+        [HttpDelete("eliminarObraSocial/{profesionalId}/{obraSocialId}")]
+        public ActionResult EliminarObraSocialProfesional(int profesionalId, int obraSocialId)
+        {
+            try
+            {
+                var obraSocial = obraSocialService.GetByIdObraSocial(obraSocialId);
+                if (obraSocial is null) return NotFound(new { message = "Obra Social no encontrada." });
+
+                var deleted = profesionalService.EliminarObraSocial(profesionalId, obraSocialId);
+
+                if (!deleted)
+                {
+                    return NotFound(new { message = "Profesional no encontrado o la Obra Social no estaba asociada." });
+                }
+
+                return NoContent();
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al intentar eliminar la Obra Social: " + ex.Message });
+            }
+        }
+
 
     }
 }

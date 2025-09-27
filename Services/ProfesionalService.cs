@@ -111,15 +111,24 @@ namespace Services
             }
         }
 
-        public Profesional? AgregarObraSocial(ObraSocial obraSocial, int profesionalId) 
+        public Profesional? AgregarObraSocial(ObraSocial obraSocial, int profesionalId)
         {
-            using (var context = new TurneroContext()) 
-            { 
+            using (var context = new TurneroContext())
+            {
                 var proEncontrado = context.Profesionales
                     .Include(p => p.ObraSociales)
                     .FirstOrDefault(p => p.PersonaId == profesionalId);
-                if (proEncontrado is null) return null;
-                
+
+                if (proEncontrado is null)
+                {
+                    return null;
+                }
+
+                if (proEncontrado.ObraSociales.Any(os => os.ObraSocialId == obraSocial.ObraSocialId))
+                {
+                    throw new InvalidOperationException("El profesional ya atiende por esta obra social.");
+                }
+
                 proEncontrado.AddObraSocial(obraSocial);
 
                 try
@@ -128,9 +137,9 @@ namespace Services
                 }
                 catch (DbUpdateException ex)
                 {
-                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
+                    if (ex.InnerException is Microsoft.Data.SqlClient.SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
                     {
-                        throw new InvalidOperationException("El profesional ya tiene la obra social asignada");
+                        throw new InvalidOperationException("El profesional ya atiende por esta obra social.");
                     }
 
                     throw;
@@ -199,6 +208,33 @@ namespace Services
                     .ToList();
 
                 return obrasSociales;
+            }
+        }
+       
+        public bool EliminarObraSocial(int profesionalId, int obraSocialId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var profesional = context.Profesionales
+                    .Include(p => p.ObraSociales)
+                    .FirstOrDefault(p => p.PersonaId == profesionalId);
+
+                if (profesional == null)
+                {
+                    return false;
+                }
+
+                var obraSocialToRemove = profesional.ObraSociales
+                    .FirstOrDefault(os => os.ObraSocialId == obraSocialId);
+
+                if (obraSocialToRemove == null)
+                {
+                    return false;
+                }
+
+                profesional.ObraSociales.Remove(obraSocialToRemove);
+                context.SaveChanges();
+                return true;
             }
         }
     }
