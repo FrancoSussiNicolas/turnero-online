@@ -40,6 +40,7 @@ builder.Services.AddControllers()
     });
 builder.Services.AddScoped<PacienteService>();
 builder.Services.AddScoped<ProfesionalService>();
+builder.Services.AddScoped<AdminService>();
 builder.Services.AddScoped<EspecialidadesService>();
 builder.Services.AddScoped<TurnoService>();
 builder.Services.AddScoped<ConsultorioService>();

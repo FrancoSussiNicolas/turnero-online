@@ -15,7 +15,6 @@ namespace API.Clients
                 new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-
         public static async Task<PacienteDTO> GetAsync(int id)
         {
             try

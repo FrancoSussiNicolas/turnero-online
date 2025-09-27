@@ -10,7 +10,6 @@ namespace Controllers
     [Route("pacientes")]
     public class PacienteController : ControllerBase
     {
-
         private readonly PacienteService pacienteService;
         private readonly PlanObraSocialService planObraSocialService;
 
@@ -20,14 +19,14 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
-        [Authorize(Roles = "Profesional,Administrador")] // ver si se agrega usertype Administrador
+        [Authorize(Roles = "Profesional,Administrador")] 
         [HttpGet]
         public ActionResult<IEnumerable<Paciente>> GetAll()
         {
             return Ok(pacienteService.GetAll());
         }
 
-        [Authorize(Roles = "Profesional,Administrador")] // ver si se agrega usertype Administrador
+        [Authorize(Roles = "Profesional,Administrador")]
         [HttpGet("{id}")]
         public ActionResult<Paciente> GetById(int id)
         {
@@ -73,7 +72,7 @@ namespace Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        [Authorize(Roles = "Administrador")]
         [HttpDelete("{id}")]
         public ActionResult DeletePaciente (int id) 
         {

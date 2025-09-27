@@ -18,8 +18,9 @@ namespace Controllers
         private readonly IConfiguration configuration;
         private readonly ProfesionalService profesionalService;
         private readonly PacienteService pacienteService;
+        private readonly AdminService adminService;
 
-        public AuthController (ProfesionalService profesionalService, PacienteService pacienteService)
+        public AuthController (ProfesionalService profesionalService, PacienteService pacienteService, AdminService adminService)
         {
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
@@ -27,6 +28,7 @@ namespace Controllers
                 .Build(); ;
             this.profesionalService = profesionalService;
             this.pacienteService = pacienteService;
+            this.adminService = adminService;
         }
 
         [HttpPost("login")]
@@ -35,12 +37,18 @@ namespace Controllers
             if (string.IsNullOrWhiteSpace(request.Mail) || string.IsNullOrWhiteSpace(request.Password))
                 return Unauthorized();
 
-            string usertype = "Paciente";
             Persona? user = pacienteService.GetByEmail(request.Mail);
+            string usertype = "Paciente";
             if (user is null)
             {
                 user = profesionalService.GetByEmail(request.Mail);
                 usertype = "Profesional";
+
+                if (user is null)
+                {
+                    user = adminService.GetByEmail(request.Mail);
+                    usertype = "Administrador";
+                }
             }
 
             if (user is null || !user.ValidatePassword(request.Password))

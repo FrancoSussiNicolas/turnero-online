@@ -48,7 +48,7 @@ namespace Controllers
             return Ok(consultorio);
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        [Authorize(Roles = "Administrador")] 
         [HttpPost]
         public ActionResult<Consultorio> CrearConsultorio([FromBody] ConsultorioDTO consultorio)
         {
@@ -57,7 +57,7 @@ namespace Controllers
             return Created($"https://localhost:7119/consultorios/{newConsul.ConsultorioId}", newConsul);
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        [Authorize(Roles = "Administrador")] 
         [HttpPut("{nro}")]
         public ActionResult UpdateConsultorio([FromBody] ConsultorioDTO consultorio, int nro)
         {
@@ -67,7 +67,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        [Authorize(Roles = "Administrador")] 
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoConsultorio(int id)
         {
@@ -77,7 +77,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
+        [Authorize(Roles = "Administrador")] 
         [HttpDelete("{nro}")]
         public ActionResult DeleteConsultorio(int nro)
         {

@@ -15,6 +15,7 @@ namespace Services
     {
         public DbSet<Paciente> Pacientes { get; set; }
         public DbSet<Profesional> Profesionales { get; set; }
+        public DbSet<Admin> Admin { get; set; }
         public DbSet<Turno> Turnos { get; set; }
         public DbSet<Especialidad> Especialidades {  get; set; }
         public DbSet<Consultorio> Consultorios { get; set; }
@@ -48,6 +49,9 @@ namespace Services
                 .HasKey(p => p.PersonaId);
 
             modelBuilder.Entity<Profesional>()
+                .HasKey(p => p.PersonaId);
+
+            modelBuilder.Entity<Admin>()
                 .HasKey(p => p.PersonaId);
 
             // Relación Paciente <-> Turno (Uno a Muchos)
