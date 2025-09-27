@@ -23,7 +23,7 @@ namespace WinFormsApp
 
         private async void btnIngresar_Click(object sender, EventArgs e)
         {
-            if(this.ValidateLoginRequest())
+            if (this.ValidateLoginRequest())
             {
                 try
                 {
@@ -34,7 +34,7 @@ namespace WinFormsApp
 
                     if (SessionManager.UserType == "Paciente")
                     {
-                        MessageBox.Show("La aplicación es accesible únicamente para Profesionales y el Administrador", "Login", 
+                        MessageBox.Show("La aplicación es accesible únicamente para Profesionales y el Administrador", "Login",
                             MessageBoxButtons.OK, MessageBoxIcon.Error);
                         this.DialogResult = DialogResult.Abort;
                     }
@@ -61,17 +61,17 @@ namespace WinFormsApp
                 isValid = false;
                 errorProvider.SetError(txtMail, "El email es requerido");
             }
-            if (this.txtPass.Text == string.Empty)
-            {
-                isValid = false;
-                errorProvider.SetError(txtPass, "La contraseña es requerida");
-            }
             else if (!EsEmailValido(this.txtMail.Text))
             {
                 isValid = false;
                 errorProvider.SetError(txtMail, "Ingrese un email válido");
             }
-
+            if (this.txtPass.Text == string.Empty)
+            {
+                isValid = false;
+                errorProvider.SetError(txtPass, "La contraseña es requerida");
+            }
+            
             return isValid;
         }
 
@@ -88,6 +88,11 @@ namespace WinFormsApp
                 "Olvidé mi contraseña",
                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             // TODO ---> recuperación de contraseña
+        }
+
+        private void checkBoxPassword_CheckedChanged(object sender, EventArgs e)
+        {
+            txtPass.UseSystemPasswordChar = !checkBoxPassword.Checked;
         }
     }
 }

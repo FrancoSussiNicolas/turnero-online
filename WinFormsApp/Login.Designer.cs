@@ -38,6 +38,7 @@
             label1 = new Label();
             sqlCommand1 = new Microsoft.Data.SqlClient.SqlCommand();
             errorProvider = new ErrorProvider(components);
+            checkBoxPassword = new CheckBox();
             ((System.ComponentModel.ISupportInitialize)errorProvider).BeginInit();
             SuspendLayout();
             // 
@@ -54,17 +55,17 @@
             // 
             // txtPass
             // 
-            txtPass.Location = new Point(183, 168);
+            txtPass.Location = new Point(161, 167);
             txtPass.Name = "txtPass";
-            txtPass.PasswordChar = '*';
-            txtPass.Size = new Size(155, 23);
+            txtPass.Size = new Size(187, 23);
             txtPass.TabIndex = 12;
+            txtPass.UseSystemPasswordChar = true;
             // 
             // txtMail
             // 
-            txtMail.Location = new Point(183, 129);
+            txtMail.Location = new Point(161, 128);
             txtMail.Name = "txtMail";
-            txtMail.Size = new Size(155, 23);
+            txtMail.Size = new Size(187, 23);
             txtMail.TabIndex = 11;
             // 
             // btnIngresar
@@ -80,7 +81,7 @@
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(64, 171);
+            label3.Location = new Point(47, 170);
             label3.Name = "label3";
             label3.Size = new Size(70, 15);
             label3.TabIndex = 9;
@@ -89,7 +90,7 @@
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(64, 132);
+            label2.Location = new Point(47, 131);
             label2.Name = "label2";
             label2.Size = new Size(108, 15);
             label2.TabIndex = 8;
@@ -98,11 +99,11 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(83, 71);
+            label1.Location = new Point(104, 71);
             label1.Name = "label1";
-            label1.Size = new Size(229, 30);
+            label1.Size = new Size(184, 30);
             label1.TabIndex = 7;
-            label1.Text = "¡Bienvenido al Sistema!\r\nPor favor digite su información de Ingreso";
+            label1.Text = "¡Bienvenido al Sistema!\r\nPor favor ingrese sus credenciales";
             label1.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // sqlCommand1
@@ -114,11 +115,24 @@
             // 
             errorProvider.ContainerControl = this;
             // 
+            // checkBoxPassword
+            // 
+            checkBoxPassword.AutoSize = true;
+            checkBoxPassword.Location = new Point(119, 169);
+            checkBoxPassword.Name = "checkBoxPassword";
+            checkBoxPassword.Size = new Size(42, 19);
+            checkBoxPassword.TabIndex = 14;
+            checkBoxPassword.Text = "Ver";
+            checkBoxPassword.UseVisualStyleBackColor = true;
+            checkBoxPassword.CheckedChanged += checkBoxPassword_CheckedChanged;
+            // 
             // Login
             // 
+            AcceptButton = btnIngresar;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(395, 361);
+            Controls.Add(checkBoxPassword);
             Controls.Add(lnkOlvidaPass);
             Controls.Add(txtPass);
             Controls.Add(txtMail);
@@ -148,5 +162,6 @@
         private Label label1;
         private Microsoft.Data.SqlClient.SqlCommand sqlCommand1;
         private ErrorProvider errorProvider;
+        private CheckBox checkBoxPassword;
     }
 }

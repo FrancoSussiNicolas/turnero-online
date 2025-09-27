@@ -89,7 +89,6 @@ namespace Services
 
                 pacEncontrado.ApellidoNombre = pac.ApellidoNombre;
                 pacEncontrado.Mail = pac.Mail;
-                pacEncontrado.SetPassword(pac.Contrasenia);
                 pacEncontrado.Dni = pac.DNI;
                 pacEncontrado.Sexo = pac.Sexo;
                 pacEncontrado.FechaNacimiento = pac.FechaNacimiento;

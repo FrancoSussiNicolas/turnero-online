@@ -62,7 +62,7 @@ namespace WinFormsApp
 
         private void ModificarPerfilToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form modificarPerfilForm = new Form();
+            Form modificarPerfilForm = new PerfilProfesional();
             modificarPerfilForm.MdiParent = this;
             modificarPerfilForm.Text = "Modificar Perfil";
             modificarPerfilForm.Show();
@@ -111,7 +111,13 @@ namespace WinFormsApp
 
         private void MenuProfesional_Load(object sender, EventArgs e)
         {
-            
+
+        }
+
+        private void SalirToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            SessionManager.ClearSession();
+            this.Dispose();
         }
     }
 }

@@ -11,8 +11,6 @@ namespace Entities
         public int PersonaId { get; set; }
         public string ApellidoNombre { get; set; }
         public string Mail { get; set; }
-
-        [JsonIgnore]
         public string Contrasenia { get; private set; }
 
         [JsonIgnore]

@@ -73,7 +73,6 @@ namespace Services
 
                 admin.ApellidoNombre = adminData.ApellidoNombre;
                 admin.Mail = adminData.Mail;
-                admin.SetPassword(adminData.Contrasenia);
 
                 try
                 {
