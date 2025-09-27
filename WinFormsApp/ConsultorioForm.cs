@@ -1,6 +1,7 @@
-﻿using System;
+﻿using API.Clients;
 using DTOs;
-using API.Clients;
+using Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -69,15 +70,22 @@ namespace WinFormsApp
 
                 try
                 {
-                    DialogResult result = MessageBox.Show("¿Seguro que deseas eliminar este consultorio?",
-                                      "Confirmar eliminación",
+                    ConsultorioDTO seleccionado = (ConsultorioDTO)consultoriosGridView.SelectedRows[0].DataBoundItem;
+
+                    bool estaHabilitado = seleccionado.Estado == EstadoConsultorio.Habilitado;
+
+                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
+                    string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";
+
+                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} este consultorio?",
+                                      $"Confirmar {accion}",
                                       MessageBoxButtons.YesNo,
                                       MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
-                        await ConsultorioApiClient.DeleteAsync(id);
-                        MessageBox.Show("El consultorio fue eliminado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        await ConsultorioApiClient.DisableAsync(id);
+                        MessageBox.Show($"El consultorio fue {mensajeExito} exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
 
                         await GetAllAndLoad();
@@ -85,7 +93,7 @@ namespace WinFormsApp
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al eliminar consultorio: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al actualizar consultorio: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
             else

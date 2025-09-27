@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Controllers
 {
     [ApiController]
-    [Route("practica")]
+    [Route("practicas")]
     public class PracticaController : ControllerBase
     {
         private readonly PracticaService practicaService;
@@ -19,14 +19,14 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Practica>> GetAll()
         {
             return Ok(practicaService.GetAll());
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public ActionResult<Practica> GetById(int id)
         {
@@ -102,6 +102,18 @@ namespace Controllers
         }
 
         [Authorize(Roles = "Administrador")]
+        [HttpPut("eliminarPlan/{practicaId}/{planId}")]
+        public ActionResult RemovePlanFromPractica(int practicaId, int planId)
+        {
+            bool eliminado = practicaService.EliminarPlanDePractica(practicaId, planId);
+
+            if (!eliminado)
+                return NotFound(new { message = "Plan o práctica no encontrada" });
+
+            return Ok(new { message = "Plan eliminado de la práctica exitosamente" });
+        }
+
+        [Authorize(Roles = "Administrador")] // ver si se agrega usertype Administrador
         [HttpDelete("{id}")]
         public ActionResult DeletePractica(int id)
         {

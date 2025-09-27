@@ -145,7 +145,7 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsync($"especialidades/deshabilitar/{id}", null);
+                HttpResponseMessage response = await client.PutAsync($"especialidades/cambiarEstado/{id}", null);
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();

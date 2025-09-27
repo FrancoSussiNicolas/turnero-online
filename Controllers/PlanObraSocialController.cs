@@ -19,14 +19,14 @@ namespace Controllers
             this.obraSocialService = obraSocialService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<PlanObraSocial>> GetAll()
         {
             return Ok(planObraSocialService.GetAll());
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{nro}")]
         public ActionResult<PlanObraSocial> GetByNro(int nro)
         {

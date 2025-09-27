@@ -43,7 +43,7 @@
             consultoriosGridView.Location = new Point(96, -10);
             consultoriosGridView.Name = "consultoriosGridView";
             consultoriosGridView.ReadOnly = true;
-            consultoriosGridView.Size = new Size(787, 359);
+            consultoriosGridView.Size = new Size(787, 246);
             consultoriosGridView.TabIndex = 0;
             // 
             // btnEliminarConsultorio

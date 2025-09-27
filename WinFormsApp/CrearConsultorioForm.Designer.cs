@@ -135,7 +135,11 @@
             Controls.Add(label3);
             Controls.Add(label2);
             Controls.Add(Titulo);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "CrearConsultorioForm";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Registrar Consultorio";
             ResumeLayout(false);
             PerformLayout();

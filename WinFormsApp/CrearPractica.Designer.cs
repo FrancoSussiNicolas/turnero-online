@@ -28,64 +28,74 @@
         /// </summary>
         private void InitializeComponent()
         {
-            label4 = new Label();
+            Titulo = new Label();
             label1 = new Label();
             label2 = new Label();
-            nomPractica = new TextBox();
-            descripcionPractica = new TextBox();
+            textNombrePractica = new TextBox();
+            textDescripcionPractica = new TextBox();
             btnCancelarPractica = new Button();
             btnRegistrarPractica = new Button();
+            btnRadioDeshabilitado = new RadioButton();
+            btnRadioHabilitado = new RadioButton();
+            label3 = new Label();
+            planesAsignadosGridView = new DataGridView();
+            tableLayoutPanelBotones = new TableLayoutPanel();
+            btnCancelarPlan = new Button();
+            lbSusPlanes = new Label();
+            ((System.ComponentModel.ISupportInitialize)planesAsignadosGridView).BeginInit();
+            tableLayoutPanelBotones.SuspendLayout();
             SuspendLayout();
             // 
-            // label4
+            // Titulo
             // 
-            label4.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(530, 34);
-            label4.MaximumSize = new Size(0, 400);
-            label4.Name = "label4";
-            label4.Size = new Size(243, 32);
-            label4.TabIndex = 5;
-            label4.Text = "Registrar Práctica";
-            label4.TextAlign = ContentAlignment.TopCenter;
+            Titulo.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            Titulo.Location = new Point(468, 22);
+            Titulo.MaximumSize = new Size(0, 400);
+            Titulo.Name = "Titulo";
+            Titulo.Size = new Size(404, 32);
+            Titulo.TabIndex = 5;
+            Titulo.Text = "Registrar Nueva Práctica";
+            Titulo.TextAlign = ContentAlignment.TopCenter;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Font = new Font("Segoe UI", 10F);
-            label1.Location = new Point(451, 122);
+            label1.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label1.Location = new Point(340, 69);
             label1.Name = "label1";
-            label1.Size = new Size(66, 19);
+            label1.Size = new Size(67, 20);
             label1.TabIndex = 6;
-            label1.Text = "Nombre: ";
+            label1.Text = "Nombre";
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Font = new Font("Segoe UI", 10F);
-            label2.Location = new Point(431, 179);
+            label2.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label2.Location = new Point(340, 151);
             label2.Name = "label2";
-            label2.Size = new Size(86, 19);
+            label2.Size = new Size(90, 20);
             label2.TabIndex = 7;
-            label2.Text = "Descripción: ";
+            label2.Text = "Descripción";
             // 
-            // nomPractica
+            // textNombrePractica
             // 
-            nomPractica.Location = new Point(530, 121);
-            nomPractica.Name = "nomPractica";
-            nomPractica.Size = new Size(345, 23);
-            nomPractica.TabIndex = 8;
+            textNombrePractica.Location = new Point(340, 108);
+            textNombrePractica.Name = "textNombrePractica";
+            textNombrePractica.Size = new Size(393, 23);
+            textNombrePractica.TabIndex = 8;
             // 
-            // descripcionPractica
+            // textDescripcionPractica
             // 
-            descripcionPractica.Location = new Point(530, 178);
-            descripcionPractica.Multiline = true;
-            descripcionPractica.Name = "descripcionPractica";
-            descripcionPractica.Size = new Size(345, 70);
-            descripcionPractica.TabIndex = 9;
+            textDescripcionPractica.Location = new Point(340, 174);
+            textDescripcionPractica.Multiline = true;
+            textDescripcionPractica.Name = "textDescripcionPractica";
+            textDescripcionPractica.Size = new Size(393, 70);
+            textDescripcionPractica.TabIndex = 9;
             // 
             // btnCancelarPractica
             // 
-            btnCancelarPractica.Location = new Point(738, 285);
+            btnCancelarPractica.Anchor = AnchorStyles.None;
+            btnCancelarPractica.Location = new Point(135, 4);
             btnCancelarPractica.Name = "btnCancelarPractica";
             btnCancelarPractica.Size = new Size(151, 42);
             btnCancelarPractica.TabIndex = 11;
@@ -95,8 +105,9 @@
             // 
             // btnRegistrarPractica
             // 
+            btnRegistrarPractica.Anchor = AnchorStyles.None;
             btnRegistrarPractica.BackColor = SystemColors.ActiveCaption;
-            btnRegistrarPractica.Location = new Point(502, 285);
+            btnRegistrarPractica.Location = new Point(556, 4);
             btnRegistrarPractica.Name = "btnRegistrarPractica";
             btnRegistrarPractica.Size = new Size(151, 42);
             btnRegistrarPractica.TabIndex = 10;
@@ -104,32 +115,136 @@
             btnRegistrarPractica.UseVisualStyleBackColor = false;
             btnRegistrarPractica.Click += btnRegistrarPractica_Click;
             // 
+            // btnRadioDeshabilitado
+            // 
+            btnRadioDeshabilitado.AutoSize = true;
+            btnRadioDeshabilitado.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnRadioDeshabilitado.Location = new Point(480, 313);
+            btnRadioDeshabilitado.Name = "btnRadioDeshabilitado";
+            btnRadioDeshabilitado.Size = new Size(105, 21);
+            btnRadioDeshabilitado.TabIndex = 14;
+            btnRadioDeshabilitado.TabStop = true;
+            btnRadioDeshabilitado.Text = "Deshabilitada";
+            btnRadioDeshabilitado.UseVisualStyleBackColor = true;
+            // 
+            // btnRadioHabilitado
+            // 
+            btnRadioHabilitado.AutoSize = true;
+            btnRadioHabilitado.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            btnRadioHabilitado.Location = new Point(480, 282);
+            btnRadioHabilitado.Name = "btnRadioHabilitado";
+            btnRadioHabilitado.Size = new Size(85, 21);
+            btnRadioHabilitado.TabIndex = 13;
+            btnRadioHabilitado.TabStop = true;
+            btnRadioHabilitado.Text = "Habilitada";
+            btnRadioHabilitado.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            label3.AutoSize = true;
+            label3.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            label3.Location = new Point(351, 268);
+            label3.Name = "label3";
+            label3.Size = new Size(56, 20);
+            label3.TabIndex = 12;
+            label3.Text = "Estado";
+            // 
+            // planesAsignadosGridView
+            // 
+            planesAsignadosGridView.BackgroundColor = SystemColors.Control;
+            planesAsignadosGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            planesAsignadosGridView.Location = new Point(777, 108);
+            planesAsignadosGridView.Name = "planesAsignadosGridView";
+            planesAsignadosGridView.ReadOnly = true;
+            planesAsignadosGridView.Size = new Size(403, 136);
+            planesAsignadosGridView.TabIndex = 15;
+            planesAsignadosGridView.Visible = false;
+            // 
+            // tableLayoutPanelBotones
+            // 
+            tableLayoutPanelBotones.ColumnCount = 3;
+            tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 380F));
+            tableLayoutPanelBotones.Controls.Add(btnCancelarPlan, 2, 0);
+            tableLayoutPanelBotones.Controls.Add(btnRegistrarPractica, 1, 0);
+            tableLayoutPanelBotones.Controls.Add(btnCancelarPractica, 0, 0);
+            tableLayoutPanelBotones.Dock = DockStyle.Bottom;
+            tableLayoutPanelBotones.Location = new Point(0, 350);
+            tableLayoutPanelBotones.Name = "tableLayoutPanelBotones";
+            tableLayoutPanelBotones.RowCount = 2;
+            tableLayoutPanelBotones.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanelBotones.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
+            tableLayoutPanelBotones.Size = new Size(1223, 100);
+            tableLayoutPanelBotones.TabIndex = 16;
+            // 
+            // btnCancelarPlan
+            // 
+            btnCancelarPlan.Anchor = AnchorStyles.None;
+            btnCancelarPlan.BackColor = Color.IndianRed;
+            btnCancelarPlan.Location = new Point(960, 4);
+            btnCancelarPlan.Name = "btnCancelarPlan";
+            btnCancelarPlan.Size = new Size(145, 42);
+            btnCancelarPlan.TabIndex = 12;
+            btnCancelarPlan.Text = "Cancelar Plan";
+            btnCancelarPlan.UseVisualStyleBackColor = false;
+            btnCancelarPlan.Visible = false;
+            btnCancelarPlan.Click += btnCancelarPlan_Click;
+            // 
+            // lbSusPlanes
+            // 
+            lbSusPlanes.AutoSize = true;
+            lbSusPlanes.Font = new Font("Segoe UI", 11.25F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            lbSusPlanes.Location = new Point(777, 72);
+            lbSusPlanes.Name = "lbSusPlanes";
+            lbSusPlanes.Size = new Size(82, 20);
+            lbSusPlanes.TabIndex = 17;
+            lbSusPlanes.Text = "Sus Planes";
+            lbSusPlanes.Visible = false;
+            // 
             // CrearPractica
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1235, 450);
-            Controls.Add(btnCancelarPractica);
-            Controls.Add(btnRegistrarPractica);
-            Controls.Add(descripcionPractica);
-            Controls.Add(nomPractica);
+            ClientSize = new Size(1223, 450);
+            Controls.Add(lbSusPlanes);
+            Controls.Add(tableLayoutPanelBotones);
+            Controls.Add(planesAsignadosGridView);
+            Controls.Add(btnRadioDeshabilitado);
+            Controls.Add(btnRadioHabilitado);
+            Controls.Add(label3);
+            Controls.Add(textDescripcionPractica);
+            Controls.Add(textNombrePractica);
             Controls.Add(label2);
             Controls.Add(label1);
-            Controls.Add(label4);
+            Controls.Add(Titulo);
+            FormBorderStyle = FormBorderStyle.FixedSingle;
+            MaximizeBox = false;
+            MinimizeBox = false;
             Name = "CrearPractica";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Crear Práctica";
+            ((System.ComponentModel.ISupportInitialize)planesAsignadosGridView).EndInit();
+            tableLayoutPanelBotones.ResumeLayout(false);
             ResumeLayout(false);
             PerformLayout();
         }
 
         #endregion
 
-        private Label label4;
+        private Label Titulo;
         private Label label1;
         private Label label2;
-        private TextBox nomPractica;
-        private TextBox descripcionPractica;
+        private TextBox textNombrePractica;
+        private TextBox textDescripcionPractica;
         private Button btnCancelarPractica;
         private Button btnRegistrarPractica;
+        private RadioButton btnRadioDeshabilitado;
+        private RadioButton btnRadioHabilitado;
+        private Label label3;
+        private DataGridView planesAsignadosGridView;
+        private TableLayoutPanel tableLayoutPanelBotones;
+        private Button btnCancelarPlan;
+        private Label lbSusPlanes;
     }
 }
