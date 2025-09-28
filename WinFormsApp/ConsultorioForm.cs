@@ -65,24 +65,20 @@ namespace WinFormsApp
         {
             if (consultoriosGridView.SelectedRows.Count > 0)
             {
+
+                int id = Convert.ToInt32(consultoriosGridView.SelectedRows[0].Cells["ConsultorioId"].Value);
+
                 try
                 {
                     ConsultorioDTO seleccionado = (ConsultorioDTO)consultoriosGridView.SelectedRows[0].DataBoundItem;
 
-                    // Verificamos estado
-                    if (seleccionado.Estado == EstadoConsultorio.Deshabilitado)
-                    {
-                        MessageBox.Show("El consultorio ya está deshabilitado, no puede volver a eliminarla.\nDebe modificarla en su lugar.",
-                                        "Acción no permitida",
-                                        MessageBoxButtons.OK,
-                                        MessageBoxIcon.Warning);
-                        return;
-                    }
+                    bool estaHabilitado = seleccionado.Estado == EstadoConsultorio.Habilitado;
 
-                    int id = Convert.ToInt32(consultoriosGridView.SelectedRows[0].Cells["ConsultorioId"].Value);
+                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
+                    string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";
 
-                    DialogResult result = MessageBox.Show("¿Seguro que deseas deshabilitar este consultorio?",
-                                      "Confirmar deshabilitar",
+                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} este consultorio?",
+                                      $"Confirmar {accion}",
                                       MessageBoxButtons.YesNo,
                                       MessageBoxIcon.Question);
 

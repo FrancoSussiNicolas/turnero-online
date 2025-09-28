@@ -34,6 +34,10 @@
             consultoriosToolStripMenuItem = new ToolStripMenuItem();
             especialidadToolStripMenuItem = new ToolStripMenuItem();
             obraSocialToolStripMenuItem = new ToolStripMenuItem();
+            verObrasSocialesToolStripMenuItem = new ToolStripMenuItem();
+            crearObraSocialToolStripMenuItem = new ToolStripMenuItem();
+            modificarObraSocialToolStripMenuItem = new ToolStripMenuItem();
+            eliminarObraSocialToolStripMenuItem = new ToolStripMenuItem();
             pacienteToolStripMenuItem = new ToolStripMenuItem();
             planObraSocialToolStripMenuItem = new ToolStripMenuItem();
             practicaToolStripMenuItem = new ToolStripMenuItem();
@@ -43,6 +47,7 @@
             // menuStrip1
             // 
             menuStrip1.Items.AddRange(new ToolStripItem[] { profesionalesToolStripMenuItem, pacienteToolStripMenuItem, consultoriosToolStripMenuItem, especialidadToolStripMenuItem, obraSocialToolStripMenuItem, planObraSocialToolStripMenuItem, practicaToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { profesionalesToolStripMenuItem, consultoriosToolStripMenuItem, especialidadToolStripMenuItem, obraSocialToolStripMenuItem, pacienteToolStripMenuItem, planObraSocialToolStripMenuItem, practicaToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -61,6 +66,7 @@
             // 
             verProfesionalesToolStripMenuItem.Name = "verProfesionalesToolStripMenuItem";
             verProfesionalesToolStripMenuItem.Size = new Size(180, 22);
+            verProfesionalesToolStripMenuItem.Size = new Size(67, 22);
             // 
             // consultoriosToolStripMenuItem
             // 
@@ -82,6 +88,34 @@
             obraSocialToolStripMenuItem.Size = new Size(79, 20);
             obraSocialToolStripMenuItem.Text = "Obra Social";
             obraSocialToolStripMenuItem.Click += obraSocialToolStripMenuItem_Click;
+            obraSocialToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verObrasSocialesToolStripMenuItem, crearObraSocialToolStripMenuItem, modificarObraSocialToolStripMenuItem, eliminarObraSocialToolStripMenuItem });
+            obraSocialToolStripMenuItem.Name = "obraSocialToolStripMenuItem";
+            obraSocialToolStripMenuItem.Size = new Size(79, 20);
+            obraSocialToolStripMenuItem.Text = "Obra Social";
+            // 
+            // verObrasSocialesToolStripMenuItem
+            // 
+            verObrasSocialesToolStripMenuItem.Name = "verObrasSocialesToolStripMenuItem";
+            verObrasSocialesToolStripMenuItem.Size = new Size(185, 22);
+            verObrasSocialesToolStripMenuItem.Text = "Ver obras sociales";
+            // 
+            // crearObraSocialToolStripMenuItem
+            // 
+            crearObraSocialToolStripMenuItem.Name = "crearObraSocialToolStripMenuItem";
+            crearObraSocialToolStripMenuItem.Size = new Size(185, 22);
+            crearObraSocialToolStripMenuItem.Text = "Crear obra social";
+            // 
+            // modificarObraSocialToolStripMenuItem
+            // 
+            modificarObraSocialToolStripMenuItem.Name = "modificarObraSocialToolStripMenuItem";
+            modificarObraSocialToolStripMenuItem.Size = new Size(185, 22);
+            modificarObraSocialToolStripMenuItem.Text = "Modificar obra social";
+            // 
+            // eliminarObraSocialToolStripMenuItem
+            // 
+            eliminarObraSocialToolStripMenuItem.Name = "eliminarObraSocialToolStripMenuItem";
+            eliminarObraSocialToolStripMenuItem.Size = new Size(185, 22);
+            eliminarObraSocialToolStripMenuItem.Text = "Eliminar obra social";
             // 
             // pacienteToolStripMenuItem
             // 
@@ -129,6 +163,10 @@
         private ToolStripMenuItem consultoriosToolStripMenuItem;
         private ToolStripMenuItem especialidadToolStripMenuItem;
         private ToolStripMenuItem obraSocialToolStripMenuItem;
+        private ToolStripMenuItem verObrasSocialesToolStripMenuItem;
+        private ToolStripMenuItem crearObraSocialToolStripMenuItem;
+        private ToolStripMenuItem modificarObraSocialToolStripMenuItem;
+        private ToolStripMenuItem eliminarObraSocialToolStripMenuItem;
         private ToolStripMenuItem pacienteToolStripMenuItem;
         private ToolStripMenuItem planObraSocialToolStripMenuItem;
         private ToolStripMenuItem practicaToolStripMenuItem;

@@ -126,7 +126,7 @@ namespace WinFormsApp
                 btnAgregarPlan.Visible = true;
                 btnModificarPlan.Visible = true;
             }
-
+            
             if (planObraSocialGridView.Columns.Count > 0)
             {
                 // Configurar tamaño relativo de columnas (FillWeight)
@@ -169,24 +169,26 @@ namespace WinFormsApp
 
         private async void btnAgregarPlanPractica_Click(object sender, EventArgs e)
         {
-            if (planObraSocialGridView.SelectedRows.Count == 0)
+            if (planObraSocialGridView.SelectedRows.Count > 0)
             {
-                MessageBox.Show("Selecciona un plan de obra social primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                return;
-            }
 
-            var planSeleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
-            int planId = planSeleccionado.PlanObraSocialId;
-
-            try
-            {
-                if (_practica != null)
+                try
                 {
-                    // Agregar plan a práctica
-                    if (_practica.PlanObraSocial.Any(p => p.PlanObraSocialId == planId))
+
+                    var planSeleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
+                    int planId = Convert.ToInt32(planObraSocialGridView.SelectedRows[0].Cells["PlanObraSocialId"].Value); ;
+
+                    bool yaExiste = _practica.PlanObraSocial != null &&
+                          _practica.PlanObraSocial.Any(p => p.PlanObraSocialId == planId);
+
+                    if (yaExiste)
                     {
-                        MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' ya está asignado a la práctica '{_practica.Nombre}'.",
-                                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        MessageBox.Show(
+                            $"El plan '{planSeleccionado.NombrePlan}' ya está asignado a la práctica '{_practica.Nombre}'.",
+                            "Aviso",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Warning
+                        );
                         return;
                     }
 
@@ -225,7 +227,47 @@ namespace WinFormsApp
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            this.Close();
+            this.Dispose();
+        }
+
+        private async void btnEliminarPlan_Click(object sender, EventArgs e)
+        {
+            if (planObraSocialGridView.SelectedRows.Count > 0)
+            {
+                int id = Convert.ToInt32(planObraSocialGridView.SelectedRows[0].Cells["PlanObraSocialId"].Value);
+
+                try
+                {
+                    PlanObraSocialDTO seleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
+
+                    bool estaHabilitado = seleccionado.Estado == EstadoPlanObraSocial.Habilitado;
+
+                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
+                    string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";
+
+
+                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} este plan?",
+                                      $"Confirmar {accion}",
+                                      MessageBoxButtons.YesNo,
+                                      MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        await PlanApiClient.DisableAsync(id);
+                        MessageBox.Show($"El plan fue {mensajeExito} exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        await GetAllAndLoad();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al actualizar el plan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecciona un plan primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
         }
 
         private async void btnAgregarPlan_Click(object sender, EventArgs e)

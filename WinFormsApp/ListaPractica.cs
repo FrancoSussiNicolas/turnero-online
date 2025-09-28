@@ -61,6 +61,9 @@ namespace WinFormsApp
         {
             if (practicasGridView.SelectedRows.Count > 0)
             {
+
+                int id = Convert.ToInt32(practicasGridView.SelectedRows[0].Cells["PracticaId"].Value);
+
                 try
                 {
                     PracticaDTO seleccionado = (PracticaDTO)practicasGridView.SelectedRows[0].DataBoundItem;
@@ -78,7 +81,15 @@ namespace WinFormsApp
                     int id = Convert.ToInt32(practicasGridView.SelectedRows[0].Cells["PracticaId"].Value);
 
                     DialogResult result = MessageBox.Show("¿Seguro que deseas deshabilitar esta práctica?",
-                                      "Confirmar deshabilitar",
+                                      "Confirmar deshabilitar"),
+                    bool estaHabilitado = seleccionado.Estado == EstadoPractica.Habilitada;
+
+                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
+                    string mensajeExito = estaHabilitado ? "deshabilitada" : "habilitada";
+
+
+                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} esta práctica?",
+                                      $"Confirmar {accion}",
                                       MessageBoxButtons.YesNo,
                                       MessageBoxIcon.Question);
 
