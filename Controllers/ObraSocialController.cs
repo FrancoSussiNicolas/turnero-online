@@ -11,20 +11,22 @@ namespace Controllers
     public class ObraSocialController : ControllerBase
     {
         private readonly ObraSocialService obraSocialService;
+        private readonly PlanObraSocialService planObraSocialService;
 
-        public ObraSocialController (ObraSocialService obraSocialService)
+        public ObraSocialController (ObraSocialService obraSocialService, PlanObraSocialService planObraSocialService)
         {
             this.obraSocialService = obraSocialService;
+            this.planObraSocialService = planObraSocialService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<ObraSocial>> GetAll()
         {
             return Ok(obraSocialService.GetAll());
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet("{id}")]
         public ActionResult<ObraSocial> GetById(int id)
         {
@@ -34,7 +36,7 @@ namespace Controllers
             return Ok(os);
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [HttpPost]
         public ActionResult<ObraSocial> CrearObraSocial([FromBody] ObraSocialDTO obraSocial)
         {
@@ -50,7 +52,7 @@ namespace Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")] 
+        //[Authorize(Roles = "Administrador")] 
         [HttpPut("{id}")]
         public ActionResult UpdateObraSocial([FromBody] ObraSocialDTO obraSocial, int id)
         {
@@ -67,7 +69,7 @@ namespace Controllers
             }
         }
 
-        [Authorize(Roles = "Administrador")] 
+        //[Authorize(Roles = "Administrador")] 
         [HttpPatch("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoObraSocial(int id)
         {
@@ -85,6 +87,46 @@ namespace Controllers
             if (!deletedOS) return NotFound(new { message = "Obra Social no encontrada" });
         
             return NoContent();
+        }
+
+        //[Authorize(Roles = "Administrador")]
+        [HttpPut("eliminarPlan/{obraSocialId}/{planId}")]
+        public ActionResult RemovePlanFromPractica(int obraSocialId, int planId)
+        {
+            bool eliminado = obraSocialService.EliminarPlanDeObraSocial(obraSocialId, planId);
+
+            if (!eliminado)
+                return NotFound(new { message = "Obra Social o plan no encontrada" });
+
+            return Ok(new { message = "Plan eliminado de la obra social exitosamente" });
+        }
+
+        //[Authorize(Roles = "Administrador")]
+        [HttpPut("agregarPlanOS/{obraSocialId}/{planObraSocialId}")]
+        public ActionResult<ObraSocial> AgregarPlanObraSocial(int obraSocialId, int planObraSocialId)
+        {
+            try
+            {
+                // Obtener el plan de obra social
+                var planOs = planObraSocialService.GetByNroPlan(planObraSocialId);
+                if (planOs is null)
+                    return NotFound(new { message = "Plan de Obra Social no encontrado" });
+
+                // Llamar al service de ObraSocial
+                var obraSocialActualizada = obraSocialService.AgregarPlanAObraSocial(obraSocialId, planOs);
+                if (obraSocialActualizada is null)
+                    return NotFound(new { message = "Obra Social no encontrada" });
+
+                return Ok(obraSocialActualizada);
+            }
+            catch (InvalidOperationException ex)
+            {
+                return Conflict(new { message = "Error al guardar: " + ex.Message });
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, new { message = "Error interno: " + ex.Message });
+            }
         }
 
 

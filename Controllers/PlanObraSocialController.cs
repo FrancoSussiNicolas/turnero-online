@@ -36,7 +36,7 @@ namespace Controllers
             return Ok(planOS);
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [HttpPost]
         public ActionResult<PlanObraSocial> CrearPlanObraSocial([FromBody] PlanObraSocialDTO planObraSocial)
         {
@@ -51,7 +51,7 @@ namespace Controllers
             return Created($"https://localhost:7119/especialidades/{newPlanOS.PlanObraSocialId}", newPlanOS);
         }
 
-        [Authorize(Roles = "Administrador")] 
+        //[Authorize(Roles = "Administrador")] 
         [HttpPut("{nro}")]
         public ActionResult UpdatePlanObraSocial([FromBody] PlanObraSocialDTO planObraSocial, int nro)
         {
@@ -61,7 +61,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrador")]
+        //[Authorize(Roles = "Administrador")]
         [HttpPatch("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoPlan(int id)
         {

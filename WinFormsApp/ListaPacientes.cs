@@ -26,7 +26,6 @@ namespace WinFormsApp
             base.OnShown(e);
             await GetAllAndLoad();
         }
-
         private void ConfigurarDataGridView()
         {
             // La tabla ocupa todo el ancho del formulario
@@ -130,7 +129,7 @@ namespace WinFormsApp
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            this.Dispose();
+            this.Close();
         }
     }
 }

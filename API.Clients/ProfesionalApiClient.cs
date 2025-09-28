@@ -163,14 +163,14 @@ namespace API.Clients
                     string errorContent = await response.Content.ReadAsStringAsync();
                     throw new Exception($"Error al cambiar la especialidad del profesional con Id {profesionalId}. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
-                     catch (HttpRequestException ex)
+            }
+            catch (HttpRequestException ex)
             {
                 throw new Exception($"Error de conexión al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
-            }
             }
         }
         public static async Task DisableAsync(int id)
@@ -186,11 +186,11 @@ namespace API.Clients
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al cambiar la especialidad del profesional con Id {id}: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
+                throw new Exception($"Timeout al cambiar la especialidad del profesional con Id {id}: {ex.Message}", ex);
             }
         }
 

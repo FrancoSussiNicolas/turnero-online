@@ -65,40 +65,53 @@ namespace WinFormsApp
         {
             if (consultoriosGridView.SelectedRows.Count > 0)
             {
-
-                int id = Convert.ToInt32(consultoriosGridView.SelectedRows[0].Cells["ConsultorioId"].Value);
-
                 try
                 {
                     ConsultorioDTO seleccionado = (ConsultorioDTO)consultoriosGridView.SelectedRows[0].DataBoundItem;
 
-                    bool estaHabilitado = seleccionado.Estado == EstadoConsultorio.Habilitado;
+                    // Verificamos estado
+                    if (seleccionado.Estado == EstadoConsultorio.Deshabilitado)
+                    {
+                        MessageBox.Show("El consultorio ya está deshabilitado, no puede volver a eliminarla.\nDebe modificarla en su lugar.",
+                                        "Acción no permitida",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Warning);
+                        return;
+                    }
 
-                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
-                    string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";
+                    int id = Convert.ToInt32(consultoriosGridView.SelectedRows[0].Cells["ConsultorioId"].Value);
 
-                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} este consultorio?",
-                                      $"Confirmar {accion}",
+                    DialogResult result = MessageBox.Show("¿Seguro que deseas deshabilitar este consultorio?",
+                                      "Confirmar deshabilitar",
                                       MessageBoxButtons.YesNo,
                                       MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
                         await ConsultorioApiClient.DisableAsync(id);
-                        MessageBox.Show($"El consultorio fue {mensajeExito} exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                        MessageBox.Show("El consultorio fue deshabilitado exitosamente",
+                                        "Éxito",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
 
                         await GetAllAndLoad();
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al actualizar consultorio: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al actualizar el consultorio: {ex.Message}",
+                                    "Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Selecciona una fila primero.");
+                MessageBox.Show("Selecciona un consultorio primero.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
             }
         }
 

@@ -130,7 +130,6 @@ namespace Services
             }
         }
 
-
         public Practica? AgregarPlanObraSocial(PlanObraSocial planOs, int practicaId)
         {
             using (var context = new TurneroContext())

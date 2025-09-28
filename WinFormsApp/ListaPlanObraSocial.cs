@@ -7,6 +7,7 @@ using System.ComponentModel;
 using System.Data;
 using System.Drawing;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -16,6 +17,7 @@ namespace WinFormsApp
     public partial class ListaPlanObraSocial : Form
     {
         private readonly PracticaDTO _practica;
+        private readonly ObraSocialDTO _obrasSocial;
 
         public ListaPlanObraSocial()
         {
@@ -27,6 +29,14 @@ namespace WinFormsApp
         {
             InitializeComponent();
             _practica = practica;
+            planObraSocialGridView.CellFormatting += planObraSocialGridView_CellFormatting;
+            ConfigurarDataGridView();
+        }
+
+        public ListaPlanObraSocial(ObraSocialDTO obraSocial)
+        {
+            InitializeComponent();
+            _obrasSocial = obraSocial;
             planObraSocialGridView.CellFormatting += planObraSocialGridView_CellFormatting;
             ConfigurarDataGridView();
         }
@@ -87,7 +97,27 @@ namespace WinFormsApp
 
         private void ConfigurarColumnasEspecificas()
         {
-            if (_practica == null)
+            if (_obrasSocial != null)
+            {
+                // Estamos mostrando planes para ObraSocial
+                btnVolver.Visible = true;
+                btnAgregarPlan.Visible = false;
+                btnModificarPlan.Visible = false;
+
+                btnEliminarPlan.Visible = false;
+                btnAgregarPlanPractica.Visible = true;
+            }
+            else if (_practica != null)
+            {
+                // Estamos mostrando planes para Practica
+                btnVolver.Visible = true;
+                btnAgregarPlanPractica.Visible = true;
+
+                btnEliminarPlan.Visible = false;
+                btnAgregarPlan.Visible = false;
+                btnModificarPlan.Visible = false;
+            }
+            else
             {
                 btnVolver.Visible = false;
                 btnAgregarPlanPractica.Visible = false;
@@ -95,15 +125,6 @@ namespace WinFormsApp
                 btnEliminarPlan.Visible = true;
                 btnAgregarPlan.Visible = true;
                 btnModificarPlan.Visible = true;
-            }
-            else
-            {
-                btnVolver.Visible = true;
-                btnAgregarPlanPractica.Visible = true;
-
-                btnEliminarPlan.Visible = false;
-                btnAgregarPlan.Visible = false;
-                btnModificarPlan.Visible = false;
             }
 
             if (planObraSocialGridView.Columns.Count > 0)
@@ -148,96 +169,63 @@ namespace WinFormsApp
 
         private async void btnAgregarPlanPractica_Click(object sender, EventArgs e)
         {
-            if (planObraSocialGridView.SelectedRows.Count > 0)
+            if (planObraSocialGridView.SelectedRows.Count == 0)
             {
+                MessageBox.Show("Selecciona un plan de obra social primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
 
-                try
+            var planSeleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
+            int planId = planSeleccionado.PlanObraSocialId;
+
+            try
+            {
+                if (_practica != null)
                 {
-
-                    var planSeleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
-                    int planId = Convert.ToInt32(planObraSocialGridView.SelectedRows[0].Cells["PlanObraSocialId"].Value); ;
-
-                    bool yaExiste = _practica.PlanObraSocial != null &&
-                          _practica.PlanObraSocial.Any(p => p.PlanObraSocialId == planId);
-
-                    if (yaExiste)
+                    // Agregar plan a práctica
+                    if (_practica.PlanObraSocial.Any(p => p.PlanObraSocialId == planId))
                     {
-                        MessageBox.Show(
-                            $"El plan '{planSeleccionado.NombrePlan}' ya está asignado a la práctica '{_practica.Nombre}'.",
-                            "Aviso",
-                            MessageBoxButtons.OK,
-                            MessageBoxIcon.Warning
-                        );
+                        MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' ya está asignado a la práctica '{_practica.Nombre}'.",
+                                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
 
                     await PracticaApiClient.AddPlanAsync(_practica.PracticaId, planId);
+                    _practica.PlanObraSocial.Add(planSeleccionado);
 
-                    MessageBox.Show(
-                        $"El plan '{planSeleccionado.NombrePlan}' fue agregado correctamente a la práctica '{_practica.Nombre}'.",
-                        "Éxito",
-                        MessageBoxButtons.OK,
-                        MessageBoxIcon.Information
-                    );
-
-                    // Opcional: refrescar el listado o cerrar el form
-                    await GetAllAndLoad();
-
+                    MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' fue agregado correctamente a la práctica '{_practica.Nombre}'.",
+                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
-                catch (Exception ex)
+                else if (_obrasSocial != null)
                 {
-                    MessageBox.Show($"Error al agregar plan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    // Agregar plan a obra social
+                    if (_obrasSocial.PlanesObraSocial.Any(p => p.PlanObraSocialId == planId))
+                    {
+                        MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' ya está asignado a la obra social '{_obrasSocial.NombreObraSocial}'.",
+                                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                        return;
+                    }
+
+                    await ObraSocialApiClient.AddPlanAsync(_obrasSocial.ObraSocialId, planId);
+                    _obrasSocial.PlanesObraSocial.Add(planSeleccionado);
+
+                    MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' fue agregado correctamente a la obra social '{_obrasSocial.NombreObraSocial}'.",
+                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
+
+                // Refrescar DataGridView
+                await GetAllAndLoad();
+
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Selecciona una fila primero.");
+                MessageBox.Show($"Error al agregar plan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
         private void btnVolver_Click(object sender, EventArgs e)
         {
-            this.Dispose();
-        }
-
-        private async void btnEliminarPlan_Click(object sender, EventArgs e)
-        {
-            if (planObraSocialGridView.SelectedRows.Count > 0)
-            {
-                int id = Convert.ToInt32(planObraSocialGridView.SelectedRows[0].Cells["PlanObraSocialId"].Value);
-
-                try
-                {
-                    PlanObraSocialDTO seleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
-
-                    bool estaHabilitado = seleccionado.Estado == EstadoPlanObraSocial.Habilitado;
-
-                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
-                    string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";
-
-
-                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} este plan?",
-                                      $"Confirmar {accion}",
-                                      MessageBoxButtons.YesNo,
-                                      MessageBoxIcon.Question);
-
-                    if (result == DialogResult.Yes)
-                    {
-                        await PlanApiClient.DisableAsync(id);
-                        MessageBox.Show($"El plan fue {mensajeExito} exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-
-                        await GetAllAndLoad();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Error al actualizar el plan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-            else
-            {
-                MessageBox.Show("Selecciona un plan primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-            }
+            this.Close();
         }
 
         private async void btnAgregarPlan_Click(object sender, EventArgs e)
@@ -280,6 +268,46 @@ namespace WinFormsApp
             else
             {
                 MessageBox.Show("Selecciona un plan de obra social primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+            }
+        }
+
+        private async void btnEliminarPlan_Click_1(object sender, EventArgs e)
+        {
+            if (planObraSocialGridView.SelectedRows.Count > 0)
+            {
+                int id = Convert.ToInt32(planObraSocialGridView.SelectedRows[0].Cells["PlanObraSocialId"].Value);
+
+                try
+                {
+                    PlanObraSocialDTO seleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
+
+                    bool estaHabilitado = seleccionado.Estado == EstadoPlanObraSocial.Habilitado;
+
+                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
+                    string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";
+
+
+                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} este plan?",
+                                      $"Confirmar {accion}",
+                                      MessageBoxButtons.YesNo,
+                                      MessageBoxIcon.Question);
+
+                    if (result == DialogResult.Yes)
+                    {
+                        await PlanApiClient.DisableAsync(id);
+                        MessageBox.Show($"El plan fue {mensajeExito} exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+
+                        await GetAllAndLoad();
+                    }
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al actualizar el plan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+            else
+            {
+                MessageBox.Show("Selecciona un plan primero.", "Advertencia", MessageBoxButtons.OK, MessageBoxIcon.Warning);
             }
         }
     }

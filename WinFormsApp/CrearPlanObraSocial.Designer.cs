@@ -101,7 +101,7 @@
             // 
             Titulo.AutoSize = true;
             Titulo.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            Titulo.Location = new Point(320, 30);
+            Titulo.Location = new Point(284, 31);
             Titulo.Name = "Titulo";
             Titulo.Size = new Size(220, 30);
             Titulo.TabIndex = 8;

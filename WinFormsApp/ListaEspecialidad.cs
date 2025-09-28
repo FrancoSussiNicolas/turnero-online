@@ -65,40 +65,53 @@ namespace WinFormsApp
         {
             if (especialidadGridView.SelectedRows.Count > 0)
             {
-
-                int id = Convert.ToInt32(especialidadGridView.SelectedRows[0].Cells["EspecialidadId"].Value);
-
                 try
                 {
                     EspecialidadDTO seleccionado = (EspecialidadDTO)especialidadGridView.SelectedRows[0].DataBoundItem;
 
-                    bool estaHabilitado = seleccionado.Estado == EstadoEspecialidad.Habilitada;
+                    // Verificamos estado
+                    if (seleccionado.Estado == EstadoEspecialidad.Deshabilitada)
+                    {
+                        MessageBox.Show("La especialidad ya está deshabilitada, no puede volver a eliminarla.\nDebe modificarla en su lugar.",
+                                        "Acción no permitida",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Warning);
+                        return;
+                    }
 
-                    string accion = estaHabilitado ? "deshabilitar" : "habilitar";
-                    string mensajeExito = estaHabilitado ? "deshabilitada" : "habilitada";
+                    int id = Convert.ToInt32(especialidadGridView.SelectedRows[0].Cells["EspecialidadId"].Value);
 
-                    DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} esta especialidad?",
-                                      $"Confirmar {accion}",
+                    DialogResult result = MessageBox.Show("¿Seguro que deseas deshabilitar esta especialidad?",
+                                      "Confirmar deshabilitar",
                                       MessageBoxButtons.YesNo,
                                       MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {
                         await EspecialidadApiClient.DisableAsync(id);
-                        MessageBox.Show($"La especialidad fue {mensajeExito} exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
+                        MessageBox.Show("La especialidad fue deshabilitada exitosamente",
+                                        "Éxito",
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Information);
 
                         await GetAllAndLoad();
                     }
                 }
                 catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al actualizar la especialidad: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al actualizar la especialidad: {ex.Message}",
+                                    "Error",
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
                 }
             }
             else
             {
-                MessageBox.Show("Selecciona una fila primero.");
+                MessageBox.Show("Selecciona una especialidad primero.",
+                                "Advertencia",
+                                MessageBoxButtons.OK,
+                                MessageBoxIcon.Warning);
             }
         }
 
@@ -111,7 +124,6 @@ namespace WinFormsApp
 
             crearEspecialidadForm.Dispose();
         }
-
         private async void btnModificarEspecialidad_Click(object sender, EventArgs e)
         {
             if (especialidadGridView.SelectedRows.Count > 0)

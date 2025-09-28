@@ -68,5 +68,12 @@ namespace WinFormsApp
             planObraSocial.MdiParent = this;
             planObraSocial.Show();
         }
+
+        private void obraSocialToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ListaObraSocial obraSocial = new ListaObraSocial();
+            obraSocial.MdiParent = this;
+            obraSocial.Show();
+        }
     }
 }

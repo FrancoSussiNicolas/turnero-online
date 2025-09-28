@@ -95,6 +95,7 @@
             btnEliminarPlan.TabIndex = 15;
             btnEliminarPlan.Text = "Eliminar";
             btnEliminarPlan.UseVisualStyleBackColor = false;
+            btnEliminarPlan.Click += btnEliminarPlan_Click_1;
             // 
             // btnVolver
             // 

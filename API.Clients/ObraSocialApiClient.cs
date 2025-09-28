@@ -185,5 +185,38 @@ namespace API.Clients
                 throw new Exception($"Timeout al obtener lista de obras sociales disponibles: {ex.Message}", ex);
             }
         }
+
+        public async static Task AddPlanAsync(int obraSocialId, int planObraSocialId)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.PutAsync($"obraSocial/agregarPlanOS/{obraSocialId}/{planObraSocialId}", null);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al agregar el plan a la obra social. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al agregar el plan a la obra social: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al agregar el plan a la obra social: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task RemovePlanAsync(int obraSocialId, int planObraSocialId)
+        {
+            HttpResponseMessage response = await client.PutAsync($"obraSocial/eliminarPlan/{obraSocialId}/{planObraSocialId}", null);
+
+            if (!response.IsSuccessStatusCode)
+            {
+                string errorContent = await response.Content.ReadAsStringAsync();
+                throw new Exception($"Error al eliminar el plan de la obra social. Status: {response.StatusCode}, Detalle: {errorContent}");
+            }
+        }
     }
 }

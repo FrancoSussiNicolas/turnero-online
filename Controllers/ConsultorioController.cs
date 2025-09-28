@@ -57,7 +57,7 @@ namespace Controllers
             return Created($"https://localhost:7119/consultorios/{newConsul.ConsultorioId}", newConsul);
         }
 
-        [Authorize(Roles = "Administrador")] 
+        //[Authorize(Roles = "Administrador")] 
         [HttpPut("{nro}")]
         public ActionResult UpdateConsultorio([FromBody] ConsultorioDTO consultorio, int nro)
         {
@@ -67,7 +67,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Administrador")] 
+        //[Authorize(Roles = "Administrador")] 
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoConsultorio(int id)
         {
