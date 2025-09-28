@@ -66,6 +66,22 @@ namespace Services
 
         }
 
+        public bool EliminarPlanDeObraSocial(int obraSocialId, int planId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var plan = context.PlanesObrasSociales
+                                  .FirstOrDefault(p => p.PlanObraSocialId == planId && p.ObraSocialId == obraSocialId);
+
+                if (plan == null) return false;
+
+                context.PlanesObrasSociales.Remove(plan);
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+
         public ObraSocial? UpdateObraSocial(ObraSocialDTO os, int idOs)
         {
             using (var context = new TurneroContext())
@@ -130,6 +146,33 @@ namespace Services
                 context.ObrasSociales.Remove(os);
                 context.SaveChanges();
                 return true;
+            }
+        }
+
+        public ObraSocial? AgregarPlanAObraSocial(int obraSocialId, PlanObraSocial planOs)
+        {
+            using (var context = new TurneroContext())
+            {
+                // Cargar la obra social junto con su lista de planes
+                var obraSocial = context.ObrasSociales
+                                        .Include(o => o.PlanesObraSocial)
+                                        .FirstOrDefault(o => o.ObraSocialId == obraSocialId);
+
+                if (obraSocial == null) return null;
+
+                // Evitar agregar duplicados
+                if (obraSocial.PlanesObraSocial.Any(p => p.PlanObraSocialId == planOs.PlanObraSocialId))
+                {
+                    throw new InvalidOperationException("El plan ya está asociado a esta obra social.");
+                }
+
+                // Agregar plan a la lista de la obra social
+                obraSocial.PlanesObraSocial.Add(planOs);
+
+                // Guardar cambios en la base de datos
+                context.SaveChanges();
+
+                return obraSocial;
             }
         }
 

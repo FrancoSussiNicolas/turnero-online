@@ -19,7 +19,8 @@ namespace DTOs
         public string DescripcionPlan { get; set; }
 
         [Required]
-
         public int ObraSocialId { get; set; }
+
+        public EstadoPlanObraSocial Estado { get; set; }
     }
 }

@@ -22,7 +22,7 @@ namespace Controllers
             this.obraSocialService = obraSocialService;
         }
 
-        [Authorize]
+        //[Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Profesional>> GetAll()
         {

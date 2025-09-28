@@ -19,7 +19,7 @@ namespace WinFormsApp
                 if (login.ShowDialog() == DialogResult.OK)
                 {
                     if (SessionManager.UserType == "Profesional") Application.Run(new MenuProfesional());
-                    //else if (SessionManager.UserType == "Administrador") Application.Run(new MenuAdmin());
+                    else if (SessionManager.UserType == "Administrador") Application.Run(new MenuAdmin());
                 }
             }
         }

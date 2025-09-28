@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Entities;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
@@ -14,5 +15,9 @@ namespace DTOs
 
         [Required]
         public string NombreObraSocial { get; set; }
+
+        public EstadoObraSocial Estado { get; set; }
+
+        public List<PlanObraSocialDTO> PlanesObraSocial { get; set; }
     }
 }

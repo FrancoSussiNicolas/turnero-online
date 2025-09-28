@@ -15,5 +15,7 @@ namespace DTOs
         public string Descripcion { get; set; }
 
         public EstadoPractica Estado { get; set; }
+
+        public List<PlanObraSocialDTO> PlanObraSocial { get; set; }
     }
 }
