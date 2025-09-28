@@ -1,8 +1,12 @@
-﻿using DTOs;
+﻿using Azure.Core;
+using DTOs;
+using Entities;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +27,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("consultorios/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"consultorios/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -49,7 +56,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("consultorios");
+                var request = new HttpRequestMessage(HttpMethod.Get, "consultorios");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -75,7 +85,11 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("consultorios/habilitados");
+                var request = new HttpRequestMessage(HttpMethod.Get, "consultorios/habilitados");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
                 if (response.IsSuccessStatusCode)
                 {
                     return await response.Content.ReadAsAsync<List<ConsultorioDTO>>();
@@ -100,7 +114,15 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("consultorios", consultorio);
+                var request = new HttpRequestMessage(HttpMethod.Post, "consultorios")
+                {
+                    Content = JsonContent.Create(consultorio)
+                };
+
+                request.Headers.Authorization =
+                    new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -122,7 +144,11 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("consultorios/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"consultorios/{id}");
+                request.Headers.Authorization =
+                    new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -144,7 +170,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"consultorios/{consultorio.ConsultorioId}", consultorio);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"consultorios/{consultorio.ConsultorioId}")
+                {
+                    Content = JsonContent.Create(consultorio)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -166,7 +199,12 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsync($"consultorios/deshabilitar/{id}", null);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"consultorios/cambiarEstado/{id}");
+                request.Headers.Authorization =
+                    new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();

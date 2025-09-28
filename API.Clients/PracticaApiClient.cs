@@ -1,8 +1,11 @@
 ﻿using DTOs;
+using Entities;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +26,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("practicas/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"practicas/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -49,7 +55,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("practicas");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"practicas");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -75,7 +84,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("practicas", practica);
+                var request = new HttpRequestMessage(HttpMethod.Post, "practicas")
+                {
+                    Content = JsonContent.Create(practica)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -97,7 +113,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("practicas/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"practicas/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -119,7 +138,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"practicas/{practica.PracticaId}", practica);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"practicas/{practica.PracticaId}")
+                {
+                    Content = JsonContent.Create(practica)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -136,11 +162,16 @@ namespace API.Clients
                 throw new Exception($"Timeout al actualizar práctica con Id {practica.PracticaId}: {ex.Message}", ex);
             }
         }
+
         public static async Task DisableAsync(int id)
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsync($"practicas/deshabilitar/{id}", null);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"practicas/cambiarEstado/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();

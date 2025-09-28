@@ -55,14 +55,14 @@ namespace Controllers
 
         [Authorize]
         [HttpGet("paciente/{pacienteId}")]
-        public ActionResult<Turno> GetTurnoByPacienteId(int pacienteId)
+        public ActionResult<List<Turno>> GetTurnoByPacienteId(int pacienteId)
         {
             var paciente = pacienteService.GetByIdPaciente(pacienteId);
             if (paciente is null) return NotFound(new {message = "Paciente no encontrado"});
             
             var turnos = turnoService.GetTurnsByPacient(paciente); 
 
-            if(turnos.Count == 0) return NotFound(new {message = "El paciente no tiene turnos asignados"});
+            if (turnos.Count == 0) return NotFound(new {message = "El paciente no tiene turnos asignados"});
             return Ok(turnos);
         }
 

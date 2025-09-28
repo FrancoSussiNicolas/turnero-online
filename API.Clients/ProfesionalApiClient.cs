@@ -1,4 +1,5 @@
 ﻿using DTOs;
+using Entities;
 using Shared;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("profesionales");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"profesionales");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -102,7 +106,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("profesionales/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"profesionales/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -153,9 +160,14 @@ namespace API.Clients
         {
             try
             {
-                var content = new StringContent(nuevaEspecialidadId.ToString(), Encoding.UTF8, "application/json");
+                var request = new HttpRequestMessage(HttpMethod.Put, $"profesionales/cambiarEspecialidad/{profesionalId}")
+                {
+                    Content = new StringContent(nuevaEspecialidadId.ToString(), Encoding.UTF8, "application/json")
+                };
 
-                HttpResponseMessage response = await client.PutAsync($"profesionales/cambiarEspecialidad/{profesionalId}", content);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -177,8 +189,11 @@ namespace API.Clients
         {
             try
             {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"profesionales/obrasSociales/{profesionalId}");
 
-                HttpResponseMessage response = await client.GetAsync($"profesionales/obrasSociales/{profesionalId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -204,7 +219,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync($"profesionales/eliminarObraSocial/{profesionalId}/{obraSocialId}");
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"profesionales/eliminarObraSocial/{profesionalId}/{obraSocialId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -227,7 +245,14 @@ namespace API.Clients
             try
             {
                 var content = new StringContent(string.Empty, Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PutAsync($"profesionales/agregarObraSocial/{profesionalId}/{obraSocialId}", content);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"profesionales/agregarObraSocial/{profesionalId}/{obraSocialId}")
+                {
+                    Content = content
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -254,6 +279,5 @@ namespace API.Clients
                 throw new Exception($"Timeout al agregar la obra social del profesional con Id {profesionalId}: {ex.Message}", ex);
             }
         }
-
     }
 }

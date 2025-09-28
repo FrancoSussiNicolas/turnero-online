@@ -1,11 +1,14 @@
 ﻿using DTOs;
+using Entities;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
-using System.Net.Http;
 
 namespace API.Clients
 {
@@ -24,7 +27,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("obraSocial/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"obraSocial/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -50,7 +56,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("obraSocial");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"obraSocial");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -76,7 +85,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("obraSocial", obraSocial);
+                var request = new HttpRequestMessage(HttpMethod.Post, "obraSocial")
+                {
+                    Content = JsonContent.Create(obraSocial)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -98,7 +114,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("obraSocial/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"obraSocial/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -120,7 +139,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"obraSocial/{id}", obraSocial);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"obraSocial/{id}")
+                {
+                    Content = JsonContent.Create(obraSocial)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -142,8 +168,11 @@ namespace API.Clients
         {
             try
             {
-                HttpContent content = new StringContent("", Encoding.UTF8, "application/json");
-                HttpResponseMessage response = await client.PatchAsync($"obraSocial/cambiarEstado/{id}", content);
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"obraSocial/cambiarEstado/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
@@ -164,7 +193,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("obraSocial/disponibles").ConfigureAwait(false);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"obraSocial/disponibles");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request).ConfigureAwait(false);
 
                 if (response.IsSuccessStatusCode)
                 {

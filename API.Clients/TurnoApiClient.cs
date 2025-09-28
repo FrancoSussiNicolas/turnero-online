@@ -1,8 +1,11 @@
 ﻿using DTOs;
+using Entities;
+using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -23,7 +26,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("turnos/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"turnos/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -49,7 +55,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("turnos");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"turnos");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -71,11 +80,105 @@ namespace API.Clients
             }
         }
 
+        public static async Task<List<TurnoDTO>> GetDisponiblesAsync()
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, "turnos/disponibles");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<List<TurnoDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener turnos disponibles. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener turnos disponibles: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener turnos disponibles: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task<List<TurnoDTO>> GetByPacienteAsync(int pacienteId)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"turnos/paciente/{pacienteId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<List<TurnoDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener turnos del paciente de id {pacienteId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener turnos del paciente de id {pacienteId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener turnos del paciente de id {pacienteId}: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task<List<TurnoDTO>> GetByProfesionalAsync(int profesionalId)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"turnos/profesional/{profesionalId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<List<TurnoDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener turnos del profesional de id {profesionalId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener turnos del profesional de id {profesionalId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener turnos del profesional de id {profesionalId}: {ex.Message}", ex);
+            }
+        }
+
         public async static Task AddAsync(TurnoDTO turno)
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("turnos", turno);
+                var request = new HttpRequestMessage(HttpMethod.Post, "turnos")
+                {
+                    Content = JsonContent.Create(turno)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -97,7 +200,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("turnos/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"turnos/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -119,7 +225,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"turnos/{turno.TurnoId}", turno);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"turnos/{turno.TurnoId}")
+                {
+                    Content = JsonContent.Create(turno)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -134,6 +247,31 @@ namespace API.Clients
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al actualizar turno con Id {turno.TurnoId}: {ex.Message}", ex);
+            }
+        }
+
+        public static async Task ChangeStateAsync(int id)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"turnos/cambiarEstado/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al confirmar el turno con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al confirmar el turno con Id {id}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al confirmar el turno con Id {id}: {ex.Message}", ex);
             }
         }
     }

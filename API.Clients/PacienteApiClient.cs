@@ -1,4 +1,6 @@
 ﻿using DTOs;
+using Entities;
+using Shared;
 using System.Net.Http.Headers;
 using System.Net.Http.Json;
 
@@ -19,7 +21,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("pacientes/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Get, $"pacientes/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -45,7 +50,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("pacientes");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"pacientes");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -93,7 +101,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("pacientes/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"pacientes/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -115,7 +126,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"pacientes/{paciente.PersonaId}", paciente);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"pacientes/{paciente.PersonaId}")
+                {
+                    Content = JsonContent.Create(paciente)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {

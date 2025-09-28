@@ -99,7 +99,7 @@ namespace Controllers
             return NoContent();
         }
 
-        //[Authorize(Roles = "Profesional")] 
+        [Authorize(Roles = "Profesional")] 
         [HttpPut("agregarObraSocial/{profesionalId}/{obraSocialId}")]
         public ActionResult NuevaObraSocialProfesional(int profesionalId, int obraSocialId)
         {
@@ -135,7 +135,7 @@ namespace Controllers
             }
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("obrasSociales/{id}")]
         public ActionResult<IEnumerable<ObraSocial>> GetObrasSocialesByProfesionalId(int id)
         {
@@ -150,7 +150,7 @@ namespace Controllers
             return Ok(obrasSociales);
         }
 
-        //[Authorize(Roles = "Profesional")]
+        [Authorize(Roles = "Profesional")]
         [HttpDelete("eliminarObraSocial/{profesionalId}/{obraSocialId}")]
         public ActionResult EliminarObraSocialProfesional(int profesionalId, int obraSocialId)
         {

@@ -87,8 +87,7 @@ namespace Controllers
             return NoContent();
         }
 
-
-        //[Authorize]
+        [Authorize]
         [HttpGet("disponibles")]
         public ActionResult<IEnumerable<ObraSocial>> GetDisponibles()
         {

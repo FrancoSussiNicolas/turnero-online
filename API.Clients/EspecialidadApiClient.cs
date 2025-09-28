@@ -1,9 +1,11 @@
 ﻿using DTOs;
+using Entities;
 using Shared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -53,7 +55,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync("especialidades");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"especialidades");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (response.IsSuccessStatusCode)
                 {
@@ -79,7 +84,15 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("especialidades", especialidad);
+                var request = new HttpRequestMessage(HttpMethod.Post, "especialidades")
+                {
+                    Content = JsonContent.Create(especialidad)
+                };
+
+                request.Headers.Authorization =
+                    new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -101,7 +114,11 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.DeleteAsync("especialidades/" + id);
+                var request = new HttpRequestMessage(HttpMethod.Delete, $"especialidades/{id}");
+                request.Headers.Authorization =
+                    new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -123,7 +140,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsJsonAsync($"especialidades/{especialidad.EspecialidadId}", especialidad);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"especialidades/{especialidad.EspecialidadId}")
+                {
+                    Content = JsonContent.Create(especialidad)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -145,7 +169,12 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsync($"especialidades/deshabilitar/{id}", null);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"especialidades/cambiarEstado/{id}");
+                request.Headers.Authorization =
+                    new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();

@@ -18,7 +18,7 @@ namespace Controllers
             this.especialidadService = especialidadService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Especialidad>> GetAll()
         {
