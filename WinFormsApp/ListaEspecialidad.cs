@@ -65,9 +65,6 @@ namespace WinFormsApp
         {
             if (especialidadGridView.SelectedRows.Count > 0)
             {
-
-                int id = Convert.ToInt32(especialidadGridView.SelectedRows[0].Cells["EspecialidadId"].Value);
-
                 try
                 {
                     EspecialidadDTO seleccionado = (EspecialidadDTO)especialidadGridView.SelectedRows[0].DataBoundItem;
@@ -84,17 +81,15 @@ namespace WinFormsApp
 
                     int id = Convert.ToInt32(especialidadGridView.SelectedRows[0].Cells["EspecialidadId"].Value);
 
-                    DialogResult result = MessageBox.Show("¿Seguro que deseas deshabilitar esta especialidad?",
-                    "Confirmar deshabilitar",)
                     bool estaHabilitado = seleccionado.Estado == EstadoEspecialidad.Habilitada;
 
                     string accion = estaHabilitado ? "deshabilitar" : "habilitar";
                     string mensajeExito = estaHabilitado ? "deshabilitada" : "habilitada";
 
                     DialogResult result = MessageBox.Show($"¿Seguro que deseas {accion} esta especialidad?",
-                                      $"Confirmar {accion}",
-                                      MessageBoxButtons.YesNo,
-                                      MessageBoxIcon.Question);
+                        $"Confirmar {accion}",
+                        MessageBoxButtons.YesNo,
+                        MessageBoxIcon.Question);
 
                     if (result == DialogResult.Yes)
                     {

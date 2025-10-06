@@ -30,7 +30,7 @@
         {
             menuStrip1 = new MenuStrip();
             profesionalesToolStripMenuItem = new ToolStripMenuItem();
-            verProfesionalesToolStripMenuItem = new ToolStripMenuItem();
+            pacienteToolStripMenuItem = new ToolStripMenuItem();
             consultoriosToolStripMenuItem = new ToolStripMenuItem();
             especialidadToolStripMenuItem = new ToolStripMenuItem();
             obraSocialToolStripMenuItem = new ToolStripMenuItem();
@@ -38,16 +38,16 @@
             crearObraSocialToolStripMenuItem = new ToolStripMenuItem();
             modificarObraSocialToolStripMenuItem = new ToolStripMenuItem();
             eliminarObraSocialToolStripMenuItem = new ToolStripMenuItem();
-            pacienteToolStripMenuItem = new ToolStripMenuItem();
             planObraSocialToolStripMenuItem = new ToolStripMenuItem();
             practicaToolStripMenuItem = new ToolStripMenuItem();
+            salirToolStripMenuItem = new ToolStripMenuItem();
+            perfilToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { profesionalesToolStripMenuItem, pacienteToolStripMenuItem, consultoriosToolStripMenuItem, especialidadToolStripMenuItem, obraSocialToolStripMenuItem, planObraSocialToolStripMenuItem, practicaToolStripMenuItem });
-            menuStrip1.Items.AddRange(new ToolStripItem[] { profesionalesToolStripMenuItem, consultoriosToolStripMenuItem, especialidadToolStripMenuItem, obraSocialToolStripMenuItem, pacienteToolStripMenuItem, planObraSocialToolStripMenuItem, practicaToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { profesionalesToolStripMenuItem, pacienteToolStripMenuItem, consultoriosToolStripMenuItem, especialidadToolStripMenuItem, obraSocialToolStripMenuItem, planObraSocialToolStripMenuItem, practicaToolStripMenuItem, perfilToolStripMenuItem, salirToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -56,17 +56,17 @@
             // 
             // profesionalesToolStripMenuItem
             // 
-            profesionalesToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verProfesionalesToolStripMenuItem });
             profesionalesToolStripMenuItem.Name = "profesionalesToolStripMenuItem";
             profesionalesToolStripMenuItem.Size = new Size(78, 20);
             profesionalesToolStripMenuItem.Text = "Profesional";
             profesionalesToolStripMenuItem.Click += profesionalesToolStripMenuItem_Click;
             // 
-            // verProfesionalesToolStripMenuItem
+            // pacienteToolStripMenuItem
             // 
-            verProfesionalesToolStripMenuItem.Name = "verProfesionalesToolStripMenuItem";
-            verProfesionalesToolStripMenuItem.Size = new Size(180, 22);
-            verProfesionalesToolStripMenuItem.Size = new Size(67, 22);
+            pacienteToolStripMenuItem.Name = "pacienteToolStripMenuItem";
+            pacienteToolStripMenuItem.Size = new Size(64, 20);
+            pacienteToolStripMenuItem.Text = "Paciente";
+            pacienteToolStripMenuItem.Click += pacienteToolStripMenuItem_Click;
             // 
             // consultoriosToolStripMenuItem
             // 
@@ -84,14 +84,11 @@
             // 
             // obraSocialToolStripMenuItem
             // 
-            obraSocialToolStripMenuItem.Name = "obraSocialToolStripMenuItem";
-            obraSocialToolStripMenuItem.Size = new Size(79, 20);
-            obraSocialToolStripMenuItem.Text = "Obra Social";
-            obraSocialToolStripMenuItem.Click += obraSocialToolStripMenuItem_Click;
             obraSocialToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verObrasSocialesToolStripMenuItem, crearObraSocialToolStripMenuItem, modificarObraSocialToolStripMenuItem, eliminarObraSocialToolStripMenuItem });
             obraSocialToolStripMenuItem.Name = "obraSocialToolStripMenuItem";
             obraSocialToolStripMenuItem.Size = new Size(79, 20);
             obraSocialToolStripMenuItem.Text = "Obra Social";
+            obraSocialToolStripMenuItem.Click += obraSocialToolStripMenuItem_Click;
             // 
             // verObrasSocialesToolStripMenuItem
             // 
@@ -117,13 +114,6 @@
             eliminarObraSocialToolStripMenuItem.Size = new Size(185, 22);
             eliminarObraSocialToolStripMenuItem.Text = "Eliminar obra social";
             // 
-            // pacienteToolStripMenuItem
-            // 
-            pacienteToolStripMenuItem.Name = "pacienteToolStripMenuItem";
-            pacienteToolStripMenuItem.Size = new Size(64, 20);
-            pacienteToolStripMenuItem.Text = "Paciente";
-            pacienteToolStripMenuItem.Click += pacienteToolStripMenuItem_Click;
-            // 
             // planObraSocialToolStripMenuItem
             // 
             planObraSocialToolStripMenuItem.Name = "planObraSocialToolStripMenuItem";
@@ -137,6 +127,20 @@
             practicaToolStripMenuItem.Size = new Size(61, 20);
             practicaToolStripMenuItem.Text = "Practica";
             practicaToolStripMenuItem.Click += practicaToolStripMenuItem_Click;
+            // 
+            // salirToolStripMenuItem
+            // 
+            salirToolStripMenuItem.Name = "salirToolStripMenuItem";
+            salirToolStripMenuItem.Size = new Size(41, 20);
+            salirToolStripMenuItem.Text = "Salir";
+            salirToolStripMenuItem.Click += salirToolStripMenuItem_Click;
+            // 
+            // perfilToolStripMenuItem
+            // 
+            perfilToolStripMenuItem.Name = "perfilToolStripMenuItem";
+            perfilToolStripMenuItem.Size = new Size(46, 20);
+            perfilToolStripMenuItem.Text = "Perfil";
+            perfilToolStripMenuItem.Click += perfilToolStripMenuItem_Click;
             // 
             // MenuAdmin
             // 
@@ -159,7 +163,6 @@
 
         private MenuStrip menuStrip1;
         private ToolStripMenuItem profesionalesToolStripMenuItem;
-        private ToolStripMenuItem verProfesionalesToolStripMenuItem;
         private ToolStripMenuItem consultoriosToolStripMenuItem;
         private ToolStripMenuItem especialidadToolStripMenuItem;
         private ToolStripMenuItem obraSocialToolStripMenuItem;
@@ -170,5 +173,7 @@
         private ToolStripMenuItem pacienteToolStripMenuItem;
         private ToolStripMenuItem planObraSocialToolStripMenuItem;
         private ToolStripMenuItem practicaToolStripMenuItem;
+        private ToolStripMenuItem salirToolStripMenuItem;
+        private ToolStripMenuItem perfilToolStripMenuItem;
     }
 }

@@ -1,6 +1,6 @@
 ﻿namespace WinFormsApp
 {
-    partial class CrearTurnosForm
+    partial class TurnoDetalle
     {
         /// <summary>
         /// Required designer variable.
@@ -32,7 +32,7 @@
             label2 = new Label();
             FechaTurno = new DateTimePicker();
             label3 = new Label();
-            label4 = new Label();
+            h1Turno = new Label();
             btnRegistrarTurno = new Button();
             btnCancelarTurno = new Button();
             label5 = new Label();
@@ -58,39 +58,44 @@
             // 
             // FechaTurno
             // 
+            FechaTurno.Anchor = AnchorStyles.None;
             FechaTurno.CustomFormat = " dd/MM/yyyy";
             FechaTurno.Format = DateTimePickerFormat.Custom;
-            FechaTurno.Location = new Point(305, 62);
-            FechaTurno.MinDate = new DateTime(2025, 9, 4, 17, 55, 8, 0);
+            FechaTurno.Location = new Point(230, 137);
+            FechaTurno.MinDate = new DateTime(2025, 9, 29, 23, 52, 41, 0);
             FechaTurno.Name = "FechaTurno";
             FechaTurno.ShowUpDown = true;
             FechaTurno.Size = new Size(269, 23);
             FechaTurno.TabIndex = 2;
-            FechaTurno.Value = new DateTime(2025, 9, 4, 17, 55, 8, 0);
+            FechaTurno.Value = new DateTime(2025, 9, 29, 23, 52, 41, 0);
+            FechaTurno.ValueChanged += HoraTurno_ValueChanged;
             // 
             // label3
             // 
             label3.AutoSize = true;
-            label3.Location = new Point(347, 24);
+            label3.Location = new Point(272, 99);
             label3.Name = "label3";
             label3.Size = new Size(0, 15);
             label3.TabIndex = 3;
             // 
-            // label4
+            // h1Turno
             // 
-            label4.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
-            label4.Location = new Point(305, 11);
-            label4.MaximumSize = new Size(0, 400);
-            label4.Name = "label4";
-            label4.Size = new Size(243, 32);
-            label4.TabIndex = 4;
-            label4.Text = "Registrar Turno";
-            label4.TextAlign = ContentAlignment.MiddleCenter;
+            h1Turno.Anchor = AnchorStyles.None;
+            h1Turno.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
+            h1Turno.Location = new Point(230, 76);
+            h1Turno.MaximumSize = new Size(0, 400);
+            h1Turno.Name = "h1Turno";
+            h1Turno.Size = new Size(243, 32);
+            h1Turno.TabIndex = 4;
+            h1Turno.Text = "Registrar Turno";
+            h1Turno.TextAlign = ContentAlignment.MiddleCenter;
             // 
             // btnRegistrarTurno
             // 
+            btnRegistrarTurno.Anchor = AnchorStyles.None;
             btnRegistrarTurno.BackColor = SystemColors.ActiveCaption;
-            btnRegistrarTurno.Location = new Point(205, 203);
+            btnRegistrarTurno.Cursor = Cursors.Hand;
+            btnRegistrarTurno.Location = new Point(412, 288);
             btnRegistrarTurno.Name = "btnRegistrarTurno";
             btnRegistrarTurno.Size = new Size(151, 34);
             btnRegistrarTurno.TabIndex = 5;
@@ -100,7 +105,9 @@
             // 
             // btnCancelarTurno
             // 
-            btnCancelarTurno.Location = new Point(459, 203);
+            btnCancelarTurno.Anchor = AnchorStyles.None;
+            btnCancelarTurno.Cursor = Cursors.Hand;
+            btnCancelarTurno.Location = new Point(130, 288);
             btnCancelarTurno.Name = "btnCancelarTurno";
             btnCancelarTurno.Size = new Size(151, 34);
             btnCancelarTurno.TabIndex = 6;
@@ -110,9 +117,10 @@
             // 
             // label5
             // 
+            label5.Anchor = AnchorStyles.None;
             label5.AutoSize = true;
             label5.Font = new Font("Segoe UI", 10F);
-            label5.Location = new Point(205, 62);
+            label5.Location = new Point(130, 138);
             label5.Name = "label5";
             label5.Size = new Size(87, 19);
             label5.TabIndex = 9;
@@ -120,9 +128,10 @@
             // 
             // label6
             // 
+            label6.Anchor = AnchorStyles.None;
             label6.AutoSize = true;
             label6.Font = new Font("Segoe UI", 10F);
-            label6.Location = new Point(205, 154);
+            label6.Location = new Point(130, 226);
             label6.Name = "label6";
             label6.Size = new Size(83, 19);
             label6.TabIndex = 10;
@@ -130,41 +139,44 @@
             // 
             // comboConsultorio
             // 
+            comboConsultorio.Anchor = AnchorStyles.None;
             comboConsultorio.FormattingEnabled = true;
-            comboConsultorio.Location = new Point(305, 150);
+            comboConsultorio.Location = new Point(230, 225);
             comboConsultorio.Name = "comboConsultorio";
             comboConsultorio.Size = new Size(269, 23);
             comboConsultorio.TabIndex = 11;
-            comboConsultorio.SelectedIndexChanged += comboConsultorio_SelectedIndexChanged;
             // 
             // HoraTurno
             // 
+            HoraTurno.Anchor = AnchorStyles.None;
             HoraTurno.CustomFormat = " HH:mm";
-            HoraTurno.Enabled = false;
-            HoraTurno.Format = DateTimePickerFormat.Custom;
-            HoraTurno.Location = new Point(305, 106);
-            HoraTurno.MinDate = new DateTime(2025, 9, 4, 17, 55, 8, 0);
+            HoraTurno.Format = DateTimePickerFormat.Time;
+            HoraTurno.Location = new Point(230, 181);
+            HoraTurno.MinDate = new DateTime(2025, 9, 29, 0, 0, 0, 0);
             HoraTurno.Name = "HoraTurno";
             HoraTurno.ShowUpDown = true;
             HoraTurno.Size = new Size(269, 23);
             HoraTurno.TabIndex = 12;
-            HoraTurno.Value = new DateTime(2025, 9, 4, 17, 55, 8, 0);
+            HoraTurno.Value = new DateTime(2025, 9, 29, 0, 0, 0, 0);
+            HoraTurno.ValueChanged += HoraTurno_ValueChanged;
             // 
             // label7
             // 
+            label7.Anchor = AnchorStyles.None;
             label7.AutoSize = true;
             label7.Font = new Font("Segoe UI", 10F);
-            label7.Location = new Point(205, 110);
+            label7.Location = new Point(130, 182);
             label7.Name = "label7";
             label7.Size = new Size(82, 19);
             label7.TabIndex = 13;
             label7.Text = "Hora Turno:";
             // 
-            // CrearTurnosForm
+            // TurnoDetalle
             // 
+            AcceptButton = btnRegistrarTurno;
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(846, 260);
+            ClientSize = new Size(700, 443);
             Controls.Add(label7);
             Controls.Add(HoraTurno);
             Controls.Add(comboConsultorio);
@@ -172,14 +184,15 @@
             Controls.Add(label5);
             Controls.Add(btnCancelarTurno);
             Controls.Add(btnRegistrarTurno);
-            Controls.Add(label4);
+            Controls.Add(h1Turno);
             Controls.Add(label3);
             Controls.Add(FechaTurno);
             Controls.Add(label2);
             Controls.Add(label1);
-            Name = "CrearTurnosForm";
+            Name = "TurnoDetalle";
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Crear Turno";
-            Load += CrearTurnosForm_Load;
+            Load += TurnoDetalle_Load;
             ResumeLayout(false);
             PerformLayout();
         }
@@ -190,7 +203,7 @@
         private Label label2;
         private DateTimePicker FechaTurno;
         private Label label3;
-        private Label label4;
+        private Label h1Turno;
         private Button btnRegistrarTurno;
         private Button btnCancelarTurno;
         private Label label5;

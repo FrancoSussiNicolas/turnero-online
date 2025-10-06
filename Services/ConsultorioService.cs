@@ -28,6 +28,15 @@ namespace Services
             }
         }
 
+        public List<Consultorio> GetFree(DateOnly fechaTurno, TimeOnly horaTurno)
+        {
+            using (var context = new TurneroContext())
+            {
+                var consultorios = context.Consultorios.Where(c => c.Estado == EstadoConsultorio.Habilitado).Include(c => c.Turnos).ToList();
+                return consultorios.FindAll(c => c.EstaLibre(fechaTurno, horaTurno));
+            }
+        }
+
         public Consultorio? GetById(int id)
         {
             using (var context = new TurneroContext())

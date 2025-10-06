@@ -222,7 +222,10 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PutAsync($"obraSocial/agregarPlanOS/{obraSocialId}/{planObraSocialId}", null);
+                var request = new HttpRequestMessage(HttpMethod.Put, $"obraSocial/agregarPlanOS/{obraSocialId}/{planObraSocialId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
@@ -242,7 +245,10 @@ namespace API.Clients
 
         public static async Task RemovePlanAsync(int obraSocialId, int planObraSocialId)
         {
-            HttpResponseMessage response = await client.PutAsync($"obraSocial/eliminarPlan/{obraSocialId}/{planObraSocialId}", null);
+            var request = new HttpRequestMessage(HttpMethod.Put, $"obraSocial/eliminarPlan/{obraSocialId}/{planObraSocialId}");
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+            HttpResponseMessage response = await client.SendAsync(request);
 
             if (!response.IsSuccessStatusCode)
             {

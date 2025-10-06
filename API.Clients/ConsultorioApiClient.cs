@@ -85,7 +85,7 @@ namespace API.Clients
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "consultorios/habilitados");
+                var request = new HttpRequestMessage(HttpMethod.Get, "consultorios/disponibles");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
 
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -107,6 +107,39 @@ namespace API.Clients
             catch (TaskCanceledException ex)
             {
                 throw new Exception($"Timeout al obtener lista de consultorios habilitados: {ex.Message}", ex);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public static async Task<List<ConsultorioDTO>> GetLibresAsync(DateOnly fechaTurno, TimeOnly horaTurno)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"consultorios/libres/{fechaTurno}/{horaTurno}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<List<ConsultorioDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener lista de consultorios libres. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener lista de consultorios libres: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener lista de consultorios libres: {ex.Message}", ex);
             }
         }
 

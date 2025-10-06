@@ -19,14 +19,14 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
-        //[Authorize]
+       [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<ObraSocial>> GetAll()
         {
             return Ok(obraSocialService.GetAll());
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<ObraSocial> GetById(int id)
         {
@@ -36,7 +36,7 @@ namespace Controllers
             return Ok(os);
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public ActionResult<ObraSocial> CrearObraSocial([FromBody] ObraSocialDTO obraSocial)
         {
@@ -52,7 +52,7 @@ namespace Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrador")] 
+        [Authorize(Roles = "Administrador")] 
         [HttpPut("{id}")]
         public ActionResult UpdateObraSocial([FromBody] ObraSocialDTO obraSocial, int id)
         {
@@ -69,7 +69,7 @@ namespace Controllers
             }
         }
 
-        //[Authorize(Roles = "Administrador")] 
+        [Authorize(Roles = "Administrador")] 
         [HttpPatch("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoObraSocial(int id)
         {
@@ -89,8 +89,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize]
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPut("eliminarPlan/{obraSocialId}/{planId}")]
         public ActionResult RemovePlanFromPractica(int obraSocialId, int planId)
         {
@@ -102,7 +101,7 @@ namespace Controllers
             return Ok(new { message = "Plan eliminado de la obra social exitosamente" });
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpPut("agregarPlanOS/{obraSocialId}/{planObraSocialId}")]
         public ActionResult<ObraSocial> AgregarPlanObraSocial(int obraSocialId, int planObraSocialId)
         {
@@ -130,8 +129,7 @@ namespace Controllers
             }
         }
 
-
-        //[Authorize]
+        [Authorize]
         [HttpGet("disponibles")]
         public ActionResult<IEnumerable<ObraSocial>> GetDisponibles()
         {

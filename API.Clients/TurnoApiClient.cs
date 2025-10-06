@@ -183,7 +183,7 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al crear turno. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al crear turno: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)

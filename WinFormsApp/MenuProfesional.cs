@@ -12,38 +12,6 @@ namespace WinFormsApp
             this.Text = "Menú Principal del Profesional";
         }
 
-        private void VerTurnosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form verTurnosForm = new Form();
-            verTurnosForm.MdiParent = this;
-            verTurnosForm.Text = "Ver Turnos";
-            verTurnosForm.Show();
-        }
-
-        private void CrearTurnosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form crearTurnosForm = new Form();
-            crearTurnosForm.MdiParent = this;
-            crearTurnosForm.Text = "Crear Turnos";
-            crearTurnosForm.Show();
-        }
-
-        private void ModificarTurnosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form modificarTurnosForm = new Form();
-            modificarTurnosForm.MdiParent = this;
-            modificarTurnosForm.Text = "Modificar Turnos";
-            modificarTurnosForm.Show();
-        }
-
-        private void BorrarTurnosToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Form borrarTurnosForm = new Form();
-            borrarTurnosForm.MdiParent = this;
-            borrarTurnosForm.Text = "Borrar Turnos";
-            borrarTurnosForm.Show();
-        }
-
         private void ModificarEspecialidadToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Form modificarEspecialidadForm = new ModificarEspecialidad((int)SessionManager.PersonaId); // Cambiar por el valor que viene en la información del login
@@ -118,6 +86,14 @@ namespace WinFormsApp
         {
             SessionManager.ClearSession();
             this.Dispose();
+        }
+
+        private void turnosMenu_Click(object sender, EventArgs e)
+        {
+            Form verTurnosForm = new ListaTurnos();
+            verTurnosForm.MdiParent = this;
+            verTurnosForm.Text = "Ver Turnos";
+            verTurnosForm.Show();
         }
     }
 }

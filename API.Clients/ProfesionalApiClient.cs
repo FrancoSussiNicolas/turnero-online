@@ -185,11 +185,16 @@ namespace API.Clients
                 throw new Exception($"Timeout al cambiar la especialidad del profesional con Id {profesionalId}: {ex.Message}", ex);
             }
         }
+
         public static async Task DisableAsync(int id)
         {
             try
             {
-                HttpResponseMessage response = await client.PatchAsync($"profesionales/cambiarEstado/{id}", null);
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"profesionales/cambiarEstado/{id}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();

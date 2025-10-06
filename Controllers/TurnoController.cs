@@ -76,7 +76,7 @@ namespace Controllers
             return Ok(turnos);
         }
 
-        //[Authorize(Roles = "Profesional")] 
+        [Authorize(Roles = "Profesional")] 
         [HttpPost]
         public ActionResult<Turno> CrearTurno([FromBody] TurnoDTO turno)
         {

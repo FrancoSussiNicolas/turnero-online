@@ -171,10 +171,8 @@ namespace WinFormsApp
         {
             if (planObraSocialGridView.SelectedRows.Count > 0)
             {
-
                 try
                 {
-
                     var planSeleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
                     int planId = Convert.ToInt32(planObraSocialGridView.SelectedRows[0].Cells["PlanObraSocialId"].Value); ;
 
@@ -197,31 +195,31 @@ namespace WinFormsApp
 
                     MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' fue agregado correctamente a la práctica '{_practica.Nombre}'.",
                                     "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                }
-                else if (_obrasSocial != null)
-                {
-                    // Agregar plan a obra social
-                    if (_obrasSocial.PlanesObraSocial.Any(p => p.PlanObraSocialId == planId))
+
+                    if (_obrasSocial is not null)
                     {
-                        MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' ya está asignado a la obra social '{_obrasSocial.NombreObraSocial}'.",
-                                        "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                        return;
+                        // Agregar plan a obra social
+                        if (_obrasSocial.PlanesObraSocial.Any(p => p.PlanObraSocialId == planId))
+                        {
+                            MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' ya está asignado a la obra social '{_obrasSocial.NombreObraSocial}'.",
+                                            "Aviso", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                            return;
+                        }
+
+                        await ObraSocialApiClient.AddPlanAsync(_obrasSocial.ObraSocialId, planId);
+                        _obrasSocial.PlanesObraSocial.Add(planSeleccionado);
+
+                        MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' fue agregado correctamente a la obra social '{_obrasSocial.NombreObraSocial}'.",
+                                        "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     }
 
-                    await ObraSocialApiClient.AddPlanAsync(_obrasSocial.ObraSocialId, planId);
-                    _obrasSocial.PlanesObraSocial.Add(planSeleccionado);
-
-                    MessageBox.Show($"El plan '{planSeleccionado.NombrePlan}' fue agregado correctamente a la obra social '{_obrasSocial.NombreObraSocial}'.",
-                                    "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    // Refrescar DataGridView
+                    await GetAllAndLoad();
                 }
-
-                // Refrescar DataGridView
-                await GetAllAndLoad();
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"Error al agregar plan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Error al agregar plan: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 
@@ -353,6 +351,4 @@ namespace WinFormsApp
             }
         }
     }
-
-
 }

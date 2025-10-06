@@ -41,7 +41,7 @@
             // 
             // txtMail
             // 
-            txtMail.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtMail.Anchor = AnchorStyles.None;
             txtMail.Location = new Point(112, 176);
             txtMail.Name = "txtMail";
             txtMail.Size = new Size(291, 23);
@@ -49,7 +49,7 @@
             // 
             // label3
             // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Location = new Point(112, 158);
             label3.Name = "label3";
@@ -59,7 +59,7 @@
             // 
             // txtApellidoNombre
             // 
-            txtApellidoNombre.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtApellidoNombre.Anchor = AnchorStyles.None;
             txtApellidoNombre.Location = new Point(113, 113);
             txtApellidoNombre.Name = "txtApellidoNombre";
             txtApellidoNombre.Size = new Size(290, 23);
@@ -67,7 +67,7 @@
             // 
             // label2
             // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Location = new Point(112, 95);
             label2.Name = "label2";
@@ -77,7 +77,7 @@
             // 
             // btnActualizar
             // 
-            btnActualizar.Anchor = AnchorStyles.Bottom;
+            btnActualizar.Anchor = AnchorStyles.None;
             btnActualizar.BackColor = SystemColors.AppWorkspace;
             btnActualizar.Cursor = Cursors.Hand;
             btnActualizar.Location = new Point(207, 236);
@@ -90,7 +90,7 @@
             // 
             // label1
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(171, 40);
@@ -115,11 +115,8 @@
             Controls.Add(label2);
             Controls.Add(btnActualizar);
             Controls.Add(label1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
-            MinimizeBox = false;
             Name = "PerfilAdmin";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Perfil de Administrador";
             Shown += PerfilAdmin_Shown;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();

@@ -26,10 +26,7 @@ namespace WinFormsApp
             base.OnShown(e);
             await GetAllAndLoad();
         }
-<<<<<<< HEAD
-=======
 
->>>>>>> 1eba31f24a277b27a13716b1911e2dbef3212051
         private void ConfigurarDataGridView()
         {
             // La tabla ocupa todo el ancho del formulario

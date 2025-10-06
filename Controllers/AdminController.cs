@@ -22,7 +22,7 @@ namespace Controllers
             this.adminService = adminService;
         }
 
-        //[Authorize(Roles = "Administrador")]
+        [Authorize(Roles = "Administrador")]
         [HttpGet]
         public ActionResult<Admin> GetAdmin()
         {

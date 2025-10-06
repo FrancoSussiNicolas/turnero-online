@@ -45,7 +45,7 @@
             // 
             // label1
             // 
-            label1.Anchor = AnchorStyles.Top | AnchorStyles.Bottom;
+            label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold, GraphicsUnit.Point, 0);
             label1.Location = new Point(170, 37);
@@ -56,7 +56,7 @@
             // 
             // btnActualizar
             // 
-            btnActualizar.Anchor = AnchorStyles.Bottom;
+            btnActualizar.Anchor = AnchorStyles.None;
             btnActualizar.BackColor = SystemColors.AppWorkspace;
             btnActualizar.Cursor = Cursors.Hand;
             btnActualizar.Location = new Point(206, 365);
@@ -69,7 +69,7 @@
             // 
             // label2
             // 
-            label2.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label2.Anchor = AnchorStyles.None;
             label2.AutoSize = true;
             label2.Location = new Point(111, 92);
             label2.Name = "label2";
@@ -79,7 +79,7 @@
             // 
             // txtApellidoNombre
             // 
-            txtApellidoNombre.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtApellidoNombre.Anchor = AnchorStyles.None;
             txtApellidoNombre.Location = new Point(112, 110);
             txtApellidoNombre.Name = "txtApellidoNombre";
             txtApellidoNombre.Size = new Size(290, 23);
@@ -87,7 +87,7 @@
             // 
             // label3
             // 
-            label3.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label3.Anchor = AnchorStyles.None;
             label3.AutoSize = true;
             label3.Location = new Point(111, 155);
             label3.Name = "label3";
@@ -97,7 +97,7 @@
             // 
             // txtMail
             // 
-            txtMail.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtMail.Anchor = AnchorStyles.None;
             txtMail.Location = new Point(111, 173);
             txtMail.Name = "txtMail";
             txtMail.Size = new Size(291, 23);
@@ -105,7 +105,7 @@
             // 
             // label4
             // 
-            label4.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label4.Anchor = AnchorStyles.None;
             label4.AutoSize = true;
             label4.Location = new Point(111, 218);
             label4.Name = "label4";
@@ -115,7 +115,7 @@
             // 
             // txtMatricula
             // 
-            txtMatricula.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtMatricula.Anchor = AnchorStyles.None;
             txtMatricula.Location = new Point(111, 236);
             txtMatricula.Name = "txtMatricula";
             txtMatricula.Size = new Size(291, 23);
@@ -123,7 +123,7 @@
             // 
             // label6
             // 
-            label6.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            label6.Anchor = AnchorStyles.None;
             label6.AutoSize = true;
             label6.Location = new Point(111, 281);
             label6.Name = "label6";
@@ -133,7 +133,7 @@
             // 
             // txtEspecialidad
             // 
-            txtEspecialidad.Anchor = AnchorStyles.Top | AnchorStyles.Bottom | AnchorStyles.Left | AnchorStyles.Right;
+            txtEspecialidad.Anchor = AnchorStyles.None;
             txtEspecialidad.Enabled = false;
             txtEspecialidad.Location = new Point(111, 299);
             txtEspecialidad.Name = "txtEspecialidad";
@@ -160,11 +160,8 @@
             Controls.Add(label2);
             Controls.Add(btnActualizar);
             Controls.Add(label1);
-            FormBorderStyle = FormBorderStyle.FixedSingle;
-            MaximizeBox = false;
-            MinimizeBox = false;
             Name = "PerfilProfesional";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Perfil de Profesional";
             Shown += PerfilProfesional_Shown;
             ((System.ComponentModel.ISupportInitialize)errorProvider).EndInit();

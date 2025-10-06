@@ -20,10 +20,6 @@
             components = new System.ComponentModel.Container();
             menuStrip = new MenuStrip();
             turnosMenu = new ToolStripMenuItem();
-            verTurnosToolStripMenuItem = new ToolStripMenuItem();
-            crearTurnosToolStripMenuItem = new ToolStripMenuItem();
-            modificarTurnosToolStripMenuItem = new ToolStripMenuItem();
-            borrarTurnosToolStripMenuItem = new ToolStripMenuItem();
             especialidadMenu = new ToolStripMenuItem();
             obrasSocialesMenu = new ToolStripMenuItem();
             perfilMenu = new ToolStripMenuItem();
@@ -33,8 +29,8 @@
             tileHorizontalToolStripMenuItem = new ToolStripMenuItem();
             closeAllToolStripMenuItem = new ToolStripMenuItem();
             arrangeIconsToolStripMenuItem = new ToolStripMenuItem();
-            toolTip = new ToolTip(components);
             salirToolStripMenuItem = new ToolStripMenuItem();
+            toolTip = new ToolTip(components);
             menuStrip.SuspendLayout();
             SuspendLayout();
             // 
@@ -52,38 +48,10 @@
             // 
             // turnosMenu
             // 
-            turnosMenu.DropDownItems.AddRange(new ToolStripItem[] { verTurnosToolStripMenuItem, crearTurnosToolStripMenuItem, modificarTurnosToolStripMenuItem, borrarTurnosToolStripMenuItem });
             turnosMenu.Name = "turnosMenu";
             turnosMenu.Size = new Size(55, 20);
             turnosMenu.Text = "&Turnos";
-            // 
-            // verTurnosToolStripMenuItem
-            // 
-            verTurnosToolStripMenuItem.Name = "verTurnosToolStripMenuItem";
-            verTurnosToolStripMenuItem.Size = new Size(164, 22);
-            verTurnosToolStripMenuItem.Text = "&Ver Turnos";
-            verTurnosToolStripMenuItem.Click += VerTurnosToolStripMenuItem_Click;
-            // 
-            // crearTurnosToolStripMenuItem
-            // 
-            crearTurnosToolStripMenuItem.Name = "crearTurnosToolStripMenuItem";
-            crearTurnosToolStripMenuItem.Size = new Size(164, 22);
-            crearTurnosToolStripMenuItem.Text = "&Crear Turnos";
-            crearTurnosToolStripMenuItem.Click += CrearTurnosToolStripMenuItem_Click;
-            // 
-            // modificarTurnosToolStripMenuItem
-            // 
-            modificarTurnosToolStripMenuItem.Name = "modificarTurnosToolStripMenuItem";
-            modificarTurnosToolStripMenuItem.Size = new Size(164, 22);
-            modificarTurnosToolStripMenuItem.Text = "&Modificar Turnos";
-            modificarTurnosToolStripMenuItem.Click += ModificarTurnosToolStripMenuItem_Click;
-            // 
-            // borrarTurnosToolStripMenuItem
-            // 
-            borrarTurnosToolStripMenuItem.Name = "borrarTurnosToolStripMenuItem";
-            borrarTurnosToolStripMenuItem.Size = new Size(164, 22);
-            borrarTurnosToolStripMenuItem.Text = "&Borrar Turnos";
-            borrarTurnosToolStripMenuItem.Click += BorrarTurnosToolStripMenuItem_Click;
+            turnosMenu.Click += turnosMenu_Click;
             // 
             // especialidadMenu
             // 
@@ -163,7 +131,7 @@
             Controls.Add(menuStrip);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip;
-            Margin = new Padding(4, 4, 4, 4);
+            Margin = new Padding(4);
             Name = "MenuProfesional";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Menú Principal del Profesional";
@@ -186,11 +154,6 @@
         private System.Windows.Forms.ToolStripMenuItem obrasSocialesMenu;
         private System.Windows.Forms.ToolStripMenuItem perfilMenu;
         private System.Windows.Forms.ToolStripMenuItem windowsMenu;
-
-        private System.Windows.Forms.ToolStripMenuItem verTurnosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem crearTurnosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem modificarTurnosToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem borrarTurnosToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cascadeToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tileVerticalToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem tileHorizontalToolStripMenuItem;

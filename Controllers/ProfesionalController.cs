@@ -10,7 +10,6 @@ namespace Controllers
     [Route("profesionales")]
     public class ProfesionalController : ControllerBase
     {
-
         private readonly ProfesionalService profesionalService;
         private readonly EspecialidadesService especialidadService;
         private readonly ObraSocialService obraSocialService;   
@@ -22,7 +21,7 @@ namespace Controllers
             this.obraSocialService = obraSocialService;
         }
 
-        //[Authorize]
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<Profesional>> GetAll()
         {
@@ -173,8 +172,5 @@ namespace Controllers
                 return Conflict(new { message = "Error al intentar eliminar la Obra Social: " + ex.Message });
             }
         }
-
-
     }
 }
-

@@ -22,7 +22,7 @@ namespace Controllers
             this.consultorioService = consultorioService;
         }
 
-        //[Authorize(Roles = "Profesional")]
+        [Authorize(Roles = "Profesional")]
         [HttpGet]
         public ActionResult<IEnumerable<Consultorio>> GetAll()
         {
@@ -35,6 +35,15 @@ namespace Controllers
         {
             var disponibles = consultorioService.GetAvailable();
             if (!disponibles.Any()) return NotFound(new { message = "No hay consultorios disponibles" });
+            return Ok(disponibles);
+        }
+
+        [Authorize(Roles = "Profesional")]
+        [HttpGet("libres/{fechaTurno}/{horaTurno}")]
+        public ActionResult<IEnumerable<Consultorio>> GetFree(DateOnly fechaTurno, TimeOnly horaTurno)
+        {
+            var disponibles = consultorioService.GetFree(fechaTurno, horaTurno);
+            if (!disponibles.Any()) return NotFound(new { message = "No hay consultorios libres" });
             return Ok(disponibles);
         }
 
@@ -57,7 +66,7 @@ namespace Controllers
             return Created($"https://localhost:7119/consultorios/{newConsul.ConsultorioId}", newConsul);
         }
 
-        //[Authorize(Roles = "Administrador")] 
+        [Authorize(Roles = "Administrador")] 
         [HttpPut("{nro}")]
         public ActionResult UpdateConsultorio([FromBody] ConsultorioDTO consultorio, int nro)
         {
@@ -67,7 +76,7 @@ namespace Controllers
             return NoContent();
         }
 
-        //[Authorize(Roles = "Administrador")] 
+        [Authorize(Roles = "Administrador")] 
         [HttpPut("cambiarEstado/{id}")]
         public ActionResult CambiarEstadoConsultorio(int id)
         {
