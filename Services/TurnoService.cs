@@ -100,7 +100,7 @@ namespace Services
                 turnoFound.FechaTurno = turno.FechaTurno;
                 turnoFound.HoraTurno = turno.HoraTurno;
                 turnoFound.Estado = turno.Estado;
-                turnoFound.ConsultorioId = turno.NroConsultorio;
+                turnoFound.ConsultorioId = turno.ConsultorioId;
 
                 context.SaveChanges();
                 return turnoFound;

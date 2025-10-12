@@ -80,12 +80,13 @@ namespace Controllers
         [HttpPost]
         public ActionResult<Turno> CrearTurno([FromBody] TurnoDTO turno)
         {
-            var consultorio = consultorioService.GetById(turno.NroConsultorio);
+            var consultorio = consultorioService.GetById(turno.ConsultorioId);
             if (consultorio is null) return NotFound(new { message = "Consultorio no encontrado" });
             if (!consultorio.EstaLibre(turno.FechaTurno, turno.HoraTurno)) return UnprocessableEntity(new { message = "El Consultorio no está libre para esa fecha y hora" });
             if (consultorio.Estado == EstadoConsultorio.Deshabilitado) return UnprocessableEntity(new { message = "El Consultorio está deshabilitado" });
             if (turno.FechaTurno < DateOnly.FromDateTime(DateTime.Now)) return UnprocessableEntity(new { message = "La fecha debe ser mayor o igual a hoy" });
-            if (turno.HoraTurno < TimeOnly.FromDateTime(DateTime.Now) && turno.FechaTurno == DateOnly.FromDateTime(DateTime.Now)) return UnprocessableEntity(new { message = "La hora debe ser mayor o igual a la hora actual" });
+            if (turno.HoraTurno < TimeOnly.FromDateTime(DateTime.Now) && turno.FechaTurno == DateOnly.FromDateTime(DateTime.Now)) 
+                return UnprocessableEntity(new { message = "La hora debe ser mayor o igual a la hora actual" });
 
             if (turno.PacienteId.HasValue)
             {

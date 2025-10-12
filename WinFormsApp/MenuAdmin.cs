@@ -86,5 +86,13 @@ namespace WinFormsApp
             modificarPerfilForm.Text = "Modificar Perfil";
             modificarPerfilForm.Show();
         }
+
+        private void turnosToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form turnosAdmin = new TurnosAdmin();
+            turnosAdmin.MdiParent = this;
+            turnosAdmin.Text = "Ver Turnos";
+            turnosAdmin.Show();
+        }
     }
 }

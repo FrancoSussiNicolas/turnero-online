@@ -67,8 +67,8 @@
             FechaTurno.ShowUpDown = true;
             FechaTurno.Size = new Size(269, 23);
             FechaTurno.TabIndex = 2;
-            FechaTurno.Value = new DateTime(2025, 9, 29, 23, 52, 41, 0);
-            FechaTurno.ValueChanged += HoraTurno_ValueChanged;
+            FechaTurno.Value = new DateTime(2025, 10, 12, 0, 0, 0, 0);
+            FechaTurno.ValueChanged += FechaTurno_ValueChanged;
             // 
             // label3
             // 

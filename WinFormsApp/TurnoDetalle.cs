@@ -1,10 +1,6 @@
 ﻿using API.Clients;
 using DTOs;
-using Entities;
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Shared;
 
 namespace WinFormsApp
 {
@@ -20,35 +16,55 @@ namespace WinFormsApp
 
         private async void TurnoDetalle_Load(object sender, EventArgs e)
         {
-            await CargarConsultorios();
-
             if (turnoExistente is not null)
             {
                 FechaTurno.Value = turnoExistente.FechaTurno.ToDateTime(TimeOnly.MinValue);
                 HoraTurno.Value = DateTime.Today.AddTicks(turnoExistente.HoraTurno.Ticks);
-                comboConsultorio.SelectedValue = turnoExistente.NroConsultorio;
                 btnRegistrarTurno.Text = "Confirmar";
-                this.Text = "Modificar Turno";
-                h1Turno.Text = "Modificar Turno";
+                this.Text = h1Turno.Text = "Modificar Turno";
             }
             else
             {
+                FechaTurno.MinDate = DateTime.Today;
+                FechaTurno.Value = DateTime.Today;
+                HoraTurno.Value = DateTime.Now;
                 btnRegistrarTurno.Text = "Registrar";
-                this.Text = "Crear Turno";
-                h1Turno.Text = "Registrar Turno";
+                this.Text = h1Turno.Text = "Registrar Turno";
             }
+
+            await ActualizarConsultoriosLibres();
         }
 
-        private async Task CargarConsultorios()
+
+        private async Task ActualizarConsultoriosLibres()
         {
             try
             {
-                List<ConsultorioDTO> consultorios = await ConsultorioApiClient.GetDisponiblesAsync();
+                var fecha = DateOnly.FromDateTime(FechaTurno.Value);
+                var hora = TimeOnly.FromDateTime(HoraTurno.Value);
+
+                var consultorios = await ConsultorioApiClient.GetLibresAsync(fecha, hora);
+
+                if (turnoExistente is not null)
+                {
+                    bool yaIncluido = consultorios.Any(c => c.ConsultorioId == turnoExistente.ConsultorioId);
+                    if (!yaIncluido)
+                    {
+                        var consultorioActual = await ConsultorioApiClient.GetAsync(turnoExistente.ConsultorioId);
+                        consultorios.Add(consultorioActual);
+                    }
+                }
+
+                consultorios = consultorios.OrderBy(c => c.ConsultorioId).ToList();
 
                 comboConsultorio.DataSource = consultorios;
                 comboConsultorio.DisplayMember = "Numero";
                 comboConsultorio.ValueMember = "ConsultorioId";
-                comboConsultorio.SelectedIndex = -1;
+
+                if (turnoExistente is not null)
+                    comboConsultorio.SelectedValue = turnoExistente.ConsultorioId;
+                else
+                    comboConsultorio.SelectedIndex = -1;
             }
             catch (Exception ex)
             {
@@ -77,9 +93,10 @@ namespace WinFormsApp
 
             var turnoDTO = new TurnoDTO
             {
+                ProfesionalId = (int)SessionManager.PersonaId,
                 FechaTurno = fechaSeleccionada,
                 HoraTurno = horaSeleccionada,
-                NroConsultorio = (int)comboConsultorio.SelectedValue
+                ConsultorioId = (int)comboConsultorio.SelectedValue
             };
 
             try
@@ -110,21 +127,14 @@ namespace WinFormsApp
             this.Close();
         }
 
+        private async void FechaTurno_ValueChanged(object sender, EventArgs e)
+        {
+            await ActualizarConsultoriosLibres();
+        }
+
         private async void HoraTurno_ValueChanged(object sender, EventArgs e)
         {
-            try
-            {
-                List<ConsultorioDTO> consultorios = await ConsultorioApiClient.GetLibresAsync(DateOnly.FromDateTime(FechaTurno.Value), TimeOnly.FromDateTime(HoraTurno.Value));
-
-                comboConsultorio.DataSource = consultorios;
-                comboConsultorio.DisplayMember = "Numero";
-                comboConsultorio.ValueMember = "ConsultorioId";
-                comboConsultorio.SelectedIndex = -1;
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show(ex.Message, "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            await ActualizarConsultoriosLibres();
         }
     }
 }

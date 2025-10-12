@@ -34,16 +34,16 @@ namespace Controllers
         public ActionResult<IEnumerable<Consultorio>> GetAvailable()
         {
             var disponibles = consultorioService.GetAvailable();
-            if (!disponibles.Any()) return NotFound(new { message = "No hay consultorios disponibles" });
+            if (!disponibles.Any()) return NotFound("No hay consultorios disponibles");
             return Ok(disponibles);
         }
 
         [Authorize(Roles = "Profesional")]
         [HttpGet("libres/{fechaTurno}/{horaTurno}")]
-        public ActionResult<IEnumerable<Consultorio>> GetFree(DateOnly fechaTurno, TimeOnly horaTurno)
+        public ActionResult<List<Consultorio>> GetFree(DateOnly fechaTurno, TimeOnly horaTurno)
         {
             var disponibles = consultorioService.GetFree(fechaTurno, horaTurno);
-            if (!disponibles.Any()) return NotFound(new { message = "No hay consultorios libres" });
+            if (disponibles.Count == 0) return NotFound("No hay consultorios libres");
             return Ok(disponibles);
         }
 
@@ -52,7 +52,7 @@ namespace Controllers
         public ActionResult<Consultorio> GetById(int nro)
         {
             var consultorio = consultorioService.GetById(nro);
-            if (consultorio is null) return NotFound(new { message = "Consultorio no encontrado" });
+            if (consultorio is null) return NotFound("Consultorio no encontrado");
                 
             return Ok(consultorio);
         }
@@ -71,7 +71,7 @@ namespace Controllers
         public ActionResult UpdateConsultorio([FromBody] ConsultorioDTO consultorio, int nro)
         {
             var updatedConsul = consultorioService.UpdateConsultorio(consultorio, nro);
-            if (updatedConsul is null) return NotFound(new { message = "Consultorio no encontrado" });
+            if (updatedConsul is null) return NotFound("Consultorio no encontrado");
 
             return NoContent();
         }
@@ -81,7 +81,7 @@ namespace Controllers
         public ActionResult CambiarEstadoConsultorio(int id)
         {
             var estadoCambiado = consultorioService.CambiarEstadoConsultorio(id);
-            if (!estadoCambiado) return NotFound(new { message = "Consultorio no encontrado" });
+            if (!estadoCambiado) return NotFound("Consultorio no encontrado");
 
             return NoContent();
         }
@@ -91,7 +91,7 @@ namespace Controllers
         public ActionResult DeleteConsultorio(int nro)
         {
             var deletedConsul = consultorioService.DeleteConsultorio(nro);
-            if (!deletedConsul) return NotFound(new { message = "Consultorio no encontrado" });
+            if (!deletedConsul) return NotFound("Consultorio no encontrado");
 
             return NoContent();
         }

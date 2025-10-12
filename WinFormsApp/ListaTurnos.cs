@@ -1,15 +1,6 @@
 ﻿using API.Clients;
 using DTOs;
-using Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+using Shared;
 
 namespace WinFormsApp
 {
@@ -18,6 +9,7 @@ namespace WinFormsApp
         public ListaTurnos()
         {
             InitializeComponent();
+            ConfigurarDataGridView();
         }
 
         protected override async void OnShown(EventArgs e)
@@ -31,7 +23,7 @@ namespace WinFormsApp
             try
             {
                 this.dvgTurnos.DataSource = null;
-                this.dvgTurnos.DataSource = await TurnoApiClient.GetAllAsync();
+                this.dvgTurnos.DataSource = await TurnoApiClient.GetByProfesionalAsync((int)SessionManager.PersonaId);
 
                 if (this.dvgTurnos.Rows.Count > 0)
                 {
@@ -40,8 +32,17 @@ namespace WinFormsApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar la lista de obras sociales: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar la lista de turnos del profesional: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private void ConfigurarDataGridView()
+        {
+            dvgTurnos.Dock = DockStyle.Fill;
+            dvgTurnos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dvgTurnos.AllowUserToResizeColumns = true;
+            dvgTurnos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
+            dvgTurnos.MultiSelect = false;
         }
 
         private async void ListaTurnos_Load(object sender, EventArgs e)

@@ -21,7 +21,7 @@ namespace DTOs
         public EstadoTurno Estado { get; set; }
 
         [Required]
-        public int NroConsultorio { get; set; }
+        public int ConsultorioId { get; set; }
 
         public int? PacienteId { get; set; }
 

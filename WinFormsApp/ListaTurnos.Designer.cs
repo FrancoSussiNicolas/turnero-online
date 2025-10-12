@@ -144,6 +144,7 @@
             // 
             btnActualizar.Anchor = AnchorStyles.None;
             btnActualizar.BackColor = Color.White;
+            btnActualizar.Cursor = Cursors.Hand;
             btnActualizar.Location = new Point(190, 382);
             btnActualizar.Name = "btnActualizar";
             btnActualizar.Size = new Size(100, 40);

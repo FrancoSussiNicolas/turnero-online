@@ -118,7 +118,9 @@ namespace API.Clients
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, $"consultorios/libres/{fechaTurno}/{horaTurno}");
+                var fecha = fechaTurno.ToString("yyyy-MM-dd");
+                var hora = horaTurno.ToString("HH:mm");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"consultorios/libres/{fecha}/{hora}");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
 
                 HttpResponseMessage response = await client.SendAsync(request);

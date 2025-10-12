@@ -40,14 +40,15 @@
             eliminarObraSocialToolStripMenuItem = new ToolStripMenuItem();
             planObraSocialToolStripMenuItem = new ToolStripMenuItem();
             practicaToolStripMenuItem = new ToolStripMenuItem();
-            salirToolStripMenuItem = new ToolStripMenuItem();
             perfilToolStripMenuItem = new ToolStripMenuItem();
+            salirToolStripMenuItem = new ToolStripMenuItem();
+            turnosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { profesionalesToolStripMenuItem, pacienteToolStripMenuItem, consultoriosToolStripMenuItem, especialidadToolStripMenuItem, obraSocialToolStripMenuItem, planObraSocialToolStripMenuItem, practicaToolStripMenuItem, perfilToolStripMenuItem, salirToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { profesionalesToolStripMenuItem, pacienteToolStripMenuItem, turnosToolStripMenuItem, consultoriosToolStripMenuItem, especialidadToolStripMenuItem, obraSocialToolStripMenuItem, planObraSocialToolStripMenuItem, practicaToolStripMenuItem, perfilToolStripMenuItem, salirToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(800, 24);
@@ -128,6 +129,13 @@
             practicaToolStripMenuItem.Text = "Practica";
             practicaToolStripMenuItem.Click += practicaToolStripMenuItem_Click;
             // 
+            // perfilToolStripMenuItem
+            // 
+            perfilToolStripMenuItem.Name = "perfilToolStripMenuItem";
+            perfilToolStripMenuItem.Size = new Size(46, 20);
+            perfilToolStripMenuItem.Text = "Perfil";
+            perfilToolStripMenuItem.Click += perfilToolStripMenuItem_Click;
+            // 
             // salirToolStripMenuItem
             // 
             salirToolStripMenuItem.Name = "salirToolStripMenuItem";
@@ -135,12 +143,12 @@
             salirToolStripMenuItem.Text = "Salir";
             salirToolStripMenuItem.Click += salirToolStripMenuItem_Click;
             // 
-            // perfilToolStripMenuItem
+            // turnosToolStripMenuItem
             // 
-            perfilToolStripMenuItem.Name = "perfilToolStripMenuItem";
-            perfilToolStripMenuItem.Size = new Size(46, 20);
-            perfilToolStripMenuItem.Text = "Perfil";
-            perfilToolStripMenuItem.Click += perfilToolStripMenuItem_Click;
+            turnosToolStripMenuItem.Name = "turnosToolStripMenuItem";
+            turnosToolStripMenuItem.Size = new Size(55, 20);
+            turnosToolStripMenuItem.Text = "Turnos";
+            turnosToolStripMenuItem.Click += turnosToolStripMenuItem_Click;
             // 
             // MenuAdmin
             // 
@@ -175,5 +183,6 @@
         private ToolStripMenuItem practicaToolStripMenuItem;
         private ToolStripMenuItem salirToolStripMenuItem;
         private ToolStripMenuItem perfilToolStripMenuItem;
+        private ToolStripMenuItem turnosToolStripMenuItem;
     }
 }
