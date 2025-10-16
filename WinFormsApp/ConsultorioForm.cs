@@ -72,7 +72,7 @@ namespace WinFormsApp
                 {
                     ConsultorioDTO seleccionado = (ConsultorioDTO)consultoriosGridView.SelectedRows[0].DataBoundItem;
 
-                    bool estaHabilitado = seleccionado.Estado == EstadoConsultorio.Habilitado;
+                    bool estaHabilitado = seleccionado.Estado == EstadoConsultorioDTO.Habilitado;
 
                     string accion = estaHabilitado ? "deshabilitar" : "habilitar";
                     string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";

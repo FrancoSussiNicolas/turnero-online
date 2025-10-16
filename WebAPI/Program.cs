@@ -49,6 +49,17 @@ builder.Services.AddScoped<PlanObraSocialService>();
 builder.Services.AddScoped<PracticaService>();
 builder.Services.AddScoped<JwtService>();
 
+var corsPolicy = "AllowBlazorDev";
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(corsPolicy, builder =>
+    {
+        builder
+            .WithOrigins("https://localhost:7229")
+            .AllowAnyHeader()
+            .AllowAnyMethod();
+    });
+});
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -87,14 +98,16 @@ builder.Services.AddHttpLogging(logging =>
 var app = builder.Build();
 if (app.Environment.IsDevelopment())
 {
+    app.UseDeveloperExceptionPage();
     app.UseSwagger();
     app.UseSwaggerUI();
     app.UseHttpLogging();
 }
 
 app.UseHttpsRedirection();
-
 app.UseHttpLogging();
+
+app.UseCors(corsPolicy);
 
 app.UseAuthentication();
 app.UseAuthorization();

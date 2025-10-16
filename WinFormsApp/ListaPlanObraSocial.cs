@@ -51,7 +51,7 @@ namespace WinFormsApp
         {
             if (planObraSocialGridView.Columns[e.ColumnIndex].Name == "Estado")
             {
-                if (e.Value != null && e.Value.ToString() == EstadoPlanObraSocial.Deshabilitado.ToString())
+                if (e.Value != null && e.Value.ToString() == EstadoPlanObraSocialDTO.Deshabilitado.ToString())
                 {
                     e.CellStyle.BackColor = Color.LightGray;
                     e.CellStyle.ForeColor = Color.Red;
@@ -238,7 +238,7 @@ namespace WinFormsApp
                 {
                     PlanObraSocialDTO seleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
 
-                    bool estaHabilitado = seleccionado.Estado == EstadoPlanObraSocial.Habilitado;
+                    bool estaHabilitado = seleccionado.Estado == EstadoPlanObraSocialDTO.Habilitado;
 
                     string accion = estaHabilitado ? "deshabilitar" : "habilitar";
                     string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";
@@ -321,7 +321,7 @@ namespace WinFormsApp
                 {
                     PlanObraSocialDTO seleccionado = (PlanObraSocialDTO)planObraSocialGridView.SelectedRows[0].DataBoundItem;
 
-                    bool estaHabilitado = seleccionado.Estado == EstadoPlanObraSocial.Habilitado;
+                    bool estaHabilitado = seleccionado.Estado == EstadoPlanObraSocialDTO.Habilitado;
 
                     string accion = estaHabilitado ? "deshabilitar" : "habilitar";
                     string mensajeExito = estaHabilitado ? "deshabilitado" : "habilitado";

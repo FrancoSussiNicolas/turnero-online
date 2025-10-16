@@ -45,7 +45,7 @@ namespace Controllers
             try
             {
                 var especialidad = especialidadService.GetById(profesional.EspecialidadId);
-                if (especialidad is null || especialidad.Estado == EstadoEspecialidad.Deshabilitada)
+                if (especialidad is null || especialidad.Estado == Entities.EstadoEspecialidad.Deshabilitada)
                 {
                     return BadRequest(new { message = "La especialidad no existe o está deshabilitada." });
                 }

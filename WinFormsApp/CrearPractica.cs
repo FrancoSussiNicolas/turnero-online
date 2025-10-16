@@ -76,7 +76,7 @@ namespace WinFormsApp
                 textNombrePractica.Text = _practicaExistente.Nombre;
                 textDescripcionPractica.Text = _practicaExistente.Descripcion;
 
-                if (_practicaExistente.Estado == EstadoPractica.Habilitada)
+                if (_practicaExistente.Estado == EstadoPracticaDTO.Habilitada)
                 {
                     btnRadioHabilitado.Checked = true;
                 }
@@ -291,7 +291,7 @@ namespace WinFormsApp
                     {
                         Nombre = textNombrePractica.Text,
                         Descripcion = textDescripcionPractica.Text,
-                        Estado = btnRadioHabilitado.Checked ? EstadoPractica.Habilitada : EstadoPractica.Deshabilitada,
+                        Estado = btnRadioHabilitado.Checked ? EstadoPracticaDTO.Habilitada : EstadoPracticaDTO.Deshabilitada,
                         PlanObraSocial = new List<PlanObraSocialDTO>()
                     };
 

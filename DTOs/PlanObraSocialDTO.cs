@@ -1,13 +1,12 @@
-﻿using Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DTOs
 {
+    public enum EstadoPlanObraSocialDTO
+    {
+        Habilitado,
+        Deshabilitado
+    }
     public class PlanObraSocialDTO
     {
         public int PlanObraSocialId { get; set; }
@@ -21,6 +20,6 @@ namespace DTOs
         [Required]
         public int ObraSocialId { get; set; }
 
-        public EstadoPlanObraSocial Estado { get; set; }
+        public EstadoPlanObraSocialDTO Estado { get; set; }
     }
 }

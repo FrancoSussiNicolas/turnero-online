@@ -66,7 +66,7 @@ namespace WinFormsApp
                     PracticaDTO seleccionado = (PracticaDTO)practicasGridView.SelectedRows[0].DataBoundItem;
 
                     // Verificamos estado
-                    if (seleccionado.Estado == EstadoPractica.Deshabilitada)
+                    if (seleccionado.Estado == EstadoPracticaDTO.Deshabilitada)
                     {
                         MessageBox.Show("La práctica ya está deshabilitada, no puede volver a eliminarla.\nDebe modificarla en su lugar.",
                                         "Acción no permitida",
@@ -77,7 +77,7 @@ namespace WinFormsApp
 
                     int id = Convert.ToInt32(practicasGridView.SelectedRows[0].Cells["PracticaId"].Value);
 
-                    bool estaHabilitado = seleccionado.Estado == EstadoPractica.Habilitada;
+                    bool estaHabilitado = seleccionado.Estado == EstadoPracticaDTO.Habilitada;
 
                     string accion = estaHabilitado ? "deshabilitar" : "habilitar";
                     string mensajeExito = estaHabilitado ? "deshabilitada" : "habilitada";

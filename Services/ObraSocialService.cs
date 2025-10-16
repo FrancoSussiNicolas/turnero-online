@@ -121,11 +121,11 @@ namespace Services
 
                 if (os is null) return false;
 
-                os.Estado = os.Estado == EstadoObraSocial.Habilitada ? EstadoObraSocial.Deshabilitada : EstadoObraSocial.Habilitada;
+                os.Estado = os.Estado == Entities.EstadoObraSocial.Habilitada ? Entities.EstadoObraSocial.Deshabilitada : Entities.EstadoObraSocial.Habilitada;
 
                 foreach (var plan in os.PlanesObraSocial)
                 {
-                    plan.Estado = os.Estado == EstadoObraSocial.Habilitada ? EstadoPlanObraSocial.Habilitado : EstadoPlanObraSocial.Deshabilitado;
+                    plan.Estado = os.Estado == Entities.EstadoObraSocial.Habilitada ? Entities.EstadoPlanObraSocial.Habilitado : Entities.EstadoPlanObraSocial.Deshabilitado;
                 }
 
                 context.SaveChanges();
@@ -153,23 +153,19 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                // Cargar la obra social junto con su lista de planes
                 var obraSocial = context.ObrasSociales
                                         .Include(o => o.PlanesObraSocial)
                                         .FirstOrDefault(o => o.ObraSocialId == obraSocialId);
 
                 if (obraSocial == null) return null;
 
-                // Evitar agregar duplicados
                 if (obraSocial.PlanesObraSocial.Any(p => p.PlanObraSocialId == planOs.PlanObraSocialId))
                 {
                     throw new InvalidOperationException("El plan ya está asociado a esta obra social.");
                 }
 
-                // Agregar plan a la lista de la obra social
                 obraSocial.PlanesObraSocial.Add(planOs);
 
-                // Guardar cambios en la base de datos
                 context.SaveChanges();
 
                 return obraSocial;
@@ -182,7 +178,7 @@ namespace Services
             {
                 return context.ObrasSociales
                     .Include(o => o.PlanesObraSocial)
-                    .Where(os => os.Estado == EstadoObraSocial.Habilitada)
+                    .Where(os => os.Estado == Entities.EstadoObraSocial.Habilitada)
                     .ToList();
             }
         }

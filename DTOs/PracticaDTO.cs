@@ -1,9 +1,13 @@
-﻿using Entities;
-using System;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DTOs
 {
+    public enum EstadoPracticaDTO
+    {
+        Habilitada,
+        Deshabilitada
+    }
+
     public class PracticaDTO
     {
         public int PracticaId { get; set; }
@@ -14,7 +18,7 @@ namespace DTOs
         [Required]
         public string Descripcion { get; set; }
 
-        public EstadoPractica Estado { get; set; }
+        public EstadoPracticaDTO Estado { get; set; }
 
         public List<PlanObraSocialDTO> PlanObraSocial { get; set; }
     }

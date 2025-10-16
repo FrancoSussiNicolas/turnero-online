@@ -46,7 +46,7 @@ namespace WinFormsApp
                 // Precargar valores en controles
                 textNombreObraSocial.Text = obraSocial.NombreObraSocial;
 
-                if (_obraSocialExistente.Estado == EstadoObraSocial.Habilitada)
+                if (_obraSocialExistente.Estado == EstadoObraSocialDTO.Habilitada)
                 {
                     btnRadioHabilitado.Checked = true;
                 }
@@ -283,7 +283,7 @@ namespace WinFormsApp
                     ObraSocialDTO obraSocialDTO = new ObraSocialDTO
                     {
                         NombreObraSocial = textNombreObraSocial.Text,
-                        Estado = btnRadioHabilitado.Checked ? EstadoObraSocial.Habilitada : EstadoObraSocial.Deshabilitada,
+                        Estado = btnRadioHabilitado.Checked ? EstadoObraSocialDTO.Habilitada : EstadoObraSocialDTO.Deshabilitada,
                         PlanesObraSocial = new List<PlanObraSocialDTO>()
                     };
 

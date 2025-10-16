@@ -34,7 +34,7 @@ namespace WinFormsApp
             // Precargar valores en los controles
             textNombrePlan.Text = planObraSocial.NombrePlan;
             textDescripcionPlan.Text = planObraSocial.DescripcionPlan;
-            if (planObraSocial.Estado == EstadoPlanObraSocial.Habilitado)
+            if (planObraSocial.Estado == EstadoPlanObraSocialDTO.Habilitado)
                 btnRadioHabilitado.Checked = true;
             else
                 btnRadioDeshabilitado.Checked = true;
@@ -61,7 +61,7 @@ namespace WinFormsApp
                     {
                         NombrePlan = textNombrePlan.Text,
                         DescripcionPlan = textDescripcionPlan.Text,
-                        Estado = btnRadioHabilitado.Checked ? EstadoPlanObraSocial.Habilitado : EstadoPlanObraSocial.Deshabilitado
+                        Estado = btnRadioHabilitado.Checked ? EstadoPlanObraSocialDTO.Habilitado : EstadoPlanObraSocialDTO.Deshabilitado
                     };
 
                     await PlanApiClient.AddAsync(planObraSocialDTO);

@@ -1,13 +1,12 @@
-﻿using Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DTOs
 {
+    public enum EstadoEspecialidadDTO
+    {
+        Habilitada,
+        Deshabilitada
+    }
     public class EspecialidadDTO
     {
         public int EspecialidadId { get; set; }
@@ -15,6 +14,6 @@ namespace DTOs
         [Required]
         public string Descripcion { get; set; }
 
-        public EstadoEspecialidad Estado { get; set; }
+        public EstadoEspecialidadDTO Estado { get; set; }
     }
 }

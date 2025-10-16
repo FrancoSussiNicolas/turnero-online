@@ -1,13 +1,13 @@
-﻿using Entities;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace DTOs
 {
+    public enum EstadoTurnoDTO
+    {
+        Disponible,
+        Ocupado
+    }
+
     public class TurnoDTO
     {
         public int TurnoId { get; set; }
@@ -18,7 +18,7 @@ namespace DTOs
         [Required]
         public TimeOnly HoraTurno { get; set; }
 
-        public EstadoTurno Estado { get; set; }
+        public EstadoTurnoDTO Estado { get; set; }
 
         [Required]
         public int ConsultorioId { get; set; }

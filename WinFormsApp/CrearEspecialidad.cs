@@ -34,7 +34,7 @@ namespace WinFormsApp
 
             // Precargar valores en los controles
             textDescripcion.Text = especialidad.Descripcion;
-            if (especialidad.Estado == EstadoEspecialidad.Habilitada)
+            if (especialidad.Estado == EstadoEspecialidadDTO.Habilitada)
                 btnRadioHabilitado.Checked = true;
             else
                 btnRadioDeshabilitado.Checked = true;
@@ -95,7 +95,7 @@ namespace WinFormsApp
                     EspecialidadDTO especialidadDTO = new EspecialidadDTO
                     {
                         Descripcion = textDescripcion.Text,
-                        Estado = btnRadioHabilitado.Checked ? EstadoEspecialidad.Habilitada : EstadoEspecialidad.Deshabilitada
+                        Estado = btnRadioHabilitado.Checked ? EstadoEspecialidadDTO.Habilitada : EstadoEspecialidadDTO.Deshabilitada
                     };
 
                     await EspecialidadApiClient.AddAsync(especialidadDTO);

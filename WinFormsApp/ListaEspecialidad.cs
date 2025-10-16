@@ -70,7 +70,7 @@ namespace WinFormsApp
                     EspecialidadDTO seleccionado = (EspecialidadDTO)especialidadGridView.SelectedRows[0].DataBoundItem;
 
                     // Verificamos estado
-                    if (seleccionado.Estado == EstadoEspecialidad.Deshabilitada)
+                    if (seleccionado.Estado == EstadoEspecialidadDTO.Deshabilitada)
                     {
                         MessageBox.Show("La especialidad ya está deshabilitada, no puede volver a eliminarla.\nDebe modificarla en su lugar.",
                                         "Acción no permitida",
@@ -81,7 +81,7 @@ namespace WinFormsApp
 
                     int id = Convert.ToInt32(especialidadGridView.SelectedRows[0].Cells["EspecialidadId"].Value);
 
-                    bool estaHabilitado = seleccionado.Estado == EstadoEspecialidad.Habilitada;
+                    bool estaHabilitado = seleccionado.Estado == EstadoEspecialidadDTO.Habilitada;
 
                     string accion = estaHabilitado ? "deshabilitar" : "habilitar";
                     string mensajeExito = estaHabilitado ? "deshabilitada" : "habilitada";

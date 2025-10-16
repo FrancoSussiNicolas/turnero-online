@@ -50,7 +50,7 @@ namespace Services
                     .Include(t => t.Profesional)
                     .ThenInclude(p => p.ObraSociales)
                     .ToList()
-                    .FindAll(turno => turno.Estado == EstadoTurno.Disponible);
+                    .FindAll(turno => turno.Estado == Entities.EstadoTurno.Disponible);
             }
 
         }
@@ -66,7 +66,7 @@ namespace Services
                     .Include(t => t.Profesional)
                     .ThenInclude(p => p.ObraSociales)
                     .ToList()
-                    .FindAll(turno => turno.Estado == EstadoTurno.Disponible && turno.PacienteId == null && turno.ProfesionalId == id);
+                    .FindAll(turno => turno.Estado == Entities.EstadoTurno.Disponible && turno.PacienteId == null && turno.ProfesionalId == id);
             }
 
         }
@@ -99,7 +99,7 @@ namespace Services
 
                 turnoFound.FechaTurno = turno.FechaTurno;
                 turnoFound.HoraTurno = turno.HoraTurno;
-                turnoFound.Estado = turno.Estado;
+                turnoFound.Estado = (Entities.EstadoTurno)turno.Estado;
                 turnoFound.ConsultorioId = turno.ConsultorioId;
 
                 context.SaveChanges();
@@ -117,8 +117,8 @@ namespace Services
                 var pacienteFound = context.Pacientes.FirstOrDefault(p => p.PersonaId == idPaciente);
                 if (pacienteFound is null) return false;
 
-                turnoFound.Estado = turnoFound.Estado == EstadoTurno.Ocupado ? EstadoTurno.Disponible : EstadoTurno.Ocupado;
-                turnoFound.PacienteId = turnoFound.Estado == EstadoTurno.Ocupado ? idPaciente : null;
+                turnoFound.Estado = turnoFound.Estado == Entities.EstadoTurno.Ocupado ? Entities.EstadoTurno.Disponible : Entities.EstadoTurno.Ocupado;
+                turnoFound.PacienteId = turnoFound.Estado == Entities.EstadoTurno.Ocupado ? idPaciente : null;
                 context.SaveChanges();
                 return true;
             }

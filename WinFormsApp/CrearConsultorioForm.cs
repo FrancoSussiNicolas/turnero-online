@@ -33,7 +33,7 @@ namespace WinFormsApp
 
             // Precargar valores en los controles
             textUbicacion.Text = consultorio.Ubicacion;
-            if (consultorio.Estado == EstadoConsultorio.Habilitado)
+            if (consultorio.Estado == EstadoConsultorioDTO.Habilitado)
                 btnRadioHabilitado.Checked = true;
             else
                 btnRadioDeshabilitado.Checked = true;
@@ -54,7 +54,7 @@ namespace WinFormsApp
                     ConsultorioDTO consultorioDTO = new ConsultorioDTO
                     {
                         Ubicacion = textUbicacion.Text,
-                        Estado = btnRadioHabilitado.Checked ? EstadoConsultorio.Habilitado : EstadoConsultorio.Deshabilitado
+                        Estado = btnRadioHabilitado.Checked ? EstadoConsultorioDTO.Habilitado : EstadoConsultorioDTO.Deshabilitado
                     };
 
                     await ConsultorioApiClient.AddAsync(consultorioDTO);

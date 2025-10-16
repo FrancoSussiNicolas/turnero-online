@@ -24,7 +24,7 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                return context.Consultorios.Where(c => c.Estado == EstadoConsultorio.Habilitado).ToList();
+                return context.Consultorios.Where(c => c.Estado == Entities.EstadoConsultorio.Habilitado).ToList();
             }
         }
 
@@ -32,7 +32,7 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                var consultorios = context.Consultorios.Where(c => c.Estado == EstadoConsultorio.Habilitado).Include(c => c.Turnos).ToList();
+                var consultorios = context.Consultorios.Where(c => c.Estado == Entities.EstadoConsultorio.Habilitado).Include(c => c.Turnos).ToList();
                 return consultorios.FindAll(c => c.EstaLibre(fechaTurno, horaTurno));
             }
         }
@@ -93,7 +93,7 @@ namespace Services
                 var consulFound = context.Consultorios.FirstOrDefault(c => c.ConsultorioId == id);
                 if (consulFound is null) return false;
 
-                consulFound.Estado = consulFound.Estado == EstadoConsultorio.Deshabilitado ? EstadoConsultorio.Habilitado : EstadoConsultorio.Deshabilitado;
+                consulFound.Estado = consulFound.Estado == Entities.EstadoConsultorio.Deshabilitado ? Entities.EstadoConsultorio.Habilitado : Entities.EstadoConsultorio.Deshabilitado;
                 context.SaveChanges();
                 return true;
             }

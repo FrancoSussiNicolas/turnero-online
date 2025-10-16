@@ -68,10 +68,10 @@ namespace Services
                     .FirstOrDefault(p => p.PlanObraSocialId == idPlan);
                 if (plan is null) return false;
 
-                if (plan.ObraSocial.Estado == EstadoObraSocial.Deshabilitada)
+                if (plan.ObraSocial.Estado == Entities.EstadoObraSocial.Deshabilitada)
                     throw new InvalidOperationException("No puede cambiarse el estado del plan, pues la Obra Social está deshabilitada");
 
-                plan.Estado = plan.Estado == EstadoPlanObraSocial.Habilitado ? EstadoPlanObraSocial.Deshabilitado : EstadoPlanObraSocial.Habilitado;
+                plan.Estado = plan.Estado == Entities.EstadoPlanObraSocial.Habilitado ? Entities.EstadoPlanObraSocial.Deshabilitado : Entities.EstadoPlanObraSocial.Habilitado;
                 context.SaveChanges();
                 return true;
             }

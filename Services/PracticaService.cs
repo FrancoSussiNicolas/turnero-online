@@ -167,7 +167,7 @@ namespace Services
                 var practica = context.Practicas.FirstOrDefault(p => p.PracticaId == id);
                 if (practica is null) return false;
 
-                practica.Estado = practica.Estado == EstadoPractica.Deshabilitada ? EstadoPractica.Habilitada : EstadoPractica.Deshabilitada;
+                practica.Estado = practica.Estado == Entities.EstadoPractica.Deshabilitada ? Entities.EstadoPractica.Habilitada : Entities.EstadoPractica.Deshabilitada;
                 context.SaveChanges();
                 return true;
             }

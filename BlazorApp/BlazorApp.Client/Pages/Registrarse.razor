@@ -1,0 +1,103 @@
+﻿@page "/register"
+@using System.ComponentModel.DataAnnotations
+
+<h1 class="text-center mt-4">Registro de Paciente</h1>
+
+<div class="d-flex justify-content-center mt-3">
+    <div class="card p-4 shadow-sm" style="width: 400px;">
+        <EditForm Model="@registerModel" OnValidSubmit="@HandleRegister">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label">Apellido y Nombre</label>
+                <InputText @bind-Value="registerModel.ApellidoNombre" class="form-control" />
+            </div>
+            
+            <div class="mb-3">
+                <label class="form-label">Correo electrónico</label>
+                <InputText @bind-Value="registerModel.Mail" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">DNI</label>
+                <InputText @bind-Value="registerModel.DNI" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Sexo</label>
+                <InputSelect @bind-Value="registerModel.Sexo" class="form-select">
+                    <option value="">Seleccionar...</option>
+                    <option value="Masculino">Masculino</option>
+                    <option value="Femenino">Femenino</option>
+                    <option value="Otro">Otro</option>
+                </InputSelect>
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Fecha de nacimiento</label>
+                <InputDate @bind-Value="registerModel.FechaNacimiento" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Teléfono</label>
+                <InputText @bind-Value="registerModel.Telefono" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <InputText @bind-Value="registerModel.Contrasenia" class="form-control" type="password" />
+            </div>
+
+            <button type="submit" class="btn btn-success w-100">Registrarse</button>
+        </EditForm>
+
+        <div class="text-center mt-3">
+            <small>¿Ya tenés cuenta?</small><br />
+            <NavLink href="/">Iniciá sesión</NavLink>
+        </div>
+    </div>
+</div>
+
+@code {
+    private RegisterModel registerModel = new();
+
+    private void HandleRegister()
+    {
+        // Acá iría la lógica para enviar los datos al backend
+        Console.WriteLine($"Registrado: {registerModel.ApellidoNombre}");
+    }
+
+    public class RegisterModel
+    {
+        [Required(ErrorMessage = "El nombre es obligatorio")]
+        [StringLength(100, MinimumLength = 3, ErrorMessage = "Debe tener entre 3 y 100 caracteres")]
+        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", ErrorMessage = "Solo puede contener letras y espacios")]
+        public string ApellidoNombre { get; set; } = string.Empty;
+
+        [Required]
+        [EmailAddress]
+        public string Mail { get; set; } = string.Empty;
+
+        [Required]
+        [DataType(DataType.Password)]
+        [StringLength(50, MinimumLength = 8)]
+        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Debe tener al menos una mayúscula y un número.")]
+        public string Contrasenia { get; set; } = string.Empty;
+
+        [Required]
+        public string DNI { get; set; } = string.Empty;
+
+        [Required]
+        public string Sexo { get; set; } = string.Empty;
+
+        [Required]
+        public DateOnly FechaNacimiento { get; set; } = DateOnly.FromDateTime(DateTime.Today);
+
+        [Required]
+        public string Telefono { get; set; } = string.Empty;
+
+        [Required]
+        public int PlanObraSocialId { get; set; }
+    }
+}

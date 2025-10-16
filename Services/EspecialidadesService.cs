@@ -112,7 +112,7 @@ namespace Services
                 var espFound = context.Especialidades.FirstOrDefault(e => e.EspecialidadId == id);
                 if (espFound is null) return false;
 
-                espFound.Estado = espFound.Estado == EstadoEspecialidad.Habilitada ? EstadoEspecialidad.Deshabilitada : EstadoEspecialidad.Habilitada;
+                espFound.Estado = espFound.Estado == Entities.EstadoEspecialidad.Habilitada ? Entities.EstadoEspecialidad.Deshabilitada : Entities.EstadoEspecialidad.Habilitada;
                 context.SaveChanges();
                 return true;
             }

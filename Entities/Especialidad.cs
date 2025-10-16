@@ -13,6 +13,7 @@ namespace Entities
         Habilitada,
         Deshabilitada
     }
+
     [Index(nameof(Descripcion), IsUnique = true)]
     public class Especialidad
     {

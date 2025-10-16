@@ -103,7 +103,7 @@ namespace WinFormsApp
                     ObraSocialDTO seleccionado = (ObraSocialDTO)obraSocialGridView.SelectedRows[0].DataBoundItem;
 
                     // Verificamos estado
-                    if (seleccionado.Estado == EstadoObraSocial.Deshabilitada)
+                    if (seleccionado.Estado == EstadoObraSocialDTO.Deshabilitada)
                     {
                         MessageBox.Show("La obra social ya está deshabilitada, no puede volver a eliminarla.\nDebe modificarla en su lugar.",
                                         "Acción no permitida",

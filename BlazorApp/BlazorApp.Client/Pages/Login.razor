@@ -1,0 +1,61 @@
+﻿@page "/"
+@inject NavigationManager NavigationManager
+@using System.ComponentModel.DataAnnotations
+@using API.Clients
+@using Shared
+@using DTOs
+
+<PageTitle>Iniciar Sesión</PageTitle>
+
+<h1 class="text-center mt-4">Iniciar Sesión</h1>
+
+<div class="d-flex justify-content-center mt-3">
+    <div class="card p-4 shadow-sm" style="width: 350px;">
+        <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
+            <DataAnnotationsValidator />
+            <ValidationSummary />
+
+            <div class="mb-3">
+                <label class="form-label">Correo electrónico</label>
+                <InputText @bind-Value="loginModel.Mail" class="form-control" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label">Contraseña</label>
+                <InputText @bind-Value="loginModel.Password" class="form-control" type="password" />
+            </div>
+
+            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+        </EditForm>
+
+        <div class="text-center mt-3">
+            <small>¿No tenés cuenta?</small><br />
+            <NavLink href="/register">Registrate aquí</NavLink>
+        </div>
+    </div>
+</div>
+
+@code {
+    private LoginRequest loginModel = new();
+
+    private async void HandleLogin()
+    {
+        try
+        {
+            var userToken = await AuthApiClient.LoginAsync(loginModel);
+
+            SessionManager.SetSession(userToken.Token);
+
+            if (SessionManager.UserType == "Administrador")
+            {
+            }
+
+            NavigationManager.NavigateTo(SessionManager.UserType == "Paciente" ? "paciente" : "profesional");
+        }
+        catch
+        {
+            
+        }
+    }
+}
+
