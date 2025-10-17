@@ -155,7 +155,6 @@
             var todasLasObras = await ObraSocialApiClient.GetDisponiblesAsync();
             var obrasActuales = await ProfesionalApiClient.GetObrasSocialesAsync(profesionalId);
 
-            // Filtrar las obras sociales que ya tiene el profesional
             var idsActuales = obrasActuales.Select(o => o.ObraSocialId).ToList();
             obrasSocialesDisponibles = todasLasObras.Where(o => !idsActuales.Contains(o.ObraSocialId));
         }
@@ -190,7 +189,6 @@
             await ProfesionalApiClient.AgregarObraSocialAsync(profesionalId, obraSocialSeleccionada.ObraSocialId);
             mensajeExito = $"Obra social '{obraSocialSeleccionada.NombreObraSocial}' agregada correctamente.";
 
-            // Redirigir después de 2 segundos
             await Task.Delay(2000);
             NavigationManager.NavigateTo("/profesional/obras-sociales");
         }

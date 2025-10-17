@@ -156,7 +156,6 @@
             mensajeExito = $"Especialidad actualizada a: {especialidadSeleccionada.Descripcion}";
             especialidadSeleccionada = null;
 
-            // Redirigir después de 2 segundos
             await Task.Delay(2000);
             NavigationManager.NavigateTo("/profesional/perfil");
         }

@@ -1,1 +1,134 @@
-﻿
+﻿@page "/profesional/home"
+@using API.Clients
+@using DTOs
+@using Shared
+@inject NavigationManager NavigationManager
+
+<div class="profesional-home">
+   
+    <div class="welcome-section">
+        <div class="container">
+            <div class="row align-items-center py-5">
+                <div class="col-md-8">
+                    <h1 class="display-4 fw-bold text-white mb-2">Bienvenido, Profesional</h1>
+                    <p class="lead text-white-50">Gestiona tu agenda, especialidades y obras sociales desde aquí</p>
+                </div>
+                <div class="col-md-4 text-end">
+                    <div class="badge bg-success fs-6 px-3 py-2">
+                            @SessionManager.ApellidoNombre
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    
+    <div class="container py-5">
+        <div class="row mb-5">
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/especialidad")' style="cursor: pointer;">
+                    <div class="card-body text-center">
+                        <div class="icon-circle bg-primary text-white mx-auto mb-3">
+                            <i class="bi bi-briefcase fs-4"></i>
+                        </div>
+                        <h5 class="card-title">Mi Especialidad</h5>
+                        <p class="card-text text-muted small">Selecciona o actualiza tu especialidad profesional</p>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-dark">Ver</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mb-3 mb-md-0">
+                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/obras-sociales")' style="cursor: pointer;">
+                    <div class="card-body text-center">
+                        <div class="icon-circle bg-success text-white mx-auto mb-3">
+                            <i class="bi bi-hospital fs-4"></i>
+                        </div>
+                        <h5 class="card-title">Obras Sociales</h5>
+                        <p class="card-text text-muted small">Administra las obras sociales por las que atiendes</p>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-dark">Gestionar</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/turnos")' style="cursor: pointer;">
+                    <div class="card-body text-center">
+                        <div class="icon-circle bg-info text-white mx-auto mb-3">
+                            <i class="bi bi-calendar3 fs-4"></i>
+                        </div>
+                        <h5 class="card-title">Mis Turnos</h5>
+                        <p class="card-text text-muted small">Visualiza y gestiona tus turnos disponibles</p>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-dark">Ver</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-4">
+                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/reporte")' style="cursor: pointer;">
+                    <div class="card-body text-center">
+                        <div class="icon-circle bg-info text-white mx-auto mb-3">
+                            <i class="bi bi-calendar3 fs-4"></i>
+                        </div>
+                        <h5 class="card-title">Reporte Obras Sociales</h5>
+                        <p class="card-text text-muted small">Visualiza la cantidad de Pacientes que atiende por Obras Social</p>
+                        <div class="mt-3">
+                            <span class="badge bg-light text-dark">Ver</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<style>
+    .profesional-home {
+        min-height: 100vh;
+        background-color: #f8f9fa;
+    }
+
+    .welcome-section {
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        box-shadow: 0 4px 20px rgba(102, 126, 234, 0.4);
+        margin-bottom: 2rem;
+    }
+
+    .icon-circle {
+        width: 60px;
+        height: 60px;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .hover-card {
+        transition: all 0.3s ease;
+        border: none;
+    }
+
+    .hover-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+    }
+
+    .bg-primary {
+        background-color: #667eea !important;
+    }
+
+    .bg-success {
+        background-color: #48bb78 !important;
+    }
+
+    .bg-info {
+        background-color: #4299e1 !important;
+    }
+</style>
+
