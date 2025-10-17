@@ -1,1 +1,222 @@
-﻿
+﻿@page "/profesional/agregar-obra-social/{ProfesionalIdParam}"
+@using API.Clients
+@using DTOs
+@using Shared
+@inject NavigationManager NavigationManager
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="d-flex align-items-center mb-4">
+                <button type="button"
+                        class="btn btn-outline-secondary me-3"
+                        @onclick="Volver">
+                    ← Volver
+                </button>
+                <h2 class="mb-0">Agregar Obra Social</h2>
+            </div>
+
+            @if (cargando)
+            {
+                <div class="alert alert-info" role="alert">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Cargando obras sociales disponibles...
+                </div>
+            }
+            else if (errorMessage != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error:</strong> @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
+                </div>
+            }
+            else if (obrasSocialesDisponibles != null && obrasSocialesDisponibles.Any())
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-muted mb-4">Selecciona una obra social para agregar:</p>
+
+                        <div class="list-group">
+                            @foreach (var obraSocial in obrasSocialesDisponibles)
+                            {
+                                <button type="button"
+                                        class="list-group-item list-group-item-action @(obraSocialSeleccionada?.ObraSocialId == obraSocial.ObraSocialId ? "active" : "")"
+                                        @onclick="() => SeleccionarObraSocial(obraSocial)">
+                                    <div class="d-flex w-100 justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">@obraSocial.NombreObraSocial</h6>
+                                            <p class="mb-0 text-muted small">
+                                                @if (obraSocial.PlanesObraSocial != null && obraSocial.PlanesObraSocial.Any())
+                                                {
+                                                    <span>Planes: @string.Join(", ", obraSocial.PlanesObraSocial.Select(p => p.NombrePlan))</span>
+                                                }
+                                                else
+                                                {
+                                                    <span>Sin planes registrados</span>
+                                                }
+                                            </p>
+                                        </div>
+                                        @if (obraSocialSeleccionada?.ObraSocialId == obraSocial.ObraSocialId)
+                                        {
+                                            <span class="badge bg-success ms-2">Seleccionada</span>
+                                        }
+                                    </div>
+                                </button>
+                            }
+                        </div>
+
+                        @if (obraSocialSeleccionada != null)
+                        {
+                            <div class="mt-4 p-3 border rounded bg-light">
+                                <p class="mb-3">
+                                    <strong>Obra social seleccionada:</strong>
+                                    <span class="text-primary">@obraSocialSeleccionada.NombreObraSocial</span>
+                                </p>
+                                <div>
+                                    <button type="button"
+                                            class="btn btn-success"
+                                            @onclick="ConfirmarAgregar"
+                                            disabled="@guardando">
+                                        @if (guardando)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        }
+                                        Confirmar Agregación
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-outline-secondary ms-2"
+                                            @onclick="Cancelar"
+                                            disabled="@guardando">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (mensajeExito != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                        <strong>Éxito:</strong> @mensajeExito
+                        <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    No hay obras sociales disponibles para agregar.
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    [Parameter]
+    public string ProfesionalIdParam { get; set; }
+
+    private int profesionalId;
+    private IEnumerable<ObraSocialDTO> obrasSocialesDisponibles;
+    private ObraSocialDTO obraSocialSeleccionada;
+    private bool cargando = true;
+    private bool guardando = false;
+    private string errorMessage;
+    private string mensajeExito;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            if (int.TryParse(ProfesionalIdParam, out int id))
+            {
+                profesionalId = id;
+                await CargarObrasSocialesDisponibles();
+            }
+            else
+            {
+                errorMessage = "ID de profesional inválido.";
+                cargando = false;
+            }
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al cargar los datos: " + ex.Message;
+            cargando = false;
+        }
+    }
+
+    private async Task CargarObrasSocialesDisponibles()
+    {
+        try
+        {
+            cargando = true;
+            var todasLasObras = await ObraSocialApiClient.GetDisponiblesAsync();
+            var obrasActuales = await ProfesionalApiClient.GetObrasSocialesAsync(profesionalId);
+
+            // Filtrar las obras sociales que ya tiene el profesional
+            var idsActuales = obrasActuales.Select(o => o.ObraSocialId).ToList();
+            obrasSocialesDisponibles = todasLasObras.Where(o => !idsActuales.Contains(o.ObraSocialId));
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            cargando = false;
+        }
+    }
+
+    private void SeleccionarObraSocial(ObraSocialDTO obraSocial)
+    {
+        obraSocialSeleccionada = obraSocial;
+        errorMessage = null;
+        StateHasChanged();
+    }
+
+    private async Task ConfirmarAgregar()
+    {
+        if (obraSocialSeleccionada == null)
+        {
+            errorMessage = "Debes seleccionar una obra social.";
+            return;
+        }
+
+        try
+        {
+            guardando = true;
+            await ProfesionalApiClient.AgregarObraSocialAsync(profesionalId, obraSocialSeleccionada.ObraSocialId);
+            mensajeExito = $"Obra social '{obraSocialSeleccionada.NombreObraSocial}' agregada correctamente.";
+
+            // Redirigir después de 2 segundos
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/profesional/obras-sociales");
+        }
+        catch (InvalidOperationException ex)
+        {
+            errorMessage = ex.Message;
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al agregar la obra social: " + ex.Message;
+        }
+        finally
+        {
+            guardando = false;
+        }
+    }
+
+    private void Cancelar()
+    {
+        obraSocialSeleccionada = null;
+        errorMessage = null;
+        StateHasChanged();
+    }
+
+    private void Volver()
+    {
+        NavigationManager.NavigateTo("/profesional/obras-sociales");
+    }
+}

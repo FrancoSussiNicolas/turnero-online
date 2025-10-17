@@ -1,1 +1,159 @@
-﻿
+﻿@page "/profesional/obras-sociales"
+@using API.Clients
+@using DTOs
+@using Shared
+@inject NavigationManager NavigationManager
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <h2 class="mb-4">Gestionar Obras Sociales</h2>
+
+            @if (loading)
+            {
+                <div class="alert alert-info" role="alert">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Cargando obras sociales...
+                </div>
+            }
+            else if (errorMessage != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error:</strong> @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
+                </div>
+            }
+            else
+            {
+                <!-- Sección de Obras Sociales Actuales -->
+                <div class="card mb-4">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Obras Sociales Actuales</h5>
+                    </div>
+                    <div class="card-body">
+                        @if (obrasSocialesActuales != null && obrasSocialesActuales.Any())
+                        {
+                            <div class="list-group">
+                                @foreach (var obraSocial in obrasSocialesActuales)
+                                {
+                                    <div class="list-group-item d-flex justify-content-between align-items-center">
+                                        <div>
+                                            <h6 class="mb-1">@obraSocial.NombreObraSocial</h6>
+                                            <small class="text-muted">ID: @obraSocial.ObraSocialId</small>
+                                        </div>
+                                        <button type="button"
+                                                class="btn btn-danger btn-sm"
+                                                @onclick="() => EliminarObraSocial(obraSocial.ObraSocialId)"
+                                                disabled="@eliminando">
+                                            @if (eliminando)
+                                            {
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                            }
+                                            else
+                                            {
+                                                <span>Eliminar</span>
+                                            }
+                                        </button>
+                                    </div>
+                                }
+                            </div>
+                        }
+                        else
+                        {
+                            <p class="text-muted">No atiende por ninguna obra social aún.</p>
+                        }
+                    </div>
+                </div>
+
+                <!-- Botón para Agregar -->
+                <div class="mb-4">
+                    <button type="button"
+                            class="btn btn-success btn-lg"
+                            @onclick="IrAAgregarObraSocial">
+                        <i class="bi bi-plus-circle"></i> Agregar Obra Social
+                    </button>
+                </div>
+
+                @if (mensajeExito != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Éxito:</strong> @mensajeExito
+                        <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
+                    </div>
+                }
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<ObraSocialDTO> obrasSocialesActuales;
+    private bool loading = true;
+    private bool eliminando = false;
+    private string errorMessage;
+    private string mensajeExito;
+    private int profesionalId;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+            profesionalId = profesionalId = (int)SessionManager.PersonaId;
+
+            await CargarObrasSociales();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al cargar los datos: " + ex.Message;
+        }
+    }
+
+    private async Task CargarObrasSociales()
+    {
+        try
+        {
+            loading = true;
+            obrasSocialesActuales = await ProfesionalApiClient.GetObrasSocialesAsync(profesionalId);
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private async Task EliminarObraSocial(int obraSocialId)
+    {
+        if (!await ConfirmarAccion("¿Estás seguro de que deseas eliminar esta obra social?"))
+            return;
+
+        try
+        {
+            eliminando = true;
+            await ProfesionalApiClient.EliminarObraSocialAsync(profesionalId, obraSocialId);
+            mensajeExito = "Obra social eliminada correctamente.";
+            await CargarObrasSociales();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al eliminar la obra social: " + ex.Message;
+        }
+        finally
+        {
+            eliminando = false;
+        }
+    }
+
+    private void IrAAgregarObraSocial()
+    {
+        NavigationManager.NavigateTo($"/profesional/agregar-obra-social/{profesionalId}");
+    }
+
+    private async Task<bool> ConfirmarAccion(string mensaje)
+    {
+        return await Task.FromResult(true); 
+    }
+}
