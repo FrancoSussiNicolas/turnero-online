@@ -1,0 +1,178 @@
+﻿@page "/profesional/especialidad"
+@using API.Clients
+@using DTOs
+@using Shared
+@inject NavigationManager NavigationManager
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <h2 class="mb-4">Seleccionar Especialidad</h2>
+
+            @if (loading)
+            {
+                <div class="alert alert-info" role="alert">
+                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                    Cargando especialidades...
+                </div>
+            }
+            else if (errorMessage != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error:</strong> @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
+                </div>
+            }
+            else if (especialidades != null && especialidades.Any())
+            {
+                <div class="card">
+                    <div class="card-body">
+                        <p class="text-muted mb-4">Selecciona la especialidad con la que deseas atender:</p>
+
+                        <div class="list-group">
+                            @foreach (var especialidad in especialidades.Where(e => e.Estado == 0))
+                            {
+                                <button type="button"
+                                        class="list-group-item list-group-item-action @(especialidadSeleccionada?.EspecialidadId == especialidad.EspecialidadId ? "active" : "")"
+                                        @onclick="() => SeleccionarEspecialidad(especialidad)">
+                                    <div class="d-flex w-100 justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">@especialidad.Descripcion</h6>
+                                            <p class="mb-0 text-muted small">ID: @especialidad.EspecialidadId</p>
+                                        </div>
+                                        @if (especialidadSeleccionada?.EspecialidadId == especialidad.EspecialidadId)
+                                        {
+                                            <span class="badge bg-success ms-2">Seleccionada</span>
+                                        }
+                                    </div>
+                                </button>
+                            }
+                        </div>
+
+                        @if (especialidadSeleccionada != null)
+                        {
+                            <div class="mt-4 p-3 border rounded bg-light">
+                                <p class="mb-3"><strong>Especialidad seleccionada:</strong> <span class="text-primary">@especialidadSeleccionada.Descripcion</span></p>
+                                <div>
+                                    <button type="button"
+                                            class="btn btn-success"
+                                            @onclick="ConfirmarCambio"
+                                            disabled="@guardando">
+                                        @if (guardando)
+                                        {
+                                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                        }
+                                        Confirmar Modificación
+                                    </button>
+                                    <button type="button"
+                                            class="btn btn-outline-secondary ms-2"
+                                            @onclick="Cancelar"
+                                            disabled="@guardando">
+                                        Cancelar
+                                    </button>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
+            else
+            {
+                <div class="alert alert-warning" role="alert">
+                    No hay especialidades disponibles en este momento.
+                </div>
+            }
+
+            @if (mensajeExito != null)
+            {
+                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    <strong>Éxito:</strong> @mensajeExito
+                    <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
+                </div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<EspecialidadDTO> especialidades;
+    private EspecialidadDTO especialidadSeleccionada;
+    private bool loading = true;
+    private bool guardando = false;
+    private string errorMessage;
+    private string mensajeExito;
+    private int profesionalId; 
+
+    protected override async Task OnInitializedAsync()
+    {
+        try
+        {
+
+            profesionalId = (int)SessionManager.PersonaId;
+
+            await CargarEspecialidades();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al cargar los datos: " + ex.Message;
+        }
+    }
+
+    private async Task CargarEspecialidades()
+    {
+        try
+        {
+            loading = true;
+            especialidades = await EspecialidadApiClient.GetAllAsync();
+        }
+        catch (Exception ex)
+        {
+            errorMessage = ex.Message;
+        }
+        finally
+        {
+            loading = false;
+        }
+    }
+
+    private void SeleccionarEspecialidad(EspecialidadDTO especialidad)
+    {
+        especialidadSeleccionada = especialidad;
+        errorMessage = null;
+    }
+
+    private async Task ConfirmarCambio()
+    {
+        if (especialidadSeleccionada == null)
+        {
+            errorMessage = "Debes seleccionar una especialidad.";
+            return;
+        }
+
+        try
+        {
+            guardando = true;
+            await ProfesionalApiClient.CambiarEspecialidadProfesional(profesionalId, especialidadSeleccionada.EspecialidadId);
+            mensajeExito = $"Especialidad actualizada a: {especialidadSeleccionada.Descripcion}";
+            especialidadSeleccionada = null;
+
+            // Redirigir después de 2 segundos
+            await Task.Delay(2000);
+            NavigationManager.NavigateTo("/profesional/perfil");
+        }
+        catch (Exception ex)
+        {
+            errorMessage = "Error al cambiar la especialidad: " + ex.Message;
+        }
+        finally
+        {
+            guardando = false;
+        }
+    }
+
+    private void Cancelar()
+    {
+        especialidadSeleccionada = null;
+        errorMessage = null;
+    }
+}
