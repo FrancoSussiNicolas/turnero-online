@@ -124,5 +124,16 @@ namespace Services
                 return true;
             }
         }
+
+        public Paciente? GetPlanObraSocialDePaciente(int idPaciente)
+        {
+            using (var context = new TurneroContext())
+            {
+                return context.Pacientes
+                    .Include(p => p.PlanObraSocial)
+                    .ThenInclude(po => po.ObraSocial)
+                    .FirstOrDefault(pac => pac.PersonaId == idPaciente);
+            }
+        }
     }
 }

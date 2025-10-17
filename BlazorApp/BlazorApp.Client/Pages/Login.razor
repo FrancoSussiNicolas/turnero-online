@@ -50,7 +50,7 @@
             {
             }
 
-            NavigationManager.NavigateTo(SessionManager.UserType == "Paciente" ? "paciente" : "profesional/home");
+            NavigationManager.NavigateTo(SessionManager.UserType == "Paciente" ? "paciente/home" : "profesional/home");
         }
         catch
         {

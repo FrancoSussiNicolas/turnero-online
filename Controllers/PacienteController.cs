@@ -81,5 +81,16 @@ namespace Controllers
 
             return NoContent();
         }
+
+        [Authorize(Roles = "Paciente")]
+        [HttpGet("{id}/plan-obra-social")]
+        public ActionResult<object> GetPlanObraSocial(int id)
+        {
+            var paciente = pacienteService.GetPlanObraSocialDePaciente(id);
+            if (paciente is null) return NotFound(new { message = "Paciente no encontrado" });
+
+            return Ok(paciente);
+        }
+
     }
 }
