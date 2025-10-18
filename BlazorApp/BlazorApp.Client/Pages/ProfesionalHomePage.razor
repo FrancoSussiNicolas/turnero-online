@@ -5,7 +5,6 @@
 @inject NavigationManager NavigationManager
 
 <div class="profesional-home">
-   
     <div class="welcome-section">
         <div class="container">
             <div class="row align-items-center py-5">
@@ -14,76 +13,38 @@
                     <p class="lead text-white-50">Gestiona tu agenda, especialidades y obras sociales desde aquí</p>
                 </div>
                 <div class="col-md-4 text-end">
-                    <div class="badge bg-success fs-6 px-3 py-2">
-                            @SessionManager.ApellidoNombre
-                    </div>
+                    <div class="badge bg-success fs-6 px-3 py-2">@SessionManager.ApellidoNombre</div>
                 </div>
             </div>
         </div>
     </div>
 
-    
     <div class="container py-5">
         <div class="row mb-5">
-            <div class="col-md-4 mb-3 mb-md-0">
-                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/especialidad")' style="cursor: pointer;">
-                    <div class="card-body text-center">
-                        <div class="icon-circle bg-primary text-white mx-auto mb-3">
-                            <i class="bi bi-briefcase fs-4"></i>
-                        </div>
-                        <h5 class="card-title">Mi Especialidad</h5>
-                        <p class="card-text text-muted small">Selecciona o actualiza tu especialidad profesional</p>
-                        <div class="mt-3">
-                            <span class="badge bg-light text-dark">Ver</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 mb-3 mb-md-0">
-                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/obras-sociales")' style="cursor: pointer;">
-                    <div class="card-body text-center">
-                        <div class="icon-circle bg-success text-white mx-auto mb-3">
-                            <i class="bi bi-hospital fs-4"></i>
-                        </div>
-                        <h5 class="card-title">Obras Sociales</h5>
-                        <p class="card-text text-muted small">Administra las obras sociales por las que atiendes</p>
-                        <div class="mt-3">
-                            <span class="badge bg-light text-dark">Gestionar</span>
+            @{
+                // Creo un array anónimo de objetos que contiene la información de cuatro tarjetas (título, ícono, color de fondo, ruta y descripción) que luego se iteran en un bucle @foreach para generar dinámicamente la interfaz
+                var cards = new[] {
+                        new { Title = "Mi Especialidad", Icon = "bi-briefcase", BgColor = "bg-primary", Route = "/profesional/especialidad", Desc = "Selecciona o actualiza tu especialidad profesional" },
+                        new { Title = "Obras Sociales", Icon = "bi-hospital", BgColor = "bg-success", Route = "/profesional/obras-sociales", Desc = "Administra las obras sociales por las que atiendes" },
+                        new { Title = "Mis Turnos", Icon = "bi-calendar3", BgColor = "bg-info", Route = "/profesional/turnos", Desc = "Visualiza y gestiona tus turnos disponibles" },
+                        new { Title = "Reporte Obras Sociales", Icon = "bi-calendar3", BgColor = "bg-info", Route = "/profesional/reporte", Desc = "Visualiza la cantidad de Pacientes que atiende por Obras Social" }
+                        };
+            }
+            @foreach (var card in cards)
+            {
+                <div class="col-md-4 mb-3">
+                    <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo(card.Route)' style="cursor: pointer;">
+                        <div class="card-body text-center">
+                            <div class="icon-circle @card.BgColor text-white mx-auto mb-3">
+                                <i class="bi @card.Icon fs-4"></i>
+                            </div>
+                            <h5 class="card-title">@card.Title</h5>
+                            <p class="card-text text-muted small">@card.Desc</p>
+                            <span class="badge bg-light text-dark mt-3">Ver</span>
                         </div>
                     </div>
                 </div>
-            </div>
-
-            <div class="col-md-4">
-                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/turnos")' style="cursor: pointer;">
-                    <div class="card-body text-center">
-                        <div class="icon-circle bg-info text-white mx-auto mb-3">
-                            <i class="bi bi-calendar3 fs-4"></i>
-                        </div>
-                        <h5 class="card-title">Mis Turnos</h5>
-                        <p class="card-text text-muted small">Visualiza y gestiona tus turnos disponibles</p>
-                        <div class="mt-3">
-                            <span class="badge bg-light text-dark">Ver</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-md-4 mt-4">
-                <div class="card h-100 shadow-sm hover-card" @onclick='() => NavigationManager.NavigateTo("/profesional/reporte")' style="cursor: pointer;">
-                    <div class="card-body text-center">
-                        <div class="icon-circle bg-info text-white mx-auto mb-3">
-                            <i class="bi bi-calendar3 fs-4"></i>
-                        </div>
-                        <h5 class="card-title">Reporte Obras Sociales</h5>
-                        <p class="card-text text-muted small">Visualiza la cantidad de Pacientes que atiende por Obras Social</p>
-                        <div class="mt-3">
-                            <span class="badge bg-light text-dark">Ver</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            }
         </div>
     </div>
 </div>
@@ -114,10 +75,10 @@
         border: none;
     }
 
-    .hover-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
-    }
+        .hover-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+        }
 
     .bg-primary {
         background-color: #667eea !important;
@@ -131,4 +92,3 @@
         background-color: #4299e1 !important;
     }
 </style>
-

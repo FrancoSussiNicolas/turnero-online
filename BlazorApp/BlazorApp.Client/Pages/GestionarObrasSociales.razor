@@ -11,14 +11,14 @@
 
             @if (loading)
             {
-                <div class="alert alert-info" role="alert">
-                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <div class="alert alert-info">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
                     Cargando obras sociales...
                 </div>
             }
             else if (errorMessage != null)
             {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show">
                     <strong>Error:</strong> @errorMessage
                     <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
                 </div>
@@ -30,26 +30,24 @@
                         <h5 class="mb-0">Obras Sociales Actuales</h5>
                     </div>
                     <div class="card-body">
-                        @if (obrasSocialesActuales != null && obrasSocialesActuales.Any())
+                        @if (obrasSocialesActuales?.Any() == true)
                         {
                             <div class="list-group">
-                                @foreach (var obraSocial in obrasSocialesActuales)
+                                @foreach (var os in obrasSocialesActuales)
                                 {
                                     <div class="list-group-item d-flex justify-content-between align-items-center">
                                         <div>
-                                            <h6 class="mb-1">@obraSocial.NombreObraSocial</h6>
-                                            <small class="text-muted">ID: @obraSocial.ObraSocialId</small>
+                                            <h6 class="mb-1">@os.NombreObraSocial</h6>
+                                            <small class="text-muted">ID: @os.ObraSocialId</small>
                                         </div>
-                                        <button type="button"
-                                                class="btn btn-danger btn-sm"
-                                                @onclick="() => EliminarObraSocial(obraSocial.ObraSocialId)"
-                                                disabled="@eliminando">
+                                        <button type="button" class="btn btn-danger btn-sm" @onclick="() => EliminarObraSocial(os.ObraSocialId)" disabled="@eliminando">
                                             @if (eliminando)
                                             {
-                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                <span class="spinner-border spinner-border-sm"></span>
                                             }
                                             else
                                             {
+
                                                 <span>Eliminar</span>
                                             }
                                         </button>
@@ -65,16 +63,14 @@
                 </div>
 
                 <div class="mb-4">
-                    <button type="button"
-                            class="btn btn-success btn-lg"
-                            @onclick="IrAAgregarObraSocial">
+                    <button type="button" class="btn btn-success btn-lg" @onclick="IrAAgregarObraSocial">
                         <i class="bi bi-plus-circle"></i> Agregar Obra Social
                     </button>
                 </div>
 
                 @if (mensajeExito != null)
                 {
-                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show">
                         <strong>Éxito:</strong> @mensajeExito
                         <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
                     </div>
@@ -96,14 +92,10 @@
     {
         try
         {
-            profesionalId = profesionalId = (int)SessionManager.PersonaId;
-
+            profesionalId = (int)SessionManager.PersonaId;
             await CargarObrasSociales();
         }
-        catch (Exception ex)
-        {
-            errorMessage = "Error al cargar los datos: " + ex.Message;
-        }
+        catch (Exception ex) { errorMessage = "Error al cargar los datos: " + ex.Message; }
     }
 
     private async Task CargarObrasSociales()
@@ -113,20 +105,13 @@
             loading = true;
             obrasSocialesActuales = await ProfesionalApiClient.GetObrasSocialesAsync(profesionalId);
         }
-        catch (Exception ex)
-        {
-            errorMessage = ex.Message;
-        }
-        finally
-        {
-            loading = false;
-        }
+        catch (Exception ex) { errorMessage = ex.Message; }
+        finally { loading = false; }
     }
 
     private async Task EliminarObraSocial(int obraSocialId)
     {
-        if (!await ConfirmarAccion("¿Estás seguro de que deseas eliminar esta obra social?"))
-            return;
+        if (!await ConfirmarAccion("¿Estás seguro de que deseas eliminar esta obra social?")) return;
 
         try
         {
@@ -135,23 +120,10 @@
             mensajeExito = "Obra social eliminada correctamente.";
             await CargarObrasSociales();
         }
-        catch (Exception ex)
-        {
-            errorMessage = "Error al eliminar la obra social: " + ex.Message;
-        }
-        finally
-        {
-            eliminando = false;
-        }
+        catch (Exception ex) { errorMessage = "Error al eliminar la obra social: " + ex.Message; }
+        finally { eliminando = false; }
     }
 
-    private void IrAAgregarObraSocial()
-    {
-        NavigationManager.NavigateTo($"/profesional/agregar-obra-social/{profesionalId}");
-    }
-
-    private async Task<bool> ConfirmarAccion(string mensaje)
-    {
-        return await Task.FromResult(true); 
-    }
+    private void IrAAgregarObraSocial() => NavigationManager.NavigateTo($"/profesional/agregar-obra-social/{profesionalId}");
+    private async Task<bool> ConfirmarAccion(string mensaje) => await Task.FromResult(true); // Método asincrónico que siempre devuelve true de forma inmediata, sin hacer ninguna validación real del mensaje que recibe como parámetro.
 }
