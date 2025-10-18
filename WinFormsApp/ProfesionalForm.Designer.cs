@@ -32,6 +32,7 @@
             btnVolver = new Button();
             btnEliminarProfesional = new Button();
             tableLayoutPanel1 = new TableLayoutPanel();
+            btnAgregarProfesional = new Button();
             ((System.ComponentModel.ISupportInitialize)ProfesionalesDataGridView).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -51,7 +52,7 @@
             // 
             btnVolver.Anchor = AnchorStyles.None;
             btnVolver.BackColor = SystemColors.ActiveBorder;
-            btnVolver.Location = new Point(223, 6);
+            btnVolver.Location = new Point(130, 6);
             btnVolver.Name = "btnVolver";
             btnVolver.Size = new Size(110, 37);
             btnVolver.TabIndex = 6;
@@ -63,7 +64,7 @@
             // 
             btnEliminarProfesional.Anchor = AnchorStyles.None;
             btnEliminarProfesional.BackColor = Color.FromArgb(128, 255, 128);
-            btnEliminarProfesional.Location = new Point(781, 6);
+            btnEliminarProfesional.Location = new Point(501, 6);
             btnEliminarProfesional.Name = "btnEliminarProfesional";
             btnEliminarProfesional.Size = new Size(110, 37);
             btnEliminarProfesional.TabIndex = 7;
@@ -74,9 +75,11 @@
             // tableLayoutPanel1
             // 
             tableLayoutPanel1.BackColor = SystemColors.ControlDark;
-            tableLayoutPanel1.ColumnCount = 2;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
+            tableLayoutPanel1.ColumnCount = 3;
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.Controls.Add(btnAgregarProfesional, 2, 0);
             tableLayoutPanel1.Controls.Add(btnEliminarProfesional, 1, 0);
             tableLayoutPanel1.Controls.Add(btnVolver, 0, 0);
             tableLayoutPanel1.Dock = DockStyle.Bottom;
@@ -87,6 +90,18 @@
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.Size = new Size(1115, 100);
             tableLayoutPanel1.TabIndex = 8;
+            // 
+            // btnAgregarProfesional
+            // 
+            btnAgregarProfesional.Anchor = AnchorStyles.None;
+            btnAgregarProfesional.BackColor = Color.FromArgb(128, 128, 255);
+            btnAgregarProfesional.Location = new Point(873, 6);
+            btnAgregarProfesional.Name = "btnAgregarProfesional";
+            btnAgregarProfesional.Size = new Size(110, 37);
+            btnAgregarProfesional.TabIndex = 8;
+            btnAgregarProfesional.Text = "Agregar";
+            btnAgregarProfesional.UseVisualStyleBackColor = false;
+            btnAgregarProfesional.Click += this.btnAgregarProfesional_Click;
             // 
             // ProfesionalForm
             // 
@@ -107,5 +122,6 @@
         private Button btnVolver;
         private Button btnEliminarProfesional;
         private TableLayoutPanel tableLayoutPanel1;
+        private Button btnAgregarProfesional;
     }
 }

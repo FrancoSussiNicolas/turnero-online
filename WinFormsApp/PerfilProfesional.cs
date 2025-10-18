@@ -61,7 +61,8 @@ namespace WinFormsApp
                         txtApellidoNombre.Text,
                         txtMail.Text,
                         profesional.Contrasenia,
-                        txtMatricula.Text
+                        txtMatricula.Text, 
+                        profesional.EspecialidadId
                     );
                     profData.PersonaId = (int)SessionManager.PersonaId;
 

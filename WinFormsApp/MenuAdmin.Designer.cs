@@ -31,18 +31,14 @@
             menuStrip1 = new MenuStrip();
             profesionalesToolStripMenuItem = new ToolStripMenuItem();
             pacienteToolStripMenuItem = new ToolStripMenuItem();
+            turnosToolStripMenuItem = new ToolStripMenuItem();
             consultoriosToolStripMenuItem = new ToolStripMenuItem();
             especialidadToolStripMenuItem = new ToolStripMenuItem();
             obraSocialToolStripMenuItem = new ToolStripMenuItem();
-            verObrasSocialesToolStripMenuItem = new ToolStripMenuItem();
-            crearObraSocialToolStripMenuItem = new ToolStripMenuItem();
-            modificarObraSocialToolStripMenuItem = new ToolStripMenuItem();
-            eliminarObraSocialToolStripMenuItem = new ToolStripMenuItem();
             planObraSocialToolStripMenuItem = new ToolStripMenuItem();
             practicaToolStripMenuItem = new ToolStripMenuItem();
             perfilToolStripMenuItem = new ToolStripMenuItem();
             salirToolStripMenuItem = new ToolStripMenuItem();
-            turnosToolStripMenuItem = new ToolStripMenuItem();
             menuStrip1.SuspendLayout();
             SuspendLayout();
             // 
@@ -69,6 +65,13 @@
             pacienteToolStripMenuItem.Text = "Paciente";
             pacienteToolStripMenuItem.Click += pacienteToolStripMenuItem_Click;
             // 
+            // turnosToolStripMenuItem
+            // 
+            turnosToolStripMenuItem.Name = "turnosToolStripMenuItem";
+            turnosToolStripMenuItem.Size = new Size(55, 20);
+            turnosToolStripMenuItem.Text = "Turnos";
+            turnosToolStripMenuItem.Click += turnosToolStripMenuItem_Click;
+            // 
             // consultoriosToolStripMenuItem
             // 
             consultoriosToolStripMenuItem.Name = "consultoriosToolStripMenuItem";
@@ -85,35 +88,10 @@
             // 
             // obraSocialToolStripMenuItem
             // 
-            obraSocialToolStripMenuItem.DropDownItems.AddRange(new ToolStripItem[] { verObrasSocialesToolStripMenuItem, crearObraSocialToolStripMenuItem, modificarObraSocialToolStripMenuItem, eliminarObraSocialToolStripMenuItem });
             obraSocialToolStripMenuItem.Name = "obraSocialToolStripMenuItem";
             obraSocialToolStripMenuItem.Size = new Size(79, 20);
             obraSocialToolStripMenuItem.Text = "Obra Social";
             obraSocialToolStripMenuItem.Click += obraSocialToolStripMenuItem_Click;
-            // 
-            // verObrasSocialesToolStripMenuItem
-            // 
-            verObrasSocialesToolStripMenuItem.Name = "verObrasSocialesToolStripMenuItem";
-            verObrasSocialesToolStripMenuItem.Size = new Size(185, 22);
-            verObrasSocialesToolStripMenuItem.Text = "Ver obras sociales";
-            // 
-            // crearObraSocialToolStripMenuItem
-            // 
-            crearObraSocialToolStripMenuItem.Name = "crearObraSocialToolStripMenuItem";
-            crearObraSocialToolStripMenuItem.Size = new Size(185, 22);
-            crearObraSocialToolStripMenuItem.Text = "Crear obra social";
-            // 
-            // modificarObraSocialToolStripMenuItem
-            // 
-            modificarObraSocialToolStripMenuItem.Name = "modificarObraSocialToolStripMenuItem";
-            modificarObraSocialToolStripMenuItem.Size = new Size(185, 22);
-            modificarObraSocialToolStripMenuItem.Text = "Modificar obra social";
-            // 
-            // eliminarObraSocialToolStripMenuItem
-            // 
-            eliminarObraSocialToolStripMenuItem.Name = "eliminarObraSocialToolStripMenuItem";
-            eliminarObraSocialToolStripMenuItem.Size = new Size(185, 22);
-            eliminarObraSocialToolStripMenuItem.Text = "Eliminar obra social";
             // 
             // planObraSocialToolStripMenuItem
             // 
@@ -143,13 +121,6 @@
             salirToolStripMenuItem.Text = "Salir";
             salirToolStripMenuItem.Click += salirToolStripMenuItem_Click;
             // 
-            // turnosToolStripMenuItem
-            // 
-            turnosToolStripMenuItem.Name = "turnosToolStripMenuItem";
-            turnosToolStripMenuItem.Size = new Size(55, 20);
-            turnosToolStripMenuItem.Text = "Turnos";
-            turnosToolStripMenuItem.Click += turnosToolStripMenuItem_Click;
-            // 
             // MenuAdmin
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -174,10 +145,6 @@
         private ToolStripMenuItem consultoriosToolStripMenuItem;
         private ToolStripMenuItem especialidadToolStripMenuItem;
         private ToolStripMenuItem obraSocialToolStripMenuItem;
-        private ToolStripMenuItem verObrasSocialesToolStripMenuItem;
-        private ToolStripMenuItem crearObraSocialToolStripMenuItem;
-        private ToolStripMenuItem modificarObraSocialToolStripMenuItem;
-        private ToolStripMenuItem eliminarObraSocialToolStripMenuItem;
         private ToolStripMenuItem pacienteToolStripMenuItem;
         private ToolStripMenuItem planObraSocialToolStripMenuItem;
         private ToolStripMenuItem practicaToolStripMenuItem;

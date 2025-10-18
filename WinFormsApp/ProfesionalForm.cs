@@ -67,7 +67,7 @@ namespace WinFormsApp
                 }
                 if (ProfesionalesDataGridView.Columns["Contrasenia"] != null)
                 {
-                    ProfesionalesDataGridView.Columns["Contrasenia"].Visible = false; 
+                    ProfesionalesDataGridView.Columns["Contrasenia"].Visible = false;
                 }
 
                 if (ProfesionalesDataGridView.Columns["Matricula"] != null)
@@ -126,7 +126,8 @@ namespace WinFormsApp
 
         private async void btnEliminarProfesional_Click(object sender, EventArgs e)
         {
-            if (ProfesionalesDataGridView.SelectedRows.Count > 0) {
+            if (ProfesionalesDataGridView.SelectedRows.Count > 0)
+            {
 
                 int id = Convert.ToInt32(ProfesionalesDataGridView.SelectedRows[0].Cells["PersonaId"].Value);
 
@@ -137,21 +138,33 @@ namespace WinFormsApp
                                       MessageBoxButtons.YesNo,
                                       MessageBoxIcon.Question);
 
-                    if (result == DialogResult.Yes) { 
+                    if (result == DialogResult.Yes)
+                    {
                         await ProfesionalApiClient.DisableAsync(id);
                         MessageBox.Show("El profesional fue eliminado exitosamente", "Exito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
                         await GetAllAndLoad();
                     }
                 }
-                catch (Exception ex) {
+                catch (Exception ex)
+                {
                     MessageBox.Show($"Error al eliminar profesional: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }    
+                }
             }
             else
             {
                 MessageBox.Show("Selecciona una fila primero.");
             }
+        }
+
+        private async void btnAgregarProfesional_Click(object sender, EventArgs e)
+        {
+            CrearProfesional crearProfesional = new CrearProfesional();
+            DialogResult result = crearProfesional.ShowDialog();
+
+            if (result == DialogResult.OK) await GetAllAndLoad();
+
+            crearProfesional.Dispose();
         }
     }
 }
