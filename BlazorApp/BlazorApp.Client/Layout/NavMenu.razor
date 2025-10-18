@@ -1,5 +1,6 @@
 ﻿@using Shared
 @inject NavigationManager NavigationManager
+@* @inject ProtectedLocalStorage localStorage *@
 
 <div class="top-row ps-3 navbar navbar-dark">
     <div class="container-fluid">
@@ -78,20 +79,21 @@
             </div>
         }
 
-        <div class="nav-item px-3">
+        @* <div class="nav-item px-3">
             <button class="nav-link" @onclick="Logout">
                 <i class="bi bi-box-arrow-left nav-icon" aria-hidden="true"></i> Cerrar Sesión
             </button>
-        </div>
+        </div> *@
 
     </nav>
 </div>
 
-@code {
+@* @code {
 
-    private void Logout()
+    private async Task Logout()
     {
+        await localStorage.DeleteAsync("jwtToken");
         SessionManager.ClearSession();
         NavigationManager.NavigateTo("/");
     }
-}
+} *@

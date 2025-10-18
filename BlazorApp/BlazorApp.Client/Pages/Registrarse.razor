@@ -1,5 +1,8 @@
 ﻿@page "/register"
 @using System.ComponentModel.DataAnnotations
+@using API.Clients
+@using DTOs
+@inject NavigationManager NavigationManager
 
 <h1 class="text-center mt-4">Registro de Paciente</h1>
 
@@ -7,49 +10,77 @@
     <div class="card p-4 shadow-sm" style="width: 400px;">
         <EditForm Model="@registerModel" OnValidSubmit="@HandleRegister">
             <DataAnnotationsValidator />
-            <ValidationSummary />
-
-            <div class="mb-3">
-                <label class="form-label">Apellido y Nombre</label>
-                <InputText @bind-Value="registerModel.ApellidoNombre" class="form-control" />
-            </div>
             
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @error
+                </div>
+            }
+
             <div class="mb-3">
-                <label class="form-label">Correo electrónico</label>
-                <InputText @bind-Value="registerModel.Mail" class="form-control" />
+                <label class="form-label" for="register-apenom">Apellido y Nombre</label>
+                <InputText @bind-Value="registerModel.ApellidoNombre" id="register-apenom" class="form-control" placeholder="Ingrese su apellido y nombre" />
+                <ValidationMessage For="@(() => registerModel.ApellidoNombre)" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">DNI</label>
-                <InputText @bind-Value="registerModel.DNI" class="form-control" />
+                <label class="form-label" for="register-mail">Correo electrónico</label>
+                <InputText @bind-Value="registerModel.Mail" id="register-mail" class="form-control" placeholder="ejemplo@correo.com" />
+                <ValidationMessage For="@(() => registerModel.Mail)" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Sexo</label>
-                <InputSelect @bind-Value="registerModel.Sexo" class="form-select">
+                <label class="form-label" for="register-dni">DNI</label>
+                <InputText @bind-Value="registerModel.DNI" id="register-dni" class="form-control" placeholder="Ingrese su DNI sin puntos" />
+                <ValidationMessage For="@(() => registerModel.DNI)" />
+            </div>
+
+            <div class="mb-3">
+                <label class="form-label" for="register-sexo">Sexo</label>
+                <InputSelect @bind-Value="registerModel.Sexo" id="register-sexo" class="form-select">
                     <option value="">Seleccionar...</option>
                     <option value="Masculino">Masculino</option>
                     <option value="Femenino">Femenino</option>
                     <option value="Otro">Otro</option>
                 </InputSelect>
+                <ValidationMessage For="@(() => registerModel.Sexo)" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Fecha de nacimiento</label>
-                <InputDate @bind-Value="registerModel.FechaNacimiento" class="form-control" />
+                <label class="form-label" for="register-fechanac">Fecha de nacimiento</label>
+                <InputDate @bind-Value="registerModel.FechaNacimiento" id="register-fechanac" class="form-control" />
+                <ValidationMessage For="@(() => registerModel.FechaNacimiento)" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Teléfono</label>
-                <InputText @bind-Value="registerModel.Telefono" class="form-control" />
+                <label class="form-label" for="register-tel">Teléfono</label>
+                <InputText @bind-Value="registerModel.Telefono" id="register-tel" class="form-control" placeholder="Ingrese su número de teléfono" />
+                <ValidationMessage For="@(() => registerModel.Telefono)" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Contraseña</label>
-                <InputText @bind-Value="registerModel.Contrasenia" class="form-control" type="password" />
+                <label class="form-label" for="register-pass">Contraseña</label>
+                <div class="input-group">
+                    <InputText @bind-Value="registerModel.Contrasenia" id="register-pass" class="form-control" type="@passwordInputType" placeholder="Mínimo 8 caracteres, 1 número" />
+                    <button class="btn btn-outline-secondary" type="button" @onclick="TogglePasswordVisibility">
+                        @(showPassword ? "Ocultar" : "Ver")
+                    </button>
+                </div>
+                <ValidationMessage For="@(() => registerModel.Contrasenia)" />
             </div>
 
-            <button type="submit" class="btn btn-success w-100">Registrarse</button>
+            <button type="submit" class="btn btn-success w-100" disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span> Registrando...</span>
+                }
+                else
+                {
+                    <span>Registrarse</span>
+                }
+            </button>
         </EditForm>
 
         <div class="text-center mt-3">
@@ -60,44 +91,38 @@
 </div>
 
 @code {
-    private RegisterModel registerModel = new();
+    private PacienteDTO registerModel = new();
+    private string error = string.Empty;
+    private bool isLoading = false; 
 
-    private void HandleRegister()
+    private bool showPassword = false;
+    private string passwordInputType = "password";
+
+    private async void HandleRegister()
     {
-        // Acá iría la lógica para enviar los datos al backend
-        Console.WriteLine($"Registrado: {registerModel.ApellidoNombre}");
+        isLoading = true;
+        error = string.Empty;
+
+        try
+        {
+            await PacienteApiClient.AddAsync((PacienteDTO)registerModel);
+            NavigationManager.NavigateTo("/"); 
+        }
+        catch (Exception exc)
+        {
+            error = exc.Message;
+            StateHasChanged();
+        }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
     }
 
-    public class RegisterModel
+    private void TogglePasswordVisibility()
     {
-        [Required(ErrorMessage = "El nombre es obligatorio")]
-        [StringLength(100, MinimumLength = 3, ErrorMessage = "Debe tener entre 3 y 100 caracteres")]
-        [RegularExpression(@"^[a-zA-ZáéíóúÁÉÍÓÚñÑ\s]+$", ErrorMessage = "Solo puede contener letras y espacios")]
-        public string ApellidoNombre { get; set; } = string.Empty;
-
-        [Required]
-        [EmailAddress]
-        public string Mail { get; set; } = string.Empty;
-
-        [Required]
-        [DataType(DataType.Password)]
-        [StringLength(50, MinimumLength = 8)]
-        [RegularExpression(@"^(?=.*[A-Z])(?=.*\d).+$", ErrorMessage = "Debe tener al menos una mayúscula y un número.")]
-        public string Contrasenia { get; set; } = string.Empty;
-
-        [Required]
-        public string DNI { get; set; } = string.Empty;
-
-        [Required]
-        public string Sexo { get; set; } = string.Empty;
-
-        [Required]
-        public DateOnly FechaNacimiento { get; set; } = DateOnly.FromDateTime(DateTime.Today);
-
-        [Required]
-        public string Telefono { get; set; } = string.Empty;
-
-        [Required]
-        public int PlanObraSocialId { get; set; }
+        showPassword = !showPassword;
+        passwordInputType = showPassword ? "text" : "password";
     }
 }

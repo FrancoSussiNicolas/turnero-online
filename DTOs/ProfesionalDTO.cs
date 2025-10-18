@@ -29,6 +29,7 @@ namespace DTOs
             Contrasenia = contrasenia;
             Matricula = matricula;
         }
+
         public EstadoConsultorioDTO Estado { get; set; }
     }
 }

@@ -150,6 +150,35 @@ namespace API.Clients
             }
         }
 
+        public static async Task<PacienteDTO> AsignarPlanAsync(int pacienteId, int planId)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"pacientes/{pacienteId}/plan/{planId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<PacienteDTO>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al asignar el plan de obra social al paciente con Id {pacienteId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al asignar el plan de obra social al paciente con Id {pacienteId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al asignar el plan de obra social al paciente con Id {pacienteId}: {ex.Message}", ex);
+            }
+        }
+
         public static async Task<PacienteDTO> GetPlanObraSocialAsync(int pacienteId)
         {
             try

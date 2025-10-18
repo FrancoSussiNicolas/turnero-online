@@ -19,7 +19,7 @@ namespace Controllers
             this.planObraSocialService = planObraSocialService;
         }
 
-       [Authorize]
+        [Authorize]
         [HttpGet]
         public ActionResult<IEnumerable<ObraSocial>> GetAll()
         {

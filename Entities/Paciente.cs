@@ -21,9 +21,9 @@ namespace Entities
 
         public string Telefono { get; set; }
 
-        public int PlanObraSocialId { get; set; }
+        public int? PlanObraSocialId { get; set; }
 
-        public PlanObraSocial PlanObraSocial { get; set; }
+        public PlanObraSocial? PlanObraSocial { get; set; }
 
         [JsonIgnore]
         public List<Turno> Turno { get; set; }
@@ -38,19 +38,18 @@ namespace Entities
             PlanObraSocialId = planObraSocialId;
         }
 
-        public Paciente(string apellidoNombre, string mail, string dni, string sexo, DateOnly fechaNacimiento, string telefono, int planObraSocialId)
+        public Paciente(string apellidoNombre, string mail, string dni, string sexo, DateOnly fechaNacimiento, string telefono)
             : base(apellidoNombre, mail)
         {
             Dni = dni;
             Sexo = sexo; 
             FechaNacimiento = fechaNacimiento;
             Telefono = telefono;
-            PlanObraSocialId = planObraSocialId;
         }
 
-        public static Paciente Crear(string apellidoNombre, string mail, string contrasenia, string dni, string sexo, DateOnly fechaNacimiento, string telefono, int planObraSocialId)
+        public static Paciente Crear(string apellidoNombre, string mail, string contrasenia, string dni, string sexo, DateOnly fechaNacimiento, string telefono)
         {
-            var p = new Paciente(apellidoNombre, mail, dni, sexo, fechaNacimiento, telefono, planObraSocialId);
+            var p = new Paciente(apellidoNombre, mail, dni, sexo, fechaNacimiento, telefono);
             p.SetPassword(contrasenia);
             return p;
         }

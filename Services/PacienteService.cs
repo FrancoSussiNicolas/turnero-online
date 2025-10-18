@@ -56,8 +56,7 @@ namespace Services
                     paciente.DNI,
                     paciente.Sexo,
                     paciente.FechaNacimiento,
-                    paciente.Telefono,
-                    paciente.PlanObraSocialId
+                    paciente.Telefono
                 );
 
                 context.Pacientes.Add(newPaciente);
@@ -120,6 +119,23 @@ namespace Services
                 if (pac == null) return false;
 
                 context.Pacientes.Remove(pac);
+                context.SaveChanges();
+                return true;
+            }
+        }
+
+        public bool AsignarPlanOs(int idPlan, int idPac)
+        {
+            using (var context = new TurneroContext())
+            {
+                var plan = context.PlanesObrasSociales.FirstOrDefault(p => p.PlanObraSocialId == idPlan);
+                if (plan is null) return false;
+
+                var pac = context.Pacientes.FirstOrDefault(p => p.PersonaId == idPac);
+                if (pac is null) return false;
+
+                pac.PlanObraSocialId = plan.PlanObraSocialId;
+                pac.PlanObraSocial = plan;
                 context.SaveChanges();
                 return true;
             }

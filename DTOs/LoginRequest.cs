@@ -11,7 +11,6 @@ namespace DTOs
 
         [Required(ErrorMessage = "La contraseña es obligatoria")]
         [DataType(DataType.Password)]
-        [RegularExpression(@"^(?=.*\d).+$", ErrorMessage = "Debe contener al menos un número.")]
         public string Password { get; set; } = string.Empty;
 
         public LoginRequest() { }
