@@ -8,22 +8,20 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="d-flex align-items-center mb-4">
-                <button type="button" class="btn btn-outline-secondary me-3" @onclick="Volver">
-                    ← Volver
-                </button>
+                <button type="button" class="btn btn-outline-secondary me-3" @onclick="Volver">← Volver</button>
                 <h2 class="mb-0">Mi Perfil</h2>
             </div>
 
             @if (cargando)
             {
-                <div class="alert alert-info" role="alert">
-                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <div class="alert alert-info">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
                     Cargando perfil...
                 </div>
             }
             else if (errorMessage != null)
             {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show">
                     <strong>Error:</strong> @errorMessage
                     <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
                 </div>
@@ -47,7 +45,6 @@
                                     <p class="text-muted">@pacienteDTO.Sexo</p>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <p class="mb-1"><strong>Fecha de Nacimiento:</strong></p>
@@ -58,7 +55,6 @@
                                     <p class="text-muted">@pacienteDTO.Telefono</p>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <p class="mb-1"><strong>Plan Obra Social:</strong></p>
@@ -68,13 +64,18 @@
                                         {
                                             <span> de la obra social <strong>@nombreObra</strong></span>
                                         }
+                                        else
+                                        {
+
+                                            <span>No tienes Obra Social</span>
+                                        }
                                     </p>
-                                    <small class="text-muted">No se puede modificar desde aquí</small>
+                                    <small class="text-muted">
+                                        <a href="/paciente/cambiar-plan" class="link-primary">Cambiar Plan</a>
+                                    </small>
                                 </div>
                             </div>
-
                             <hr />
-
                             <button type="button" class="btn btn-primary" @onclick="ActivarEdicion">
                                 <i class="bi bi-pencil"></i> Editar Perfil
                             </button>
@@ -96,7 +97,6 @@
                                     </select>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="fechaNacimiento" class="form-label"><strong>Fecha de Nacimiento:</strong></label>
@@ -107,7 +107,6 @@
                                     <input type="tel" class="form-control" id="telefono" @bind="pacienteDTO.Telefono" />
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-12">
                                     <label for="planOS" class="form-label"><strong>Plan Obra Social:</strong></label>
@@ -115,26 +114,22 @@
                                     <small class="text-muted">No se puede modificar desde aquí</small>
                                 </div>
                             </div>
-
                             <hr />
-
                             <button type="button" class="btn btn-success" @onclick="GuardarCambios" disabled="@guardando">
                                 @if (guardando)
                                 {
-                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
                                 }
                                 Guardar Cambios
                             </button>
-                            <button type="button" class="btn btn-outline-secondary ms-2" @onclick="CancelarEdicion" disabled="@guardando">
-                                Cancelar
-                            </button>
+                            <button type="button" class="btn btn-outline-secondary ms-2" @onclick="CancelarEdicion" disabled="@guardando">Cancelar</button>
                         }
                     </div>
                 </div>
 
                 @if (mensajeExito != null)
                 {
-                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show mt-3">
                         <strong>Éxito:</strong> @mensajeExito
                         <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
                     </div>
@@ -158,15 +153,8 @@
 
     protected override async Task OnInitializedAsync()
     {
-        try
-        {
-            await CargarPerfil();
-        }
-        catch (Exception ex)
-        {
-            errorMessage = "Error al cargar el perfil: " + ex.Message;
-            cargando = false;
-        }
+        try { await CargarPerfil(); }
+        catch (Exception ex) { errorMessage = "Error al cargar el perfil: " + ex.Message; cargando = false; }
     }
 
     private async Task CargarPerfil()
@@ -175,39 +163,27 @@
         {
             cargando = true;
             int pacienteId = (int)SessionManager.PersonaId;
-
             pacienteDTO = await PacienteApiClient.GetPlanObraSocialAsync(pacienteId);
             fechaNacimientoString = pacienteDTO.FechaNacimiento.ToString("yyyy-MM-dd");
-
             GuardarCopiaOriginal();
-
             await CargarPlanObraSocial();
         }
-        catch (Exception ex)
-        {
-            errorMessage = ex.Message;
-        }
-        finally
-        {
-            cargando = false;
-        }
+        catch (Exception ex) { errorMessage = ex.Message; }
+        finally { cargando = false; }
     }
 
-    private void GuardarCopiaOriginal()
+    private void GuardarCopiaOriginal() => pacienteOriginal = new PacienteDTO
     {
-        pacienteOriginal = new PacienteDTO
-        {
-            PersonaId = pacienteDTO.PersonaId,
-            ApellidoNombre = pacienteDTO.ApellidoNombre,
-            Mail = pacienteDTO.Mail,
-            Contrasenia = pacienteDTO.Contrasenia,
-            DNI = pacienteDTO.DNI,
-            Sexo = pacienteDTO.Sexo,
-            FechaNacimiento = pacienteDTO.FechaNacimiento,
-            Telefono = pacienteDTO.Telefono,
-            PlanObraSocialId = pacienteDTO.PlanObraSocialId
-        };
-    }
+        PersonaId = pacienteDTO.PersonaId,
+        ApellidoNombre = pacienteDTO.ApellidoNombre,
+        Mail = pacienteDTO.Mail,
+        Contrasenia = pacienteDTO.Contrasenia,
+        DNI = pacienteDTO.DNI,
+        Sexo = pacienteDTO.Sexo,
+        FechaNacimiento = pacienteDTO.FechaNacimiento,
+        Telefono = pacienteDTO.Telefono,
+        PlanObraSocialId = pacienteDTO.PlanObraSocialId
+    };
 
     private async Task CargarPlanObraSocial()
     {
@@ -217,70 +193,36 @@
             var pacienteConPlan = await PacienteApiClient.GetPlanObraSocialAsync(pacienteId);
             var planObraSocial = await PlanApiClient.GetAsync(pacienteConPlan.PlanObraSocialId);
             var obraSocial = await ObraSocialApiClient.GetAsync(planObraSocial.ObraSocialId);
-
             nombreObra = obraSocial.NombreObraSocial;
             planObraSocialInfo = planObraSocial.NombrePlan;
         }
-        catch (Exception ex)
-        {
-            planObraSocialInfo = "Error al cargar información de la obra social";
-            nombreObra = "";
-        }
+        catch (Exception ex) { planObraSocialInfo = "Error al cargar información de la obra social"; nombreObra = ""; }
     }
 
-    private void ActivarEdicion()
-    {
-        editando = true;
-        errorMessage = null;
-    }
+    private void ActivarEdicion() { editando = true; errorMessage = null; }
 
     private async Task GuardarCambios()
     {
-        if (string.IsNullOrWhiteSpace(pacienteDTO.DNI))
-        {
-            errorMessage = "El DNI no puede estar vacío.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(pacienteDTO.Sexo))
-        {
-            errorMessage = "Debe seleccionar un sexo.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(pacienteDTO.Telefono))
-        {
-            errorMessage = "El teléfono no puede estar vacío.";
-            return;
-        }
+        if (string.IsNullOrWhiteSpace(pacienteDTO.DNI)) { errorMessage = "El DNI no puede estar vacío."; return; }
+        if (string.IsNullOrWhiteSpace(pacienteDTO.Sexo)) { errorMessage = "Debe seleccionar un sexo."; return; }
+        if (string.IsNullOrWhiteSpace(pacienteDTO.Telefono)) { errorMessage = "El teléfono no puede estar vacío."; return; }
 
         try
         {
-            if (DateOnly.TryParse(fechaNacimientoString, out DateOnly fechaParsed))
-            {
-                pacienteDTO.FechaNacimiento = fechaParsed;
-            }
-            else
+            if (!DateOnly.TryParse(fechaNacimientoString, out DateOnly fechaParsed))
             {
                 errorMessage = "Fecha de nacimiento inválida.";
                 return;
             }
-
+            pacienteDTO.FechaNacimiento = fechaParsed;
             guardando = true;
             await PacienteApiClient.UpdateAsync(pacienteDTO);
             mensajeExito = "Perfil actualizado correctamente.";
             editando = false;
-
             GuardarCopiaOriginal();
         }
-        catch (Exception ex)
-        {
-            errorMessage = "Error al guardar cambios: " + ex.Message;
-        }
-        finally
-        {
-            guardando = false;
-        }
+        catch (Exception ex) { errorMessage = "Error al guardar cambios: " + ex.Message; }
+        finally { guardando = false; }
     }
 
     private void CancelarEdicion()
@@ -309,14 +251,8 @@
             pacienteDTO.FechaNacimiento = fecha;
             fechaNacimientoString = fecha.ToString("yyyy-MM-dd");
         }
-        else
-        {
-            fechaNacimientoString = "";
-        }
+        else { fechaNacimientoString = ""; }
     }
 
-    private void Volver()
-    {
-        NavigationManager.NavigateTo("/paciente/home");
-    }
+    private void Volver() => NavigationManager.NavigateTo("/paciente/home");
 }

@@ -1,0 +1,183 @@
+﻿@page "/paciente/cambiar-plan"
+@using API.Clients
+@using DTOs
+@using Shared
+@inject NavigationManager NavigationManager
+
+<div class="container mt-5">
+    <div class="row justify-content-center">
+        <div class="col-md-10">
+            <div class="d-flex align-items-center mb-4">
+                <button type="button" class="btn btn-outline-secondary me-3" @onclick="Volver">← Volver</button>
+                <h2 class="mb-0">Cambiar Plan de Obra Social</h2>
+            </div>
+
+            @if (cargando)
+            {
+                <div class="alert alert-info">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
+                    Cargando planes disponibles...
+                </div>
+            }
+            else if (errorMessage != null)
+            {
+                <div class="alert alert-danger alert-dismissible fade show">
+                    <strong>Error:</strong> @errorMessage
+                    <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
+                </div>
+            }
+            else if (planesDisponibles?.Any() == true)
+            {
+                <div class="card shadow-sm mb-4">
+                    <div class="card-header bg-info text-white">
+                        <h5 class="mb-0">Plan Actual</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="mb-1"><strong>Plan:</strong> <span class="badge bg-secondary">@planActual</span></p>
+                        <p class="mb-0"><strong>Obra Social:</strong> <span class="badge bg-secondary">@obraSocialActual</span></p>
+                    </div>
+                </div>
+
+                <div class="card shadow-sm">
+                    <div class="card-header bg-primary text-white">
+                        <h5 class="mb-0">Seleccionar Nuevo Plan</h5>
+                    </div>
+                    <div class="card-body">
+                        <p class="text-muted mb-4">Elige un nuevo plan de obra social:</p>
+                        <div class="list-group">
+                            @foreach (var plan in planesDisponibles)
+                            {
+                                var obraSocial = obrasSocialesMap.ContainsKey(plan.ObraSocialId) ? obrasSocialesMap[plan.ObraSocialId].NombreObraSocial : "Cargando..."; // Si existe la clave del ID de la obra social en el diccionario, obtiene su nombre; si no, devuelve "Cargando..."
+                                var isSelected = planSeleccionado?.PlanObraSocialId == plan.PlanObraSocialId;
+                                <button type="button" class="list-group-item list-group-item-action @(isSelected ? "active" : "")" @onclick="() => SeleccionarPlan(plan)">
+                                    <div class="d-flex w-100 justify-content-between align-items-start">
+                                        <div class="flex-grow-1">
+                                            <h6 class="mb-1">@plan.NombrePlan</h6>
+                                            <p class="mb-0 text-muted small">
+                                                Obra Social: <strong>@obraSocial</strong><br />
+                                                Descripción: @plan.DescripcionPlan
+                                            </p>
+                                        </div>
+                                        @if (isSelected)
+                                        {
+                                            <span class="badge bg-success ms-2">Seleccionado</span>
+                                        }
+                                    </div>
+                                </button>
+                            }
+                        </div>
+
+                        @if (planSeleccionado != null)
+                        {
+                            <div class="mt-4 p-3 border rounded bg-light">
+                                <p class="mb-3"><strong>Nuevo plan seleccionado:</strong> <span class="text-primary">@planSeleccionado.NombrePlan</span></p>
+                                <small class="text-muted d-block mb-3">@planSeleccionado.DescripcionPlan</small>
+                                <button type="button" class="btn btn-success" @onclick="ConfirmarCambio" disabled="@guardando">
+                                    @if (guardando)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                    }
+                                    Confirmar Cambio
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary ms-2" @onclick="Cancelar" disabled="@guardando">Cancelar</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+
+                @if (mensajeExito != null)
+                {
+                    <div class="alert alert-success alert-dismissible fade show mt-3">
+                        <strong>Éxito:</strong> @mensajeExito
+                        <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
+                    </div>
+                }
+            }
+            else
+            {
+                <div class="alert alert-warning">No hay planes de obra social disponibles.</div>
+            }
+        </div>
+    </div>
+</div>
+
+@code {
+    private IEnumerable<PlanObraSocialDTO> planesDisponibles;
+    private Dictionary<int, ObraSocialDTO> obrasSocialesMap = new();
+    private PlanObraSocialDTO planSeleccionado;
+    private string planActual = "Cargando...";
+    private string obraSocialActual = "Cargando...";
+    private int planActualId;
+    private bool cargando = true;
+    private bool guardando = false;
+    private string errorMessage;
+    private string mensajeExito;
+
+    protected override async Task OnInitializedAsync()
+    {
+        try { await CargarPlanesYObrasSociales(); }
+        catch (Exception ex) { errorMessage = "Error al cargar los datos: " + ex.Message; cargando = false; }
+    }
+
+    private async Task CargarPlanesYObrasSociales()
+    {
+        try
+        {
+            cargando = true;
+            int pacienteId = (int)SessionManager.PersonaId;
+            var paciente = await PacienteApiClient.GetPlanObraSocialAsync(pacienteId);
+            planActualId = paciente.PlanObraSocialId;
+
+            planesDisponibles = await PlanApiClient.GetAllAsync();
+
+            var planActualObj = planesDisponibles.FirstOrDefault(p => p.PlanObraSocialId == planActualId);
+            if (planActualObj != null)
+            {
+                planActual = planActualObj.NombrePlan;
+                var obraSocialActualObj = await ObraSocialApiClient.GetAsync(planActualObj.ObraSocialId);
+                obraSocialActual = obraSocialActualObj.NombreObraSocial;
+            }
+
+            foreach (var plan in planesDisponibles) // Por cada plan disponible, si su ID de obra social no está en el diccionario, lo obtiene de la API y lo almacena para evitar hacer llamadas duplicadas
+                if (!obrasSocialesMap.ContainsKey(plan.ObraSocialId))
+                    obrasSocialesMap[plan.ObraSocialId] = await ObraSocialApiClient.GetAsync(plan.ObraSocialId);
+        }
+        catch (Exception ex) { errorMessage = ex.Message; }
+        finally { cargando = false; }
+    }
+
+    private void SeleccionarPlan(PlanObraSocialDTO plan)
+    {
+        planSeleccionado = plan;
+        errorMessage = null;
+    }
+
+    private async Task ConfirmarCambio()
+    {
+        if (planSeleccionado == null) { errorMessage = "Debe seleccionar un plan."; return; }
+        if (planSeleccionado.PlanObraSocialId == planActualId) { errorMessage = "El plan seleccionado es el mismo que ya tiene actualmente."; return; }
+
+        try
+        {
+            guardando = true;
+            int pacienteId = (int)SessionManager.PersonaId;
+            var paciente = await PacienteApiClient.GetPlanObraSocialAsync(pacienteId);
+            paciente.PlanObraSocialId = planSeleccionado.PlanObraSocialId;
+            await PacienteApiClient.UpdateAsync(paciente);
+
+            mensajeExito = $"Plan actualizado a '{planSeleccionado.NombrePlan}' correctamente.";
+            planActual = planSeleccionado.NombrePlan;
+            obraSocialActual = obrasSocialesMap[planSeleccionado.ObraSocialId].NombreObraSocial;
+            planActualId = planSeleccionado.PlanObraSocialId;
+            planSeleccionado = null;
+
+            await Task.Delay(2000); // Pequeño delay para que se vea el simbolo de carga
+            NavigationManager.NavigateTo("/paciente/perfil");
+        }
+        catch (Exception ex) { errorMessage = "Error al cambiar el plan: " + ex.Message; }
+        finally { guardando = false; }
+    }
+
+    private void Cancelar() { planSeleccionado = null; errorMessage = null; }
+    private void Volver() { NavigationManager.NavigateTo("/paciente/perfil"); }
+}

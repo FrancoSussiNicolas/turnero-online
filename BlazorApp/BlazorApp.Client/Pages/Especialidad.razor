@@ -11,36 +11,34 @@
 
             @if (loading)
             {
-                <div class="alert alert-info" role="alert">
-                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <div class="alert alert-info">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
                     Cargando especialidades...
                 </div>
             }
             else if (errorMessage != null)
             {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show">
                     <strong>Error:</strong> @errorMessage
                     <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
                 </div>
             }
-            else if (especialidades != null && especialidades.Any())
+            else if (especialidades?.Any() == true)
             {
                 <div class="card">
                     <div class="card-body">
                         <p class="text-muted mb-4">Selecciona la especialidad con la que deseas atender:</p>
-
                         <div class="list-group">
-                            @foreach (var especialidad in especialidades.Where(e => e.Estado == 0))
+                            @foreach (var esp in especialidades.Where(e => e.Estado == 0))
                             {
-                                <button type="button"
-                                        class="list-group-item list-group-item-action @(especialidadSeleccionada?.EspecialidadId == especialidad.EspecialidadId ? "active" : "")"
-                                        @onclick="() => SeleccionarEspecialidad(especialidad)">
+                                var isSelected = especialidadSeleccionada?.EspecialidadId == esp.EspecialidadId;
+                                <button type="button" class="list-group-item list-group-item-action @(isSelected ? "active" : "")" @onclick="() => SeleccionarEspecialidad(esp)">
                                     <div class="d-flex w-100 justify-content-between align-items-start">
                                         <div class="flex-grow-1">
-                                            <h6 class="mb-1">@especialidad.Descripcion</h6>
-                                            <p class="mb-0 text-muted small">ID: @especialidad.EspecialidadId</p>
+                                            <h6 class="mb-1">@esp.Descripcion</h6>
+                                            <p class="mb-0 text-muted small">ID: @esp.EspecialidadId</p>
                                         </div>
-                                        @if (especialidadSeleccionada?.EspecialidadId == especialidad.EspecialidadId)
+                                        @if (isSelected)
                                         {
                                             <span class="badge bg-success ms-2">Seleccionada</span>
                                         }
@@ -53,24 +51,14 @@
                         {
                             <div class="mt-4 p-3 border rounded bg-light">
                                 <p class="mb-3"><strong>Especialidad seleccionada:</strong> <span class="text-primary">@especialidadSeleccionada.Descripcion</span></p>
-                                <div>
-                                    <button type="button"
-                                            class="btn btn-success"
-                                            @onclick="ConfirmarCambio"
-                                            disabled="@guardando">
-                                        @if (guardando)
-                                        {
-                                            <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
-                                        }
-                                        Confirmar Modificación
-                                    </button>
-                                    <button type="button"
-                                            class="btn btn-outline-secondary ms-2"
-                                            @onclick="Cancelar"
-                                            disabled="@guardando">
-                                        Cancelar
-                                    </button>
-                                </div>
+                                <button type="button" class="btn btn-success" @onclick="ConfirmarCambio" disabled="@guardando">
+                                    @if (guardando)
+                                    {
+                                        <span class="spinner-border spinner-border-sm me-2"></span>
+                                    }
+                                    Confirmar Modificación
+                                </button>
+                                <button type="button" class="btn btn-outline-secondary ms-2" @onclick="Cancelar" disabled="@guardando">Cancelar</button>
                             </div>
                         }
                     </div>
@@ -78,14 +66,12 @@
             }
             else
             {
-                <div class="alert alert-warning" role="alert">
-                    No hay especialidades disponibles en este momento.
-                </div>
+                <div class="alert alert-warning">No hay especialidades disponibles en este momento.</div>
             }
 
             @if (mensajeExito != null)
             {
-                <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                <div class="alert alert-success alert-dismissible fade show mt-3">
                     <strong>Éxito:</strong> @mensajeExito
                     <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
                 </div>
@@ -101,21 +87,16 @@
     private bool guardando = false;
     private string errorMessage;
     private string mensajeExito;
-    private int profesionalId; 
+    private int profesionalId;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
-
             profesionalId = (int)SessionManager.PersonaId;
-
             await CargarEspecialidades();
         }
-        catch (Exception ex)
-        {
-            errorMessage = "Error al cargar los datos: " + ex.Message;
-        }
+        catch (Exception ex) { errorMessage = "Error al cargar los datos: " + ex.Message; }
     }
 
     private async Task CargarEspecialidades()
@@ -125,29 +106,15 @@
             loading = true;
             especialidades = await EspecialidadApiClient.GetAllAsync();
         }
-        catch (Exception ex)
-        {
-            errorMessage = ex.Message;
-        }
-        finally
-        {
-            loading = false;
-        }
+        catch (Exception ex) { errorMessage = ex.Message; }
+        finally { loading = false; }
     }
 
-    private void SeleccionarEspecialidad(EspecialidadDTO especialidad)
-    {
-        especialidadSeleccionada = especialidad;
-        errorMessage = null;
-    }
+    private void SeleccionarEspecialidad(EspecialidadDTO especialidad) { especialidadSeleccionada = especialidad; errorMessage = null; }
 
     private async Task ConfirmarCambio()
     {
-        if (especialidadSeleccionada == null)
-        {
-            errorMessage = "Debes seleccionar una especialidad.";
-            return;
-        }
+        if (especialidadSeleccionada == null) { errorMessage = "Debes seleccionar una especialidad."; return; }
 
         try
         {
@@ -155,23 +122,12 @@
             await ProfesionalApiClient.CambiarEspecialidadProfesional(profesionalId, especialidadSeleccionada.EspecialidadId);
             mensajeExito = $"Especialidad actualizada a: {especialidadSeleccionada.Descripcion}";
             especialidadSeleccionada = null;
-
-            await Task.Delay(2000);
+            await Task.Delay(2000); // Pequeño delay para que se vea el simbolo de carga
             NavigationManager.NavigateTo("/profesional/perfil");
         }
-        catch (Exception ex)
-        {
-            errorMessage = "Error al cambiar la especialidad: " + ex.Message;
-        }
-        finally
-        {
-            guardando = false;
-        }
+        catch (Exception ex) { errorMessage = "Error al cambiar la especialidad: " + ex.Message; }
+        finally { guardando = false; }
     }
 
-    private void Cancelar()
-    {
-        especialidadSeleccionada = null;
-        errorMessage = null;
-    }
+    private void Cancelar() { especialidadSeleccionada = null; errorMessage = null; }
 }

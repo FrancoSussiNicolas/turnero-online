@@ -8,22 +8,20 @@
     <div class="row justify-content-center">
         <div class="col-md-8">
             <div class="d-flex align-items-center mb-4">
-                <button type="button" class="btn btn-outline-secondary me-3" @onclick="Volver">
-                    ← Volver
-                </button>
+                <button type="button" class="btn btn-outline-secondary me-3" @onclick="Volver">← Volver</button>
                 <h2 class="mb-0">Mi Perfil Profesional</h2>
             </div>
 
             @if (cargando)
             {
-                <div class="alert alert-info" role="alert">
-                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                <div class="alert alert-info">
+                    <span class="spinner-border spinner-border-sm me-2"></span>
                     Cargando perfil...
                 </div>
             }
             else if (errorMessage != null)
             {
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <div class="alert alert-danger alert-dismissible fade show">
                     <strong>Error:</strong> @errorMessage
                     <button type="button" class="btn-close" @onclick="() => errorMessage = null"></button>
                 </div>
@@ -37,7 +35,6 @@
                     <div class="card-body">
                         @if (!editando)
                         {
-                    
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <p class="mb-1"><strong>Apellido y Nombre:</strong></p>
@@ -48,7 +45,6 @@
                                     <p class="text-muted">@profesionalDTO.Mail</p>
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <p class="mb-1"><strong>Matrícula:</strong></p>
@@ -57,30 +53,18 @@
                                 <div class="col-md-6">
                                     <p class="mb-1"><strong>Especialidad:</strong></p>
                                     <p class="text-muted">
-                                        @if (!string.IsNullOrEmpty(especialidadNombre))
-                                        {
-                                            <span>@especialidadNombre</span>
-                                        }
-                                        else
-                                        {
-                                            <span class="text-warning">No asignada</span>
-                                        }
-                                        <a href="/profesional/especialidad" class="ms-2">
-                                            <small>(Modificar)</small>
-                                        </a>
+                                        <span>@(string.IsNullOrEmpty(especialidadNombre) ? "No asignada" : especialidadNombre)</span>
+                                        <a href="/profesional/especialidad" class="ms-2"><small>(Modificar)</small></a>
                                     </p>
                                 </div>
                             </div>
-
                             <hr />
-
                             <button type="button" class="btn btn-primary" @onclick="ActivarEdicion">
                                 <i class="bi bi-pencil"></i> Editar Perfil
                             </button>
                         }
                         else
                         {
-                        
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="apellidoNombre" class="form-label"><strong>Apellido y Nombre:</strong></label>
@@ -91,7 +75,6 @@
                                     <input type="email" class="form-control" id="email" @bind="profesionalDTO.Mail" />
                                 </div>
                             </div>
-
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label for="matricula" class="form-label"><strong>Matrícula:</strong></label>
@@ -103,26 +86,22 @@
                                     <small class="text-muted">Modificar en la sección de especialidades</small>
                                 </div>
                             </div>
-
                             <hr />
-
                             <button type="button" class="btn btn-success" @onclick="GuardarCambios" disabled="@guardando">
                                 @if (guardando)
                                 {
-                                    <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                                    <span class="spinner-border spinner-border-sm me-2"></span>
                                 }
                                 Guardar Cambios
                             </button>
-                            <button type="button" class="btn btn-outline-secondary ms-2" @onclick="CancelarEdicion" disabled="@guardando">
-                                Cancelar
-                            </button>
+                            <button type="button" class="btn btn-outline-secondary ms-2" @onclick="CancelarEdicion" disabled="@guardando">Cancelar</button>
                         }
                     </div>
                 </div>
 
                 @if (mensajeExito != null)
                 {
-                    <div class="alert alert-success alert-dismissible fade show mt-3" role="alert">
+                    <div class="alert alert-success alert-dismissible fade show mt-3">
                         <strong>Éxito:</strong> @mensajeExito
                         <button type="button" class="btn-close" @onclick="() => mensajeExito = null"></button>
                     </div>
@@ -134,6 +113,7 @@
 
 @code {
     private ProfesionalDTO profesionalDTO;
+    private ProfesionalDTO profesionalOriginal;
     private string especialidadNombre = "";
     private bool cargando = true;
     private bool editando = false;
@@ -141,21 +121,15 @@
     private string errorMessage;
     private string mensajeExito;
     private int profesionalId;
-    private ProfesionalDTO profesionalOriginal;
 
     protected override async Task OnInitializedAsync()
     {
         try
         {
             profesionalId = (int)SessionManager.PersonaId;
-
             await CargarPerfil();
         }
-        catch (Exception ex)
-        {
-            errorMessage = "Error al cargar el perfil: " + ex.Message;
-            cargando = false;
-        }
+        catch (Exception ex) { errorMessage = "Error al cargar el perfil: " + ex.Message; cargando = false; }
     }
 
     private async Task CargarPerfil()
@@ -164,62 +138,45 @@
         {
             cargando = true;
             profesionalDTO = await ProfesionalApiClient.GetAsync(profesionalId);
+<<<<<<< HEAD
             profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula,profesionalDTO.EspecialidadId)
             {
                 PersonaId = profesionalDTO.PersonaId,
                 EspecialidadId = profesionalDTO.EspecialidadId
             };
 
+=======
+            GuardarCopiaOriginal();
+>>>>>>> develop
             await CargarEspecialidad();
         }
-        catch (Exception ex)
-        {
-            errorMessage = ex.Message;
-        }
-        finally
-        {
-            cargando = false;
-        }
+        catch (Exception ex) { errorMessage = ex.Message; }
+        finally { cargando = false; }
     }
+
+    private void GuardarCopiaOriginal() => profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula)
+    {
+        PersonaId = profesionalDTO.PersonaId,
+        EspecialidadId = profesionalDTO.EspecialidadId
+    };
 
     private async Task CargarEspecialidad()
     {
         try
         {
-            var especialidad = await EspecialidadApiClient.GetAsync(profesionalDTO.EspecialidadId);
-            especialidadNombre = especialidad.Descripcion;
+            var esp = await EspecialidadApiClient.GetAsync(profesionalDTO.EspecialidadId);
+            especialidadNombre = esp.Descripcion;
         }
-        catch (Exception ex)
-        {
-            especialidadNombre = "Error al cargar especialidad";
-        }
+        catch (Exception ex) { especialidadNombre = "Error al cargar especialidad"; }
     }
 
-    private void ActivarEdicion()
-    {
-        editando = true;
-        errorMessage = null;
-    }
+    private void ActivarEdicion() { editando = true; errorMessage = null; }
 
     private async Task GuardarCambios()
     {
-        if (string.IsNullOrWhiteSpace(profesionalDTO.ApellidoNombre))
-        {
-            errorMessage = "El apellido y nombre no pueden estar vacíos.";
-            return;
-        }
-
-        if (string.IsNullOrWhiteSpace(profesionalDTO.Mail))
-        {
-            errorMessage = "El correo electrónico no puede estar vacío.";
-            return;
-        }
-
-        if (!EsEmailValido(profesionalDTO.Mail))
-        {
-            errorMessage = "El correo electrónico debe ser válido (ejemplo: usuario@dominio.com).";
-            return;
-        }
+        if (string.IsNullOrWhiteSpace(profesionalDTO.ApellidoNombre)) { errorMessage = "El apellido y nombre no pueden estar vacíos."; return; }
+        if (string.IsNullOrWhiteSpace(profesionalDTO.Mail)) { errorMessage = "El correo electrónico no puede estar vacío."; return; }
+        if (!EsEmailValido(profesionalDTO.Mail)) { errorMessage = "El correo electrónico debe ser válido (ejemplo: usuario@dominio.com)."; return; }
 
         try
         {
@@ -227,6 +184,7 @@
             await ProfesionalApiClient.UpdateAsync(profesionalDTO);
             mensajeExito = "Perfil actualizado correctamente.";
             editando = false;
+<<<<<<< HEAD
             profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula, profesionalDTO.EspecialidadId)
             {
                 PersonaId = profesionalDTO.PersonaId,
@@ -240,7 +198,12 @@
         finally
         {
             guardando = false;
+=======
+            GuardarCopiaOriginal();
+>>>>>>> develop
         }
+        catch (Exception ex) { errorMessage = "Error al guardar cambios: " + ex.Message; }
+        finally { guardando = false; }
     }
 
     private void CancelarEdicion()
@@ -261,14 +224,8 @@
             var addr = new System.Net.Mail.MailAddress(email);
             return addr.Address == email;
         }
-        catch
-        {
-            return false;
-        }
+        catch { return false; }
     }
 
-    private void Volver()
-    {
-        NavigationManager.NavigateTo("/profesional/home");
-    }
+    private void Volver() => NavigationManager.NavigateTo("/profesional/home");
 }

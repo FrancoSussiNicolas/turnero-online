@@ -94,6 +94,11 @@ namespace Services
                 pacEncontrado.FechaNacimiento = pac.FechaNacimiento;
                 pacEncontrado.Telefono = pac.Telefono;
 
+                if (pac.PlanObraSocialId > 0)
+                {
+                    pacEncontrado.PlanObraSocialId = pac.PlanObraSocialId;
+                }
+
                 try
                 {
                     context.SaveChanges();
@@ -104,7 +109,6 @@ namespace Services
                     {
                         throw new InvalidOperationException("Ya existe una paciente con el dni o mail ingresados.");
                     }
-
                     throw;
                 }
 
