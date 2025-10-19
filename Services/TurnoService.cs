@@ -55,9 +55,9 @@ namespace Services
 
         }
 
-        public List<Turno> GetByProfesional(int id)
+        public List<Turno> GetByProfesional(int profesionalId)
         {
-            using (var context = new TurneroContext()) 
+            using (var context = new TurneroContext())
             {
                 return context.Turnos
                     .Include(t => t.Consultorio)
@@ -65,11 +65,13 @@ namespace Services
                     .ThenInclude(p => p.PlanObraSocial)
                     .Include(t => t.Profesional)
                     .ThenInclude(p => p.ObraSociales)
-                    .ToList()
-                    .FindAll(turno => turno.Estado == Entities.EstadoTurno.Disponible && turno.PacienteId == null && turno.ProfesionalId == id);
+                    .Where(t => t.ProfesionalId == profesionalId)
+                    .OrderBy(t => t.FechaTurno)
+                    .ThenBy(t => t.HoraTurno)
+                    .ToList();
             }
-
         }
+
 
         public Turno CreateTurno(TurnoDTO turno, Consultorio consultorio)
         {
@@ -124,19 +126,24 @@ namespace Services
             }
         }
 
-        public List<Turno> GetTurnsByPacient(Paciente paciente)
+        public List<TurnoDTO> GetByPaciente(int pacienteId)
         {
-            using (var context = new TurneroContext())
-            {
-                return context.Turnos
-                    .Include(t => t.Consultorio)
-                    .Include(t => t.Paciente)
-                    .ThenInclude(p => p.PlanObraSocial)
-                    .Include(t => t.Profesional)
-                    .ThenInclude(p => p.ObraSociales)
-                    .Where(t => t.PacienteId == paciente.PersonaId)
-                    .ToList();
-            }
+            using var context = new TurneroContext();
+            return context.Turnos
+                .Include(t => t.Profesional)
+                .Include(t => t.Profesional.Especialidad)
+                .Where(t => t.PacienteId == pacienteId)
+                .Select(t => new TurnoDTO
+                {
+                    TurnoId = t.TurnoId,
+                    FechaTurno = t.FechaTurno,
+                    HoraTurno = t.HoraTurno,
+                    ProfesionalId = t.ProfesionalId,
+                    ProfesionalNombre = t.Profesional.ApellidoNombre,
+                    EspecialidadId = t.Profesional.EspecialidadId,
+                    EspecialidadNombre = t.Profesional.Especialidad.Descripcion
+                })
+                .ToList();
         }
         public bool DeleteTurno(int id)
         {
@@ -151,5 +158,27 @@ namespace Services
                 return true;
             }
         }
+
+
+        public Turno AsignarTurno(int turnoId, int pacienteId )
+        {
+            using (var context = new TurneroContext())
+            {
+
+                var turno = context.Turnos.FirstOrDefault(t => t.TurnoId == turnoId);
+
+                if (turno == null)
+                    throw new Exception("El turno no existe.");
+
+
+                turno.PacienteId = pacienteId;
+                turno.Estado = Entities.EstadoTurno.Ocupado;
+
+                context.SaveChanges();
+
+                return turno;
+            }
+        }
+
     }
 }

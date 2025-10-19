@@ -1,1 +1,172 @@
-﻿
+﻿@page "/paciente/misTurnos"
+@using DTOs;
+@using Shared;
+@using API.Clients;
+@inject NavigationManager NavigationManager
+
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Mis Turnos</h2>
+        <button class="btn btn-primary" @onclick='() => NavigationManager.NavigateTo("/paciente/nuevoTurno")'>
+            <i class="bi bi-plus-lg"></i> Solicitar Nuevo Turno
+        </button>
+    </div>
+
+    @if (isLoading)
+    {
+        <div class="text-center mt-5">
+            <div class="spinner-border text-primary" style="width: 3rem; height: 3rem;" role="status">
+                <span class="visually-hidden">Cargando...</span>
+            </div>
+            <p class="mt-2">Cargando tus turnos...</p>
+        </div>
+    }
+    else
+    {
+        <!-- Próximos Turnos -->
+        <h4 class="mb-3">Próximos Turnos</h4>
+        @if (proximosTurnos.Any())
+        {
+            <div class="row">
+                @foreach (var turno in proximosTurnos)
+                {
+                    <div class="col-md-6 mb-4">
+                        <div class="card shadow-sm h-100">
+                            <div class="card-body">
+                                <span class="badge bg-info text-dark mb-2">@turno.Estado</span>
+                                <h5 class="card-title">@turno.EspecialidadNombre</h5>
+                                <p class="card-text mb-1"><strong>Profesional:</strong> @turno.ProfesionalNombre</p>
+                                <p class="card-text"><strong>Fecha:</strong> @FormatearFechaHora(turno)</p>
+                                <button class="btn btn-outline-danger" @onclick="() => AbrirModalConfirmacion(turno)">
+                                    <i class="bi bi-x-circle"></i> Cancelar Turno
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-light text-center">No tienes próximos turnos agendados.</div>
+        }
+
+        <!-- Historial de Turnos -->
+        <h4 class="mt-5 mb-3">Historial de Turnos</h4>
+        @if (historialTurnos.Any())
+        {
+            <div class="list-group">
+                @foreach (var turno in historialTurnos)
+                {
+                    <div class="list-group-item flex-column align-items-start">
+                        <div class="d-flex w-100 justify-content-between">
+                            <h5 class="mb-1">@turno.EspecialidadNombre</h5>
+                            <small>@turno.FechaTurno.ToString("dd/MM/yyyy")</small>
+                        </div>
+                        <p class="mb-1">Atendido por: @turno.ProfesionalNombre</p>
+                    </div>
+                }
+            </div>
+        }
+        else
+        {
+            <div class="alert alert-light text-center">Aún no tienes un historial de turnos.</div>
+        }
+    }
+</div>
+
+<!-- Modal de Confirmación de Cancelación -->
+@if (mostrarModalConfirmacion)
+{
+    <div class="modal fade show" tabindex="-1" style="display:block;" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Cancelación</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModalConfirmacion"></button>
+                </div>
+                <div class="modal-body">
+                    <p>¿Estás seguro de que deseas cancelar este turno?</p>
+                    @if (turnoParaCancelar != null)
+                    {
+                        <p>
+                            <strong>@turnoParaCancelar.EspecialidadNombre</strong> con <strong>@turnoParaCancelar.ProfesionalNombre</strong><br>
+                            El día @turnoParaCancelar.FechaTurno.ToString("dd/MM/yyyy") a las @turnoParaCancelar.HoraTurno.ToString("HH:mm") hs.
+                        </p>
+                    }
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CerrarModalConfirmacion">Volver</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmarCancelacion">Sí, Cancelar Turno</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+
+@code {
+    private bool isLoading = true;
+    private bool mostrarModalConfirmacion = false;
+    private TurnoDTO? turnoParaCancelar;
+
+    private List<TurnoDTO> proximosTurnos = new List<TurnoDTO>();
+    private List<TurnoDTO> historialTurnos = new List<TurnoDTO>();
+
+    protected override async Task OnInitializedAsync()
+    {
+        await CargarTurnos();
+    }
+
+    private string FormatearFechaHora(TurnoDTO turno)
+    {
+        return turno.FechaTurno.ToDateTime(turno.HoraTurno).ToString("dddd, dd 'de' MMMM, yyyy - HH:mm 'hs.'");
+    }
+
+
+    private async Task CargarTurnos()
+    {
+        isLoading = true;
+
+        if(SessionManager.PersonaId is not null)
+        {
+            var todosLosTurnos = await TurnoApiClient.GetByPacienteAsync((int)SessionManager.PersonaId);
+
+            await Task.Delay(800);
+
+            // Filtrar turnos
+            var hoy = DateOnly.FromDateTime(DateTime.Now);
+            proximosTurnos = todosLosTurnos.Where(t => t.FechaTurno >= hoy).OrderBy(t => t.FechaTurno).ToList();
+            historialTurnos = todosLosTurnos.Where(t => t.FechaTurno < hoy).OrderByDescending(t => t.FechaTurno).ToList();
+        }
+
+        isLoading = false;
+        StateHasChanged();
+    }
+
+    private void AbrirModalConfirmacion(TurnoDTO turno)
+    {
+        turnoParaCancelar = turno;
+        mostrarModalConfirmacion = true;
+    }
+
+    private void CerrarModalConfirmacion()
+    {
+        mostrarModalConfirmacion = false;
+        turnoParaCancelar = null;
+    }
+
+    private async Task ConfirmarCancelacion()
+    {
+        if (turnoParaCancelar is null) return;
+
+        if (SessionManager.PersonaId is null) return;
+
+        await TurnoApiClient.ChangeStateAsync(turnoParaCancelar.TurnoId, (int)SessionManager.PersonaId); 
+
+
+        CerrarModalConfirmacion();
+        await CargarTurnos(); 
+    }
+}

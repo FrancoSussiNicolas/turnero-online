@@ -1,83 +1,83 @@
 ﻿@page "/paciente/nuevoTurno"
-@using DTOs;
-@using Shared;
-@using API.Clients;
+@using DTOs
+@using Shared
+@using API.Clients
 @inject NavigationManager NavigationManager
-
 
 <div class="nuevo-turno-container container py-5">
     <div class="card shadow-lg">
         <div class="card-header bg-primary text-white">
             <h3 class="mb-0">Solicitar un Nuevo Turno</h3>
         </div>
+
         <div class="card-body p-4">
-            <!-- Stepper -->
+            <!-- Pasos -->
             <div class="stepper-wrapper mb-5">
-                <div class="stepper-item @(currentStep >= 1 ? "completed" : "")">
+                <div class="stepper-item @(actualPaso >= 1 ? "completed" : "")">
                     <div class="step-counter">1</div>
                     <div class="step-name">Especialidad</div>
                 </div>
-                <div class="stepper-item @(currentStep >= 2 ? "completed" : "")">
+                <div class="stepper-item @(actualPaso >= 2 ? "completed" : "")">
                     <div class="step-counter">2</div>
                     <div class="step-name">Profesional</div>
                 </div>
-                <div class="stepper-item @(currentStep >= 3 ? "completed" : "")">
+                <div class="stepper-item @(actualPaso >= 3 ? "completed" : "")">
                     <div class="step-counter">3</div>
                     <div class="step-name">Turno</div>
                 </div>
             </div>
 
-            <!-- Step 1: Select Especialidad -->
-            @if (currentStep == 1)
+            <!-- Paso 1 -->
+            @if (actualPaso == 1)
             {
                 <h4 class="mb-3">Paso 1: Selecciona una especialidad</h4>
+
                 @if (isLoadingEspecialidades)
                 {
-                    <div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div><p class="mt-2">Cargando especialidades...</p></div>
+                    <div class="text-center">
+                        <div class="spinner-border text-primary"></div>
+                        <p>Cargando especialidades...</p>
+                    </div>
                 }
                 else
                 {
-                    <div class="mb-3">
-                        <select class="form-select form-select-lg" @bind="selectedEspecialidadId" @onchange="HandleEspecialidadChange">
-                            <option value="0">-- Elige una especialidad --</option>
-                            @foreach (var especialidad in especialidades)
-                            {
-                                <option value="@especialidad.IdEspecialidad">@especialidad.Nombre</option>
-                            }
-                        </select>
-                    </div>
+                    <select class="form-select form-select-lg"
+                            @onchange="HandleEspecialidadChange">
+                        <option value="0">-- Elige una especialidad --</option>
+                        @foreach (var especialidad in especialidades)
+                        {
+                            <option value="@especialidad.EspecialidadId">@especialidad.Descripcion</option>
+                        }
+                    </select>
                 }
             }
 
-            <!-- Step 2: Select Profesional -->
-            @if (currentStep == 2)
+            <!-- Paso 2 -->
+            @if (actualPaso == 2)
             {
                 <h4 class="mb-3">Paso 2: Selecciona un profesional</h4>
-                <button class="btn btn-outline-secondary btn-sm mb-3" @onclick="() => GoToStep(1)">
-                    <i class="bi bi-arrow-left"></i> Volver a Especialidades
+                <button class="btn btn-outline-secondary btn-sm mb-3" @onclick="() => SiguientePaso(1)">
+                    <i class="bi bi-arrow-left"></i> Volver
                 </button>
 
                 @if (isLoadingProfesionales)
                 {
-                    <div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div><p class="mt-2">Cargando profesionales...</p></div>
+                    <div class="text-center">
+                        <div class="spinner-border text-primary"></div>
+                        <p>Cargando profesionales...</p>
+                    </div>
                 }
                 else if (profesionales.Any())
                 {
                     <div class="list-group">
                         @foreach (var profesional in profesionales)
                         {
-                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" @onclick="() => SelectProfesional(profesional.Id)">
-                                <div>
-                                    <h5 class="mb-1">@profesional.Apellido, @profesional.Nombre</h5>
-                                </div>
-                                @if (profesional.AtiendePorObraSocial)
-                                {
-                                    <span class="badge bg-success rounded-pill">Atiende por tu Obra Social</span>
-                                }
-                                else
-                                {
-                                    <span class="badge bg-warning text-dark rounded-pill">Particular</span>
-                                }
+                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between"
+                                    @onclick="() => SelectProfesional(profesional.PersonaId)">
+                                <span>@profesional.ApellidoNombre</span>
+                                <span class="badge @(profesional.AtiendePorObraSocial ? "bg-success" : "bg-warning text-dark")">
+                                    @(profesional.AtiendePorObraSocial ? "Obra Social" : "Particular")
+                                </span>
                             </button>
                         }
                     </div>
@@ -88,52 +88,88 @@
                 }
             }
 
-            <!-- Step 3: Select Turno -->
-            @if (currentStep == 3)
+            <!-- Paso 3 -->
+            @if (actualPaso == 3)
             {
                 <h4 class="mb-3">Paso 3: Elige un turno disponible</h4>
-                 <button class="btn btn-outline-secondary btn-sm mb-3" @onclick="() => GoToStep(2)">
-                    <i class="bi bi-arrow-left"></i> Volver a Profesionales
+                <button class="btn btn-outline-secondary btn-sm mb-3" @onclick="() => SiguientePaso(2)">
+                    <i class="bi bi-arrow-left"></i> Volver
                 </button>
-                
+
                 @if (isLoadingTurnos)
                 {
-                    <div class="text-center"><div class="spinner-border text-primary" role="status"><span class="visually-hidden">Cargando...</span></div><p class="mt-2">Cargando turnos...</p></div>
+                    <div class="text-center">
+                        <div class="spinner-border text-primary"></div>
+                        <p>Cargando turnos...</p>
+                    </div>
                 }
                 else if (turnosDisponibles.Any())
                 {
                     <div class="list-group">
-                         @foreach (var turno in turnosDisponibles)
+                        @foreach (var turno in turnosDisponibles)
                         {
-                             <button type="button" class="list-group-item list-group-item-action" @onclick="() => ConfirmarTurno(turno)">
-                                 <strong>@turno.Fecha.ToString("dddd, dd 'de' MMMM 'de' yyyy")</strong> a las <strong>@turno.Fecha.ToString("HH:mm") hs.</strong>
-                             </button>
+                            <button type="button" class="list-group-item list-group-item-action"
+                                    @onclick="() => AbrirModalConfirmacion(turno)">
+                                <strong>@turno.FechaTurno.ToString("dddd, dd 'de' MMMM")</strong> a las
+                                <strong>@turno.HoraTurno.ToString("HH:mm")</strong>
+                            </button>
                         }
                     </div>
                 }
                 else
                 {
-                    <div class="alert alert-info">El profesional seleccionado no tiene turnos disponibles.</div>
+                    <div class="alert alert-info">El profesional no tiene turnos disponibles.</div>
                 }
             }
         </div>
     </div>
 </div>
 
+<!-- Modal de confirmación -->
+<div class="modal fade @(showModal ? "show d-block" : "")" tabindex="-1" style="background-color: rgba(0,0,0,0.5);" aria-hidden="@(!showModal)">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-primary text-white">
+                <h5 class="modal-title">Confirmar turno</h5>
+                <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+            </div>
+            <div class="modal-body">
+                @if (turnoSeleccionado != null)
+                {
+                    <p>¿Deseas confirmar el turno el <strong>@turnoSeleccionado.FechaTurno.ToString("dd/MM/yyyy")</strong> a las <strong>@turnoSeleccionado.HoraTurno.ToString("HH:mm")</strong> hs?</p>
+                }
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary" @onclick="CerrarModal">Cancelar</button>
+                <button class="btn btn-success" @onclick="ConfirmarTurno">Confirmar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
 <style>
+    .modal.fade {
+        display: none;
+    }
+
+    .modal.show.d-block {
+        display: block;
+    }
+
     .stepper-wrapper {
         display: flex;
         justify-content: space-between;
         position: relative;
     }
+
     .stepper-item {
-        position: relative;
         display: flex;
         flex-direction: column;
         align-items: center;
         flex: 1;
         text-align: center;
     }
+
     .stepper-wrapper::before {
         content: "";
         position: absolute;
@@ -144,8 +180,8 @@
         background-color: #ccc;
         z-index: 1;
     }
-    .stepper-item .step-counter {
-        position: relative;
+
+    .step-counter {
         z-index: 5;
         display: flex;
         justify-content: center;
@@ -154,37 +190,26 @@
         height: 40px;
         border-radius: 50%;
         background: #ccc;
-        margin-bottom: 6px;
         color: white;
-        border: 2px solid #f8f9fa;
         font-weight: bold;
-    }
-    .stepper-item.completed .step-counter {
-        background-color: #667eea;
-    }
-    .step-name {
-        font-size: 0.9rem;
-        color: #6c757d;
-    }
-    .stepper-item.completed .step-name {
-        font-weight: bold;
-        color: #343a40;
     }
 
-    .nuevo-turno-container {
-        max-width: 800px;
+    .completed .step-counter {
+        background-color: #0d6efd;
     }
 </style>
 
-
 @code {
-    private int currentStep = 1;
+    private int actualPaso = 1;
     private int selectedEspecialidadId;
     private int selectedProfesionalId;
 
-    private bool isLoadingEspecialidades = false;
-    private bool isLoadingProfesionales = false;
-    private bool isLoadingTurnos = false;
+    private bool isLoadingEspecialidades;
+    private bool isLoadingProfesionales;
+    private bool isLoadingTurnos;
+
+    private bool showModal = false;
+    private TurnoDTO? turnoSeleccionado;
 
     private IEnumerable<EspecialidadDTO> especialidades = new List<EspecialidadDTO>();
     private IEnumerable<ProfesionalDTO> profesionales = new List<ProfesionalDTO>();
@@ -197,94 +222,74 @@
 
     private async Task LoadEspecialidades()
     {
+        isLoadingEspecialidades = true;
         especialidades = await EspecialidadApiClient.GetAllAsync();
+        isLoadingEspecialidades = false;
     }
 
     private async Task HandleEspecialidadChange(ChangeEventArgs e)
     {
         selectedEspecialidadId = Convert.ToInt32(e.Value);
-        profesionales = new List<ProfesionalDTO>();
-        turnosDisponibles = new List<TurnoDTO>();
         if (selectedEspecialidadId > 0)
         {
             await LoadProfesionales();
-            GoToStep(2);
-        } else {
-            GoToStep(1);
-        }
-    }
-
-    private async Task LoadTurnosDisponibles()
-    {
-        isLoadingTurnos = true;
-        turnosDisponibles = new List<TurnoDTO>();
-
-        turnosDisponibles = await TurnoApiClient.GetByProfesionalAsync(selectedProfesionalId);
-
-        isLoadingTurnos = false;
-        StateHasChanged();
-    }
-
-    private async Task HandleEspecialidadChange(ChangeEventArgs e)
-    {
-        selectedEspecialidadId = Convert.ToInt32(e.Value);
-        profesionales = new List<ProfesionalDTO>();
-        turnosDisponibles = new List<TurnoDTO>();
-        if (selectedEspecialidadId > 0)
-        {
-            await LoadProfesionales();
-            GoToStep(2);
-        } else {
-            GoToStep(1);
+            SiguientePaso(2);
         }
     }
 
     private async Task LoadProfesionales()
     {
         isLoadingProfesionales = true;
-
-        // =================================================================
-        // Aquí llamarías a tu ApiClient para obtener los profesionales
-        // de la especialidad seleccionada (selectedEspecialidadId).
-        // Deberías pasarle también el Id del paciente para que el backend
-        // determine si atiende por su obra social.
-        // Ejemplo: profesionales = await ApiClient.Profesionales.GetByEspecialidadAsync(selectedEspecialidadId, SessionManager.IdPaciente);
-        // =================================================================
-
-
-
+        profesionales = await ProfesionalApiClient.GetProfesionalByEspecialidad(selectedEspecialidadId);
         isLoadingProfesionales = false;
-        StateHasChanged();
     }
 
     private async Task SelectProfesional(int profesionalId)
     {
         selectedProfesionalId = profesionalId;
         await LoadTurnosDisponibles();
-        GoToStep(3);
+        SiguientePaso(3);
+    }
+
+    private async Task LoadTurnosDisponibles()
+    {
+        isLoadingTurnos = true;
+
+        turnosDisponibles = (await TurnoApiClient.GetByProfesionalAsync(selectedProfesionalId))
+            .OrderBy(t => t.FechaTurno)
+            .ToList();
+
+        isLoadingTurnos = false;
     }
 
 
-    private async Task ConfirmarTurno(TurnoDTO turno)
+    private void AbrirModalConfirmacion(TurnoDTO turno)
     {
-        // =================================================================
-        // Aquí llamarías a tu ApiClient para reservar el turno.
-        // Necesitarás el Id del turno y el Id del paciente.
-        // Ejemplo: var resultado = await ApiClient.Turnos.ReservarAsync(new ReservaDTO { IdTurno = turno.Id, IdPaciente = SessionManager.IdPaciente });
-        //
-        // Después de la confirmación, deberías mostrar un mensaje de éxito
-        // y navegar a la página de "Mis Turnos".
-        // =================================================================
+        turnoSeleccionado = turno;
+        showModal = true;
+    }
 
-            var resultado = await TurnoApiClient.
+    private void CerrarModal()
+    {
+        showModal = false;
+        turnoSeleccionado = null;
+    }
+
+    private async Task ConfirmarTurno()
+    {
+        int pacienteId = Convert.ToInt32(SessionManager.PersonaId);
+
+        if(turnoSeleccionado is not null)
+        {
+            await TurnoApiClient.AsignarTurno(turnoSeleccionado.TurnoId, pacienteId);  
         
-        // Por ahora, simplemente navega a la página de turnos.
-        NavigationManager.NavigateTo("/paciente/turnos");
+            await Task.Delay(1500);
+            NavigationManager.NavigateTo("/paciente/misTurnos");
+        }
     }
 
-    private void GoToStep(int step)
+    private void SiguientePaso(int paso)
     {
-        currentStep = step;
-        StateHasChanged();
+        actualPaso = paso;
     }
 }

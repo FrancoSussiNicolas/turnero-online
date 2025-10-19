@@ -12,7 +12,7 @@ namespace Controllers
     {
         private readonly ProfesionalService profesionalService;
         private readonly EspecialidadesService especialidadService;
-        private readonly ObraSocialService obraSocialService;   
+        private readonly ObraSocialService obraSocialService;
 
         public ProfesionalController(ProfesionalService profesionalService, EspecialidadesService especialidadService, ObraSocialService obraSocialService)
         {
@@ -98,7 +98,7 @@ namespace Controllers
             return NoContent();
         }
 
-        [Authorize(Roles = "Profesional")] 
+        [Authorize(Roles = "Profesional")]
         [HttpPut("agregarObraSocial/{profesionalId}/{obraSocialId}")]
         public ActionResult NuevaObraSocialProfesional(int profesionalId, int obraSocialId)
         {
@@ -108,7 +108,7 @@ namespace Controllers
                 if (obraSocial is null) return NotFound(new { message = "Obra Social no encontrada" });
 
                 var profObra = profesionalService.AgregarObraSocial(obraSocial, profesionalId);
-                
+
                 if (profObra is null) return NotFound(new { message = $"Profesional no encontrado" });
 
                 return Ok(profObra);
@@ -172,5 +172,18 @@ namespace Controllers
                 return Conflict(new { message = "Error al intentar eliminar la Obra Social: " + ex.Message });
             }
         }
+
+        [Authorize]
+        [HttpGet("especialidad/{id}")]
+        public ActionResult<IEnumerable<Profesional>> GetObrasSocialesByProfesional(int id)
+        {
+            var p = profesionalService.GetProfesionalByEspecialidad(id);
+            if (p is null) return NotFound(new { message = "No hay profesionales con esa especilidad" });
+
+            return Ok(p);
+
+        }
     }
+
+   
 }

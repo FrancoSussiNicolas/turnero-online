@@ -299,5 +299,37 @@ namespace API.Clients
                 throw new Exception($"Timeout al agregar la obra social del profesional con Id {profesionalId}: {ex.Message}", ex);
             }
         }
+
+        public static async Task<IEnumerable<ProfesionalDTO>> GetProfesionalByEspecialidad(int especilidadId) 
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"profesionales/especialidad/{especilidadId}");
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsAsync<IEnumerable<ProfesionalDTO>>();
+                }
+                else
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al obtener especialidad del profesional con Id {especilidadId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al obtener la especialidad del profesional con Id {especilidadId}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al obtener la epecilalidad del profesional con Id {especilidadId}: {ex.Message}", ex);
+            }
+
+
+        } 
     }
 }

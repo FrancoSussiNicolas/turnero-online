@@ -27,5 +27,9 @@ namespace DTOs
 
         [Required]
         public int ProfesionalId { get; set; }
+
+        public string ProfesionalNombre { get; set; } = string.Empty;
+        public string EspecialidadNombre { get; set; } = string.Empty;
+        public int EspecialidadId { get; set; }
     }
 }

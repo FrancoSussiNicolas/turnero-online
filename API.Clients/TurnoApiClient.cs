@@ -245,11 +245,12 @@ namespace API.Clients
             }
         }
 
-        public static async Task ChangeStateAsync(int id)
+        public static async Task AsignarTurno(int turnoId, int pacienteId)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Patch, $"turnos/cambiarEstado/{id}");
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"turnos/asignarTurno/{turnoId}/{pacienteId}");
+
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
 
                 HttpResponseMessage response = await client.SendAsync(request);
@@ -257,18 +258,51 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al confirmar el turno con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception($"Error al asignar turno. Status: {response.StatusCode}, Detalle: {errorContent}");
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al confirmar el turno con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Error de conexión al asignar el turno: {ex.Message}", ex);
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al confirmar el turno con Id {id}: {ex.Message}", ex);
+                throw new Exception($"Timeout al asignar turno: {ex.Message}", ex);
             }
         }
+
+        public static async Task ChangeStateAsync(int idTurno, int pacienteId)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Put, $"turnos/cambiarEstado/{idTurno}") 
+                { 
+                    Content = JsonContent.Create(pacienteId)
+                
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception($"Error al confirmar el turno con Id {idTurno}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al confirmar el turno con Id {idTurno}: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al confirmar el turno con Id {idTurno}: {ex.Message}", ex);
+            }
+        }
+
+
+
     }
 
 

@@ -67,7 +67,7 @@
         </div>
 
         <div class="card-footer text-muted">
-            Total de turnos: @(turnos?.Count ?? 0)
+            Total de turnos: @(turnos?.Count() ?? 0)
         </div>
     </div>
 </div>
@@ -97,12 +97,36 @@
         </div>
     </div>
     <div class="modal-backdrop fade show"></div>
+
+
 }
+    @if (mostrarModalOcupado)
+    {
+        <div class="modal fade show" tabindex="-1" style="display:block;" role="dialog">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header bg-warning text-dark">
+                        <h5 class="modal-title">Turno ocupado</h5>
+                        <button type="button" class="btn-close" @onclick="() => mostrarModalOcupado = false"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>No se puede modificar un turno que ya está ocupado.</p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" @onclick="() => mostrarModalOcupado = false">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="modal-backdrop fade show"></div>
+    }
 
 @code {
-    private List<TurnoDTO> turnos = new();
+    private IEnumerable<TurnoDTO> turnos = new List<TurnoDTO>();
     private bool loading = true;
+    private TurnoDTO turnoSeleccionado; 
     private int profesionalId;
+    private bool mostrarModalOcupado = false;
 
     private TurnoDTO? turnoParaCancelar;
 
@@ -126,8 +150,17 @@
         NavigationManager.NavigateTo("/profesional/turnos/nuevo");
     }
 
-    private void ModificarTurno(int turnoId)
+    private async Task ModificarTurno(int turnoId)
     {
+
+        turnoSeleccionado = await TurnoApiClient.GetAsync(turnoId); 
+
+        if(turnoSeleccionado.Estado == EstadoTurnoDTO.Ocupado)
+        {
+            mostrarModalOcupado = true;
+            return;
+        }
+
         NavigationManager.NavigateTo($"/profesional/turnos/modificar/{turnoId}");
     }
 

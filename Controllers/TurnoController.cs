@@ -60,7 +60,7 @@ namespace Controllers
             var paciente = pacienteService.GetByIdPaciente(pacienteId);
             if (paciente is null) return NotFound(new {message = "Paciente no encontrado"});
             
-            var turnos = turnoService.GetTurnsByPacient(paciente); 
+            var turnos = turnoService.GetByPaciente(pacienteId); 
 
             if (turnos.Count == 0) return NotFound(new {message = "El paciente no tiene turnos asignados"});
             return Ok(turnos);
@@ -131,5 +131,17 @@ namespace Controllers
 
             return NoContent();
         }
+
+        [Authorize]
+        [HttpPatch("asignarTurno/{turnoId}/{pacienteId}")]
+
+        public ActionResult AsignarTurno(int turnoId, int pacienteId)
+        {
+            var asignarTurno = turnoService.AsignarTurno(turnoId, pacienteId);
+            if (asignarTurno == null) return NotFound(new { message = "Error al asignar el turno" }); 
+            
+            return NoContent();
+        }
+
     }
 }

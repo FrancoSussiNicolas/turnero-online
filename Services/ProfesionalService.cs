@@ -236,5 +236,19 @@ namespace Services
                 return true;
             }
         }
+
+        public IEnumerable<Profesional> GetProfesionalByEspecialidad(int especialidadId)
+        {
+            using (var context = new TurneroContext())
+            {
+                var profesionales = context.Profesionales
+                    .Include(p => p.Especialidad)
+                    .Include(p => p.ObraSociales) 
+                    .Where(p => p.EspecialidadId == especialidadId)
+                    .ToList();
+
+                return profesionales;
+            }
+        }
     }
 }
