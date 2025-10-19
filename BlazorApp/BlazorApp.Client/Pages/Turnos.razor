@@ -1,0 +1,153 @@
+﻿@page "/profesional/turnos"
+@using DTOs
+@using API.Clients
+@using Shared
+@inject NavigationManager NavigationManager
+
+<div class="container mt-4">
+    <div class="card shadow-sm">
+        <div class="card-header bg-primary text-white d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">Mis Turnos Creados</h3>
+            <button class="btn btn-success" @onclick="AgregarTurno">
+                <i class="bi bi-plus-circle"></i> Agregar Turno
+            </button>
+        </div>
+
+        <div class="card-body">
+            @if (loading)
+            {
+                <div class="alert alert-info">Cargando turnos...</div>
+            }
+            else if (turnos == null || !turnos.Any())
+            {
+                <div class="alert alert-secondary">No hay turnos creados.</div>
+            }
+            else
+            {
+                <div class="table-responsive">
+                    <table class="table table-striped table-hover align-middle">
+                        <thead class="table-light">
+                            <tr>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>Estado</th>
+                                <th>Consultorio</th>
+                                <th>Paciente</th>
+                                <th class="text-center">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var turno in turnos)
+                            {
+                                <tr>
+                                    <td>@turno.FechaTurno.ToString("dd/MM/yyyy")</td>
+                                    <td>@turno.HoraTurno.ToString("HH:mm")</td>
+                                    <td>
+                                        @if (turno.Estado == DTOs.EstadoTurnoDTO.Disponible)
+                                        {
+                                            <span class="badge bg-success">Disponible</span>
+                                        }
+                                        else
+                                        {
+                                            <span class="badge bg-warning text-dark">Ocupado</span>
+                                        }
+                                    </td>
+                                    <td>@turno.ConsultorioId</td>
+                                    <td>@(turno.PacienteId.HasValue ? "Asignado" : "-- Sin asignar --")</td>
+                                    <td class="text-center">
+                                        <button class="btn btn-sm btn-outline-primary" @onclick="() => ModificarTurno(turno.TurnoId)">Modificar</button>
+                                        <button class="btn btn-sm btn-outline-danger ms-1" @onclick="() => PrepararCancelacion(turno)">Cancelar</button>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            }
+        </div>
+
+        <div class="card-footer text-muted">
+            Total de turnos: @(turnos?.Count ?? 0)
+        </div>
+    </div>
+</div>
+
+<!-- Modal de confirmación de cancelación -->
+@if (turnoParaCancelar != null)
+{
+    <div class="modal fade show" tabindex="-1" style="display:block;" role="dialog">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Confirmar Cancelación</h5>
+                    <button type="button" class="btn-close" @onclick="CerrarModal"></button>
+                </div>
+                <div class="modal-body">
+                    <p>
+                        ¿Estás seguro de que deseas cancelar el turno del día
+                        <strong>@turnoParaCancelar.FechaTurno.ToString("dd/MM/yyyy")</strong>
+                        a las <strong>@turnoParaCancelar.HoraTurno.ToString("HH:mm")</strong>?
+                    </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" @onclick="CerrarModal">Volver</button>
+                    <button type="button" class="btn btn-danger" @onclick="ConfirmarCancelacion">Sí, Cancelar Turno</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal-backdrop fade show"></div>
+}
+
+@code {
+    private List<TurnoDTO> turnos = new();
+    private bool loading = true;
+    private int profesionalId;
+
+    private TurnoDTO? turnoParaCancelar;
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (SessionManager.PersonaId is not null)
+            profesionalId = (int)SessionManager.PersonaId;
+
+        await CargarTurnos();
+    }
+
+    private async Task CargarTurnos()
+    {
+        loading = true;
+        turnos = await TurnoApiClient.GetByProfesionalAsync(profesionalId);
+        loading = false;
+    }
+
+    private void AgregarTurno()
+    {
+        NavigationManager.NavigateTo("/profesional/turnos/nuevo");
+    }
+
+    private void ModificarTurno(int turnoId)
+    {
+        NavigationManager.NavigateTo($"/profesional/turnos/modificar/{turnoId}");
+    }
+
+    private void PrepararCancelacion(TurnoDTO turno)
+    {
+        turnoParaCancelar = turno;
+    }
+
+    private void CerrarModal()
+    {
+        turnoParaCancelar = null;
+    }
+
+    private async Task ConfirmarCancelacion()
+    {
+        if (turnoParaCancelar != null)
+        {
+            await TurnoApiClient.DeleteAsync(turnoParaCancelar.TurnoId);
+            turnoParaCancelar = null;
+            await CargarTurnos();
+        }
+    }
+}

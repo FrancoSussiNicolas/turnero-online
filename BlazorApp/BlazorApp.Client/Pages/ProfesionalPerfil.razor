@@ -164,7 +164,7 @@
         {
             cargando = true;
             profesionalDTO = await ProfesionalApiClient.GetAsync(profesionalId);
-            profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula)
+            profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula,profesionalDTO.EspecialidadId)
             {
                 PersonaId = profesionalDTO.PersonaId,
                 EspecialidadId = profesionalDTO.EspecialidadId
@@ -227,7 +227,7 @@
             await ProfesionalApiClient.UpdateAsync(profesionalDTO);
             mensajeExito = "Perfil actualizado correctamente.";
             editando = false;
-            profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula)
+            profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula, profesionalDTO.EspecialidadId)
             {
                 PersonaId = profesionalDTO.PersonaId,
                 EspecialidadId = profesionalDTO.EspecialidadId
@@ -245,7 +245,7 @@
 
     private void CancelarEdicion()
     {
-        profesionalDTO = new ProfesionalDTO(profesionalOriginal.ApellidoNombre, profesionalOriginal.Mail, profesionalOriginal.Contrasenia, profesionalOriginal.Matricula)
+        profesionalDTO = new ProfesionalDTO(profesionalOriginal.ApellidoNombre, profesionalOriginal.Mail, profesionalOriginal.Contrasenia, profesionalOriginal.Matricula, profesionalOriginal.EspecialidadId)
         {
             PersonaId = profesionalOriginal.PersonaId,
             EspecialidadId = profesionalOriginal.EspecialidadId

@@ -1,0 +1,189 @@
+﻿@page "/profesional/turnos/nuevo"
+@page "/profesional/turnos/modificar/{TurnoId:int}"
+@using DTOs
+@using API.Clients
+@using Shared
+@using Microsoft.AspNetCore.Components.Forms
+@inject NavigationManager NavigationManager
+
+<h3>@(TurnoId.HasValue ? "Modificar Turno" : "Registrar Nuevo Turno")</h3>
+
+@if (!string.IsNullOrEmpty(AlertMessage))
+{
+    <div class="alert @AlertClass alert-dismissible fade show mt-3" role="alert">
+        @AlertMessage
+        <button type="button" class="btn-close" @onclick="CerrarAlerta" aria-label="Close"></button>
+    </div>
+}
+
+<EditForm Model="@nuevoTurno" OnValidSubmit="GuardarTurno">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+
+    <!-- Fecha -->
+    <div class="mb-3">
+        <label>Fecha</label>
+        <InputDate @bind-Value="nuevoTurno.FechaTurno"
+                   class="form-control"
+                   @onchange="CargarConsultoriosDisponibles" />
+    </div>
+
+    <!-- Hora -->
+    <div class="mb-3">
+        <label>Hora</label>
+        <input type="time"
+               step="60"
+               class="form-control"
+               value="@horaString"
+               @onchange="HoraCambiada" />
+    </div>
+
+    <!-- Consultorio -->
+    <div class="mb-3">
+        <label>Consultorio</label>
+        <InputSelect @bind-Value="nuevoTurno.ConsultorioId" class="form-select">
+            <option value="0">Seleccione un consultorio</option>
+            @foreach (var c in consultorios)
+            {
+                <option value="@c.ConsultorioId">@c.ConsultorioId</option>
+            }
+        </InputSelect>
+    </div>
+
+    <div class="d-flex justify-content-end">
+        <button type="button" class="btn btn-secondary me-2" @onclick="Cancelar">Cancelar</button>
+        <button type="submit" class="btn btn-success">Guardar</button>
+    </div>
+</EditForm>
+
+@code {
+    [Parameter]
+    public int? TurnoId { get; set; } // Si tiene valor, estamos editando
+
+    private TurnoDTO nuevoTurno = new()
+    {
+        FechaTurno = DateOnly.FromDateTime(DateTime.Today),
+        HoraTurno = new TimeOnly(DateTime.Now.Hour, DateTime.Now.Minute)
+    };
+
+    private IEnumerable<ConsultorioDTO> consultorios = new List<ConsultorioDTO>();
+    private string AlertMessage = string.Empty;
+    private string AlertClass = string.Empty;
+
+    private string horaString => nuevoTurno.HoraTurno.ToString("HH:mm");
+
+    private void CambiarHora(string? valor)
+    {
+        if (!string.IsNullOrEmpty(valor))
+        {
+            if (TimeOnly.TryParse(valor, out var hora))
+            {
+                nuevoTurno.HoraTurno = hora;
+            }
+        }
+    }
+
+    private void HoraCambiada(ChangeEventArgs e)
+    {
+        CambiarHora(e.Value?.ToString());
+        _ = CargarConsultoriosDisponibles();
+    }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (SessionManager.PersonaId is not null)
+            nuevoTurno.ProfesionalId = (int)SessionManager.PersonaId;
+
+        // Si estamos editando, cargamos el turno existente
+        if (TurnoId.HasValue)
+        {
+            try
+            {
+                var turnoExistente = await TurnoApiClient.GetAsync(TurnoId.Value);
+                if (turnoExistente != null)
+                {
+                    nuevoTurno = turnoExistente;
+                }
+                else
+                {
+                    MostrarAlerta("Turno no encontrado", "alert-danger");
+                }
+            }
+            catch (Exception ex)
+            {
+                MostrarAlerta($"Error al cargar el turno: {ex.Message}", "alert-danger");
+            }
+        }
+
+        await CargarConsultoriosDisponibles();
+    }
+
+    // Carga dinámica de consultorios según fecha y hora
+    private async Task CargarConsultoriosDisponibles(ChangeEventArgs? e = null)
+    {
+        if (nuevoTurno.FechaTurno != default && nuevoTurno.HoraTurno != default)
+        {
+            try
+            {
+                Console.WriteLine($"Buscando consultorios libres: {nuevoTurno.FechaTurno} {nuevoTurno.HoraTurno}");
+                consultorios = await ConsultorioApiClient.GetLibresAsync(nuevoTurno.FechaTurno, nuevoTurno.HoraTurno);
+
+                // Si estamos editando, agregar el consultorio actual si no está en la lista
+                if (TurnoId.HasValue && !consultorios.Any(c => c.ConsultorioId == nuevoTurno.ConsultorioId))
+                {
+                    var actual = await ConsultorioApiClient.GetAsync(nuevoTurno.ConsultorioId);
+                    if (actual != null)
+                        consultorios = consultorios.Append(actual);
+                }
+
+                if (!consultorios.Any())
+                    MostrarAlerta("No hay consultorios disponibles en ese horario.", "alert-warning");
+                else
+                    CerrarAlerta();
+            }
+            catch (Exception ex)
+            {
+                MostrarAlerta($"Error al cargar consultorios: {ex.Message}", "alert-danger");
+            }
+        }
+    }
+
+    private async Task GuardarTurno()
+    {
+        try
+        {
+            if (TurnoId.HasValue)
+            {
+                await TurnoApiClient.UpdateAsync(nuevoTurno); // Editando
+                MostrarAlerta("Turno actualizado correctamente", "alert-success");
+            }
+            else
+            {
+                await TurnoApiClient.AddAsync(nuevoTurno); // Nuevo
+                MostrarAlerta("Turno registrado correctamente", "alert-success");
+            }
+
+            await Task.Delay(1500);
+            NavigationManager.NavigateTo("/profesional/turnos");
+        }
+        catch (Exception ex)
+        {
+            MostrarAlerta($"Error al guardar el turno: {ex.Message}", "alert-danger");
+        }
+    }
+
+    private void Cancelar() => NavigationManager.NavigateTo("/profesional/turnos");
+
+    private void MostrarAlerta(string mensaje, string clase)
+    {
+        AlertMessage = mensaje;
+        AlertClass = clase;
+        StateHasChanged();
+    }
+
+    private void CerrarAlerta()
+    {
+        AlertMessage = string.Empty;
+        StateHasChanged();
+    }
+}
