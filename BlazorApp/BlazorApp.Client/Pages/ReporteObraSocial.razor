@@ -1,0 +1,163 @@
+﻿@page "/profesional/reporte"
+@using Radzen
+@using Radzen.Blazor
+@using DTOs
+@using API.Clients
+
+<PageTitle>Reporte: Pacientes por Obra Social</PageTitle>
+
+<div class="container-fluid py-4">
+    <div class="row mb-4">
+        <div class="col-12">
+            <h2 class="mb-3">Reporte: Pacientes por Obra Social</h2>
+            
+            @if (!string.IsNullOrEmpty(fechaGeneracion))
+            {
+                <RadzenAlert AlertStyle="AlertStyle.Info" Variant="Variant.Flat" Shade="Shade.Lighter">
+                    <strong>Fecha de generación:</strong> @fechaGeneracion
+                </RadzenAlert>
+            }
+        </div>
+    </div>
+
+    <div class="row mb-3">
+        <div class="col-12">
+            <button class="btn btn-primary" @onclick="@CargarReporte">Cargar Reporte</button>
+        </div>
+    </div>
+
+    @if (mensajeError != null)
+    {
+        <div class="row mb-3">
+            <div class="col-12">
+                <RadzenAlert AlertStyle="AlertStyle.Danger" 
+                    Variant="Variant.Flat" 
+                    Shade="Shade.Lighter" 
+                    AllowClose="true"
+                    Close="@(() => mensajeError = null)"
+                >
+                    <strong>Error:</strong> @mensajeError
+                </RadzenAlert>
+            </div>
+        </div>
+    }
+
+    @if (reporteActual != null)
+    {
+        <div class="row mb-4">
+            <div class="col-12">
+                <RadzenCard>
+                    <RadzenChart>
+                        <RadzenColumnSeries Data="@reporteActual.Datos" 
+                            CategoryProperty="NombreObraSocial" 
+                            ValueProperty="CantidadPacientes"
+                            Title="Pacientes"
+                            Fill="#3498db" 
+                        />
+                        <RadzenValueAxis>
+                            <RadzenGridLines Visible="true" />
+                            <RadzenAxisTitle Text="Cantidad de Pacientes" />
+                        </RadzenValueAxis>
+                        <RadzenCategoryAxis>
+                            <RadzenAxisTitle Text="Obras Sociales" />
+                        </RadzenCategoryAxis>
+                        <RadzenColumnOptions Radius="5" />
+                        <RadzenLegend Visible="false" />
+                    </RadzenChart>
+                </RadzenCard>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <RadzenCard>
+                    <RadzenText TextStyle="TextStyle.H5" TagName="TagName.H5" class="mb-3">
+                        Datos Detallados
+                    </RadzenText>
+                    
+                    <RadzenDataGrid Data="@reporteActual.Datos" 
+                        TItem="PacientesPorObraSocialItem"
+                        AllowSorting="true"
+                        AllowFiltering="true"
+                        FilterMode="FilterMode.Simple"
+                        ColumnWidth="200px"
+                    >
+                        <Columns>
+                            <RadzenDataGridColumn TItem="PacientesPorObraSocialItem" 
+                                Property="ObraSocialId" 
+                                Title="ID" 
+                                Width="100px" 
+                                TextAlign="TextAlign.Center" />
+                            
+                            <RadzenDataGridColumn TItem="PacientesPorObraSocialItem" 
+                                Property="NombreObraSocial" 
+                                Title="Obra Social" 
+                            />
+                            
+                            <RadzenDataGridColumn TItem="PacientesPorObraSocialItem" 
+                                Property="CantidadPacientes" 
+                                Title="Cantidad de Pacientes" 
+                                Width="200px" 
+                                TextAlign="TextAlign.Center"
+                            >
+                                <Template Context="data">
+                                    <RadzenBadge BadgeStyle="@(data.CantidadPacientes == 0 ? BadgeStyle.Danger : BadgeStyle.Primary)" 
+                                        Text="@data.CantidadPacientes.ToString()" 
+                                        Shade="Shade.Lighter" 
+                                    />
+                                </Template>
+                            </RadzenDataGridColumn>
+                        </Columns>
+                    </RadzenDataGrid>
+
+                    <div class="mt-3 p-3 bg-light border rounded">
+                        <strong>Total de pacientes: @reporteActual.Datos.Sum(d => d.CantidadPacientes)</strong>
+                    </div>
+                </RadzenCard>
+            </div>
+        </div>
+    }
+    else if (!cargando)
+    {
+        <div class="row">
+            <div class="col-12">
+                <p>
+                    Presione "Cargar Reporte" para ver los datos
+                </p>
+            </div>
+        </div>
+    }
+</div>
+
+@code {
+    private ReportePacientesPorObraSocialDTO reporteActual;
+    private bool cargando = false;
+    private string? mensajeError;
+    private string? fechaGeneracion;
+
+    private async Task CargarReporte()
+    {
+        try
+        {
+            cargando = true;
+            mensajeError = null;
+            StateHasChanged();
+
+            reporteActual = await ReportesApiClient.GetReporteObrasSocialesAsync();
+
+            if (reporteActual != null)
+            {
+                fechaGeneracion = reporteActual.FechaGeneracion.ToString("dd/MM/yyyy HH:mm");
+            }
+        }
+        catch (Exception ex)
+        {
+            mensajeError = $"Error al cargar el reporte: {ex.Message}";
+        }
+        finally
+        {
+            cargando = false;
+            StateHasChanged();
+        }
+    }
+}
