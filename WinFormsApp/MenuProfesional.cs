@@ -95,5 +95,13 @@ namespace WinFormsApp
             verTurnosForm.Text = "Ver Turnos";
             verTurnosForm.Show();
         }
+
+        private void reporteObrasSocialesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form reporteObrasSociales = new ReporteObrasSocialesForm();
+            reporteObrasSociales.MdiParent = this;
+            reporteObrasSociales.Text = "Reporte Pacientes Por Obra Social";
+            reporteObrasSociales.Show();
+        }
     }
 }

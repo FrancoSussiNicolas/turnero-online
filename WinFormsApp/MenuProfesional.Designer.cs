@@ -31,46 +31,47 @@
             arrangeIconsToolStripMenuItem = new ToolStripMenuItem();
             salirToolStripMenuItem = new ToolStripMenuItem();
             toolTip = new ToolTip(components);
+            reporteObrasSocialesToolStripMenuItem = new ToolStripMenuItem();
             menuStrip.SuspendLayout();
             SuspendLayout();
             // 
             // menuStrip
             // 
             menuStrip.ImageScalingSize = new Size(20, 20);
-            menuStrip.Items.AddRange(new ToolStripItem[] { turnosMenu, especialidadMenu, obrasSocialesMenu, perfilMenu, windowsMenu, salirToolStripMenuItem });
+            menuStrip.Items.AddRange(new ToolStripItem[] { turnosMenu, especialidadMenu, obrasSocialesMenu, perfilMenu, reporteObrasSocialesToolStripMenuItem, windowsMenu, salirToolStripMenuItem });
             menuStrip.Location = new Point(0, 0);
             menuStrip.MdiWindowListItem = windowsMenu;
             menuStrip.Name = "menuStrip";
-            menuStrip.Padding = new Padding(7, 2, 0, 2);
-            menuStrip.Size = new Size(738, 24);
+            menuStrip.Padding = new Padding(8, 3, 0, 3);
+            menuStrip.Size = new Size(843, 30);
             menuStrip.TabIndex = 0;
             menuStrip.Text = "MenuStrip";
             // 
             // turnosMenu
             // 
             turnosMenu.Name = "turnosMenu";
-            turnosMenu.Size = new Size(55, 20);
+            turnosMenu.Size = new Size(67, 24);
             turnosMenu.Text = "&Turnos";
             turnosMenu.Click += turnosMenu_Click;
             // 
             // especialidadMenu
             // 
             especialidadMenu.Name = "especialidadMenu";
-            especialidadMenu.Size = new Size(84, 20);
+            especialidadMenu.Size = new Size(107, 24);
             especialidadMenu.Text = "&Especialidad";
             especialidadMenu.Click += ModificarEspecialidadToolStripMenuItem_Click;
             // 
             // obrasSocialesMenu
             // 
             obrasSocialesMenu.Name = "obrasSocialesMenu";
-            obrasSocialesMenu.Size = new Size(95, 20);
+            obrasSocialesMenu.Size = new Size(120, 24);
             obrasSocialesMenu.Text = "&Obras Sociales";
             obrasSocialesMenu.Click += ModificarObrasSocialesToolStripMenuItem_Click;
             // 
             // perfilMenu
             // 
             perfilMenu.Name = "perfilMenu";
-            perfilMenu.Size = new Size(46, 20);
+            perfilMenu.Size = new Size(56, 24);
             perfilMenu.Text = "&Perfil";
             perfilMenu.Click += ModificarPerfilToolStripMenuItem_Click;
             // 
@@ -78,60 +79,67 @@
             // 
             windowsMenu.DropDownItems.AddRange(new ToolStripItem[] { cascadeToolStripMenuItem, tileVerticalToolStripMenuItem, tileHorizontalToolStripMenuItem, closeAllToolStripMenuItem, arrangeIconsToolStripMenuItem });
             windowsMenu.Name = "windowsMenu";
-            windowsMenu.Size = new Size(66, 20);
+            windowsMenu.Size = new Size(82, 24);
             windowsMenu.Text = "&Ventanas";
             // 
             // cascadeToolStripMenuItem
             // 
             cascadeToolStripMenuItem.Name = "cascadeToolStripMenuItem";
-            cascadeToolStripMenuItem.Size = new Size(180, 22);
+            cascadeToolStripMenuItem.Size = new Size(224, 26);
             cascadeToolStripMenuItem.Text = "&Cascada";
             cascadeToolStripMenuItem.Click += CascadeToolStripMenuItem_Click;
             // 
             // tileVerticalToolStripMenuItem
             // 
             tileVerticalToolStripMenuItem.Name = "tileVerticalToolStripMenuItem";
-            tileVerticalToolStripMenuItem.Size = new Size(180, 22);
+            tileVerticalToolStripMenuItem.Size = new Size(224, 26);
             tileVerticalToolStripMenuItem.Text = "Mosaico &vertical";
             tileVerticalToolStripMenuItem.Click += TileVerticalToolStripMenuItem_Click;
             // 
             // tileHorizontalToolStripMenuItem
             // 
             tileHorizontalToolStripMenuItem.Name = "tileHorizontalToolStripMenuItem";
-            tileHorizontalToolStripMenuItem.Size = new Size(180, 22);
+            tileHorizontalToolStripMenuItem.Size = new Size(224, 26);
             tileHorizontalToolStripMenuItem.Text = "Mosaico &horizontal";
             tileHorizontalToolStripMenuItem.Click += TileHorizontalToolStripMenuItem_Click;
             // 
             // closeAllToolStripMenuItem
             // 
             closeAllToolStripMenuItem.Name = "closeAllToolStripMenuItem";
-            closeAllToolStripMenuItem.Size = new Size(180, 22);
+            closeAllToolStripMenuItem.Size = new Size(224, 26);
             closeAllToolStripMenuItem.Text = "C&errar todo";
             closeAllToolStripMenuItem.Click += CloseAllToolStripMenuItem_Click;
             // 
             // arrangeIconsToolStripMenuItem
             // 
             arrangeIconsToolStripMenuItem.Name = "arrangeIconsToolStripMenuItem";
-            arrangeIconsToolStripMenuItem.Size = new Size(180, 22);
+            arrangeIconsToolStripMenuItem.Size = new Size(224, 26);
             arrangeIconsToolStripMenuItem.Text = "&Organizar iconos";
             arrangeIconsToolStripMenuItem.Click += ArrangeIconsToolStripMenuItem_Click;
             // 
             // salirToolStripMenuItem
             // 
             salirToolStripMenuItem.Name = "salirToolStripMenuItem";
-            salirToolStripMenuItem.Size = new Size(41, 20);
+            salirToolStripMenuItem.Size = new Size(52, 24);
             salirToolStripMenuItem.Text = "Salir";
             salirToolStripMenuItem.Click += SalirToolStripMenuItem_Click;
             // 
+            // reporteObrasSocialesToolStripMenuItem
+            // 
+            reporteObrasSocialesToolStripMenuItem.Name = "reporteObrasSocialesToolStripMenuItem";
+            reporteObrasSocialesToolStripMenuItem.Size = new Size(177, 24);
+            reporteObrasSocialesToolStripMenuItem.Text = "Reporte Obras Sociales";
+            reporteObrasSocialesToolStripMenuItem.Click += reporteObrasSocialesToolStripMenuItem_Click;
+            // 
             // MenuProfesional
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(738, 523);
+            ClientSize = new Size(843, 697);
             Controls.Add(menuStrip);
             IsMdiContainer = true;
             MainMenuStrip = menuStrip;
-            Margin = new Padding(4);
+            Margin = new Padding(5, 5, 5, 5);
             Name = "MenuProfesional";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Menú Principal del Profesional";
@@ -160,5 +168,6 @@
         private System.Windows.Forms.ToolStripMenuItem closeAllToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem arrangeIconsToolStripMenuItem;
         private ToolStripMenuItem salirToolStripMenuItem;
+        private ToolStripMenuItem reporteObrasSocialesToolStripMenuItem;
     }
 }

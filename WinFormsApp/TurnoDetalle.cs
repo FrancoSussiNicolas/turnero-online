@@ -21,7 +21,8 @@ namespace WinFormsApp
                 FechaTurno.Value = turnoExistente.FechaTurno.ToDateTime(TimeOnly.MinValue);
                 HoraTurno.Value = DateTime.Today.AddTicks(turnoExistente.HoraTurno.Ticks);
                 btnRegistrarTurno.Text = "Confirmar";
-                this.Text = h1Turno.Text = "Modificar Turno";
+                h1Turno.Text = "Modificar Turno";
+                this.Text = "Modificar Turno";
             }
             else
             {
@@ -29,7 +30,8 @@ namespace WinFormsApp
                 FechaTurno.Value = DateTime.Today;
                 HoraTurno.Value = DateTime.Now;
                 btnRegistrarTurno.Text = "Registrar";
-                this.Text = h1Turno.Text = "Registrar Turno";
+                h1Turno.Text = "Registrar Turno";
+                this.Text = "Registrar Turno";
             }
 
             await ActualizarConsultoriosLibres();
