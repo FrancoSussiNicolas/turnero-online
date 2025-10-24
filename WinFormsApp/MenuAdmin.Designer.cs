@@ -99,30 +99,6 @@
             obraSocialToolStripMenuItem.Text = "Obra Social";
             obraSocialToolStripMenuItem.Click += obraSocialToolStripMenuItem_Click;
             // 
-            // verObrasSocialesToolStripMenuItem
-            // 
-            verObrasSocialesToolStripMenuItem.Name = "verObrasSocialesToolStripMenuItem";
-            verObrasSocialesToolStripMenuItem.Size = new Size(233, 26);
-            verObrasSocialesToolStripMenuItem.Text = "Ver obras sociales";
-            // 
-            // crearObraSocialToolStripMenuItem
-            // 
-            crearObraSocialToolStripMenuItem.Name = "crearObraSocialToolStripMenuItem";
-            crearObraSocialToolStripMenuItem.Size = new Size(233, 26);
-            crearObraSocialToolStripMenuItem.Text = "Crear obra social";
-            // 
-            // modificarObraSocialToolStripMenuItem
-            // 
-            modificarObraSocialToolStripMenuItem.Name = "modificarObraSocialToolStripMenuItem";
-            modificarObraSocialToolStripMenuItem.Size = new Size(233, 26);
-            modificarObraSocialToolStripMenuItem.Text = "Modificar obra social";
-            // 
-            // eliminarObraSocialToolStripMenuItem
-            // 
-            eliminarObraSocialToolStripMenuItem.Name = "eliminarObraSocialToolStripMenuItem";
-            eliminarObraSocialToolStripMenuItem.Size = new Size(233, 26);
-            eliminarObraSocialToolStripMenuItem.Text = "Eliminar obra social";
-            // 
             // planObraSocialToolStripMenuItem
             // 
             planObraSocialToolStripMenuItem.Name = "planObraSocialToolStripMenuItem";

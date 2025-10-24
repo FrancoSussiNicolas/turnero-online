@@ -22,7 +22,7 @@ namespace Controllers
             this.consultorioService = consultorioService;
         }
 
-        [Authorize(Roles = "Profesional")]
+        [Authorize(Roles = "Profesional,Administrador")]
         [HttpGet]
         public ActionResult<IEnumerable<Consultorio>> GetAll()
         {
