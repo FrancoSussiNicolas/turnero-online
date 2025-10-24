@@ -1,5 +1,6 @@
 ﻿@inherits LayoutComponentBase
 @using Shared
+@* @inject ProtectedLocalStorage localStorage *@
 
 <div class="page">
 
@@ -22,3 +23,15 @@
     <a href="" class="reload">Reload</a>
     <a class="dismiss">🗙</a>
 </div>
+
+@* @code {
+    protected override async Task OnInitializedAsync()
+    {
+        var result = await localStorage.GetAsync<string>("jwtToken");
+        if (result.Success && result.Value is not null && !SessionManager.IsLoggedIn)
+        {
+            SessionManager.SetSession(result.Value);
+            StateHasChanged();
+        }
+    }
+} *@

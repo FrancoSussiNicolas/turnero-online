@@ -48,6 +48,7 @@ builder.Services.AddScoped<ObraSocialService>();
 builder.Services.AddScoped<PlanObraSocialService>();
 builder.Services.AddScoped<PracticaService>();
 builder.Services.AddScoped<JwtService>();
+builder.Services.AddScoped<ReportesService>();
 
 var corsPolicy = "AllowBlazorDev";
 builder.Services.AddCors(options =>

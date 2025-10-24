@@ -39,6 +39,7 @@ namespace Controllers
             return Ok(p);
         }
 
+        [Authorize(Roles = "Administrador")]
         [HttpPost]
         public ActionResult<Profesional> CrearProfesional([FromBody] ProfesionalDTO profesional)
         {
@@ -119,6 +120,7 @@ namespace Controllers
             }
         }
 
+        [Authorize(Roles = "Profesional")]
         [HttpPut("cambiarEspecialidad/{profesionalId}")]
         public IActionResult CambiarEspecialidadProfesional(int profesionalId, [FromBody] int nuevaEspecialidadId)
         {

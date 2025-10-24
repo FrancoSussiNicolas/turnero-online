@@ -25,7 +25,7 @@ namespace Controllers
             configuration = new ConfigurationBuilder()
                 .SetBasePath(Directory.GetCurrentDirectory())
                 .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
-                .Build(); ;
+                .Build();
             this.profesionalService = profesionalService;
             this.pacienteService = pacienteService;
             this.adminService = adminService;

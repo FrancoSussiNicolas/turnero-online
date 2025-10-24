@@ -3,6 +3,7 @@ using Entities;
 using DTOs;
 using Services;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Controllers
 {
@@ -40,10 +41,7 @@ namespace Controllers
         public ActionResult<Paciente> CrearPaciente([FromBody] PacienteDTO paciente)
         {
             try
-            {
-                var plan = planObraSocialService.GetByNroPlan(paciente.PlanObraSocialId);
-                if (plan is null) return BadRequest(new { message = "El Plan de Obra Social especificado no existe." });
-               
+            {               
                 var newPaciente = pacienteService.CrearPaciente(paciente);
 
                 //return CreatedAtAction(nameof(GetById), new { id = newPaciente.IdPersona }, newPaciente);
@@ -70,6 +68,16 @@ namespace Controllers
             {
                 return Conflict(new { message = "Error al guardar: " + ex.Message });
             }
+        }
+
+        [Authorize(Roles = "Paciente")]
+        [HttpPatch("{idPac}/plan/{idPlan}")]
+        public ActionResult AsignarPlan(int idPlan, int idPac)
+        {
+            var result = pacienteService.AsignarPlanOs(idPlan, idPac);
+            if (!result) return NotFound("Paciente o Plan no encontrado");
+
+            return NoContent();
         }
 
         [Authorize(Roles = "Administrador")]

@@ -94,5 +94,26 @@ namespace WinFormsApp
             turnosAdmin.Text = "Ver Turnos";
             turnosAdmin.Show();
         }
+
+        private void menuStrip1_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
+        }
+
+        private void obrasSocialesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form reporteObrasSociales = new ReporteObrasSocialesForm();
+            reporteObrasSociales.MdiParent = this;
+            reporteObrasSociales.Text = "Reporte Pacientes Por Obra Social";
+            reporteObrasSociales.Show();
+        }
+
+        private void especialidadesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Form reporteEspecialidades = new ReporteEspecialidadesForm();
+            reporteEspecialidades.MdiParent = this;
+            reporteEspecialidades.Text = "Reporte Profesionales Por Especialidad";
+            reporteEspecialidades.Show();
+        }
     }
 }

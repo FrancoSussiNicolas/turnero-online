@@ -13,19 +13,42 @@
     <div class="card p-4 shadow-sm" style="width: 350px;">
         <EditForm Model="@loginModel" OnValidSubmit="@HandleLogin">
             <DataAnnotationsValidator />
-            <ValidationSummary />
+
+            @if (!string.IsNullOrEmpty(error))
+            {
+                <div class="alert alert-danger" role="alert">
+                    @error
+                </div>
+            }
 
             <div class="mb-3">
-                <label class="form-label">Correo electrónico</label>
-                <InputText @bind-Value="loginModel.Mail" class="form-control" />
+                <label class="form-label" for="login-email">Correo electrónico</label>
+                <InputText @bind-Value="loginModel.Mail" id="login-email" class="form-control" placeholder="ejemplo@correo.com" />
+                <ValidationMessage For="@(() => loginModel.Mail)" />
             </div>
 
             <div class="mb-3">
-                <label class="form-label">Contraseña</label>
-                <InputText @bind-Value="loginModel.Password" class="form-control" type="password" />
+                <label class="form-label" for="login-password">Contraseña</label>
+                <div class="input-group">
+                    <InputText @bind-Value="loginModel.Password" id="login-password" class="form-control" type="@passwordInputType" placeholder="****" />
+                    <button class="btn btn-outline-secondary" type="button" @onclick="TogglePasswordVisibility">
+                        @(showPassword ? "Ocultar" : "Ver")
+                    </button>
+                </div>
+                <ValidationMessage For="@(() => loginModel.Password)" />
             </div>
 
-            <button type="submit" class="btn btn-primary w-100">Ingresar</button>
+            <button type="submit" class="btn btn-primary w-100" disabled="@isLoading">
+                @if (isLoading)
+                {
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                    <span> Cargando...</span>
+                }
+                else
+                {
+                    <span>Ingresar</span>
+                }
+            </button>
         </EditForm>
 
         <div class="text-center mt-3">
@@ -37,25 +60,44 @@
 
 @code {
     private LoginRequest loginModel = new();
+    private string error = string.Empty;
+    private bool isLoading = false; 
 
-    private async void HandleLogin()
+    private bool showPassword = false;
+    private string passwordInputType = "password";
+
+    private async Task HandleLogin()
     {
+        isLoading = true;
+        error = string.Empty;
+
         try
         {
             var userToken = await AuthApiClient.LoginAsync(loginModel);
 
             SessionManager.SetSession(userToken.Token);
 
-            if (SessionManager.UserType == "Administrador")
-            {
-            }
+            if (SessionManager.UserType == "Administrador") 
+                throw new Exception("El sitio web solo es accesible para Pacientes y Profesionales. Por favor, utilice la aplicación de escritorio.");
 
             NavigationManager.NavigateTo(SessionManager.UserType == "Paciente" ? "paciente/home" : "profesional/home");
         }
-        catch
+        catch (Exception ex)
         {
-            
+            error = ex.Message;
+            StateHasChanged();
         }
+        finally
+        {
+            isLoading = false;
+            StateHasChanged();
+        }
+    }
+
+    private void TogglePasswordVisibility()
+    {
+        showPassword = !showPassword;
+        passwordInputType = showPassword ? "text" : "password";
     }
 }
 

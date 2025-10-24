@@ -30,6 +30,7 @@ namespace DTOs
             Matricula = matricula;
             EspecialidadId = especialidadId;
         }
+
         public EstadoConsultorioDTO Estado { get; set; }
 
         public List<ObraSocialDTO> ObraSociales { get; set; }

@@ -66,7 +66,7 @@ namespace Services
                 .HasOne(paciente => paciente.PlanObraSocial)
                 .WithMany(plan => plan.Paciente)
                 .HasForeignKey("PlanObraSocialId")
-                .IsRequired();
+                .IsRequired(false);
 
             // Relación ObraSocial <-> PlanObraSocial (Uno a Muchos)
             modelBuilder.Entity<PlanObraSocial>()
