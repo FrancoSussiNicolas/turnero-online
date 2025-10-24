@@ -18,7 +18,12 @@ namespace WinFormsApp
             InitializeComponent();
         }
 
-        private async void btnCargar_Click(object sender, EventArgs e)
+        private async void ReporteEspecialidadesForm_Load(object sender, EventArgs e)
+        {
+            await GenerarReporte();
+        }
+
+        private async Task GenerarReporte()
         {
             try
             {
@@ -35,6 +40,11 @@ namespace WinFormsApp
                 MessageBox.Show($"Error al cargar el reporte: {ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private async void btnCargar_Click(object sender, EventArgs e)
+        {
+            await GenerarReporte();
         }
 
         private void btnExportarPDF_Click(object sender, EventArgs e)

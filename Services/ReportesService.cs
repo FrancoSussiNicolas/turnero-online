@@ -32,10 +32,7 @@ namespace Services
             };
 
             string query = @"
-                SELECT 
-                    os.ObraSocialId,
-                    os.NombreObraSocial,
-                    COUNT(DISTINCT p.PersonaId) as CantidadPacientes
+                SELECT os.ObraSocialId, os.NombreObraSocial, COUNT(p.PersonaId) as CantidadPacientes
                 FROM ObrasSociales os
                 LEFT JOIN PlanesObrasSociales pos ON os.ObraSocialId = pos.ObraSocialId
                 LEFT JOIN Pacientes p ON p.PlanObraSocialId = pos.PlanObraSocialId
@@ -75,10 +72,7 @@ namespace Services
             };
 
             string query = @"
-                SELECT 
-                    e.EspecialidadId,
-                    e.Descripcion,
-                    COUNT(p.PersonaId) as CantidadProfesionales
+                SELECT e.EspecialidadId, e.Descripcion, COUNT(p.PersonaId) as CantidadProfesionales
                 FROM Especialidades e
                 LEFT JOIN Profesionales p ON e.EspecialidadId = p.EspecialidadId
                 GROUP BY e.EspecialidadId, e.Descripcion

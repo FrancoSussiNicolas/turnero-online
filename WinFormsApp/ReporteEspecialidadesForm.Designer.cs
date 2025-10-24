@@ -37,8 +37,6 @@ namespace WinFormsApp
         /// </summary>
         private void InitializeComponent()
         {
-            DataGridViewCellStyle dataGridViewCellStyle1 = new DataGridViewCellStyle();
-            DataGridViewCellStyle dataGridViewCellStyle2 = new DataGridViewCellStyle();
             lblFecha = new Label();
             btnCargar = new Button();
             btnExportarPDF = new Button();
@@ -52,9 +50,9 @@ namespace WinFormsApp
             // 
             lblFecha.Anchor = AnchorStyles.None;
             lblFecha.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblFecha.Location = new Point(23, 90);
+            lblFecha.Location = new Point(20, 68);
             lblFecha.Name = "lblFecha";
-            lblFecha.Size = new Size(457, 33);
+            lblFecha.Size = new Size(400, 25);
             lblFecha.TabIndex = 0;
             lblFecha.Text = "Fecha de generación: --";
             // 
@@ -63,12 +61,11 @@ namespace WinFormsApp
             btnCargar.Anchor = AnchorStyles.None;
             btnCargar.Cursor = Cursors.Hand;
             btnCargar.Font = new Font("Segoe UI", 10F);
-            btnCargar.Location = new Point(640, 78);
-            btnCargar.Margin = new Padding(3, 4, 3, 4);
+            btnCargar.Location = new Point(560, 58);
             btnCargar.Name = "btnCargar";
-            btnCargar.Size = new Size(171, 47);
+            btnCargar.Size = new Size(150, 35);
             btnCargar.TabIndex = 1;
-            btnCargar.Text = "Cargar Reporte";
+            btnCargar.Text = "Recargar";
             btnCargar.UseVisualStyleBackColor = true;
             btnCargar.Click += btnCargar_Click;
             // 
@@ -78,10 +75,9 @@ namespace WinFormsApp
             btnExportarPDF.Cursor = Cursors.Hand;
             btnExportarPDF.Enabled = false;
             btnExportarPDF.Font = new Font("Segoe UI", 10F);
-            btnExportarPDF.Location = new Point(823, 78);
-            btnExportarPDF.Margin = new Padding(3, 4, 3, 4);
+            btnExportarPDF.Location = new Point(720, 58);
             btnExportarPDF.Name = "btnExportarPDF";
-            btnExportarPDF.Size = new Size(171, 47);
+            btnExportarPDF.Size = new Size(150, 35);
             btnExportarPDF.TabIndex = 2;
             btnExportarPDF.Text = "Exportar a PDF";
             btnExportarPDF.UseVisualStyleBackColor = true;
@@ -97,14 +93,13 @@ namespace WinFormsApp
             dgvDatos.ColumnHeadersHeight = 35;
             dgvDatos.EnableHeadersVisualStyles = false;
             dgvDatos.Font = new Font("Segoe UI", 10F);
-            dgvDatos.Location = new Point(23, 133);
-            dgvDatos.Margin = new Padding(3, 4, 3, 4);
+            dgvDatos.Location = new Point(20, 100);
             dgvDatos.Name = "dgvDatos";
             dgvDatos.ReadOnly = true;
             dgvDatos.RowHeadersWidth = 51;
             dgvDatos.RowTemplate.Height = 30;
             dgvDatos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDatos.Size = new Size(971, 467);
+            dgvDatos.Size = new Size(850, 350);
             dgvDatos.TabIndex = 3;
             // 
             // lblResumen
@@ -113,10 +108,10 @@ namespace WinFormsApp
             lblResumen.BackColor = Color.FromArgb(236, 240, 241);
             lblResumen.BorderStyle = BorderStyle.FixedSingle;
             lblResumen.Font = new Font("Segoe UI", 10F);
-            lblResumen.Location = new Point(23, 613);
+            lblResumen.Location = new Point(20, 460);
             lblResumen.Name = "lblResumen";
-            lblResumen.Padding = new Padding(11, 13, 11, 13);
-            lblResumen.Size = new Size(971, 178);
+            lblResumen.Padding = new Padding(10, 10, 10, 10);
+            lblResumen.Size = new Size(850, 134);
             lblResumen.TabIndex = 4;
             lblResumen.Text = "Cargue el reporte para ver el resumen estadístico";
             // 
@@ -125,27 +120,28 @@ namespace WinFormsApp
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
-            label1.Location = new Point(23, 21);
+            label1.Location = new Point(20, 16);
             label1.Name = "label1";
-            label1.Size = new Size(614, 37);
+            label1.Size = new Size(468, 30);
             label1.TabIndex = 6;
             label1.Text = "Reporte: cantidad de pacientes por obra social";
             // 
             // ReporteEspecialidadesForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1029, 800);
+            ClientSize = new Size(900, 600);
             Controls.Add(label1);
             Controls.Add(lblResumen);
             Controls.Add(dgvDatos);
             Controls.Add(btnExportarPDF);
             Controls.Add(btnCargar);
             Controls.Add(lblFecha);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "ReporteEspecialidadesForm";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Reporte: Profesionales por Especialidad";
+            WindowState = FormWindowState.Maximized;
+            Load += ReporteEspecialidadesForm_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDatos).EndInit();
             ResumeLayout(false);
             PerformLayout();

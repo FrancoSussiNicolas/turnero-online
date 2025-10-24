@@ -38,9 +38,9 @@ namespace WinFormsApp
             // 
             lblFecha.Anchor = AnchorStyles.None;
             lblFecha.Font = new Font("Segoe UI", 10F, FontStyle.Bold);
-            lblFecha.Location = new Point(56, 90);
+            lblFecha.Location = new Point(49, 68);
             lblFecha.Name = "lblFecha";
-            lblFecha.Size = new Size(457, 33);
+            lblFecha.Size = new Size(400, 25);
             lblFecha.TabIndex = 0;
             lblFecha.Text = "Fecha de generación: --";
             // 
@@ -49,12 +49,11 @@ namespace WinFormsApp
             btnCargar.Anchor = AnchorStyles.None;
             btnCargar.Cursor = Cursors.Hand;
             btnCargar.Font = new Font("Segoe UI", 10F);
-            btnCargar.Location = new Point(734, 78);
-            btnCargar.Margin = new Padding(3, 4, 3, 4);
+            btnCargar.Location = new Point(642, 58);
             btnCargar.Name = "btnCargar";
-            btnCargar.Size = new Size(171, 47);
+            btnCargar.Size = new Size(150, 35);
             btnCargar.TabIndex = 1;
-            btnCargar.Text = "Cargar Reporte";
+            btnCargar.Text = "Recargar";
             btnCargar.UseVisualStyleBackColor = true;
             btnCargar.Click += btnCargar_Click;
             // 
@@ -64,10 +63,9 @@ namespace WinFormsApp
             btnExportarPDF.Cursor = Cursors.Hand;
             btnExportarPDF.Enabled = false;
             btnExportarPDF.Font = new Font("Segoe UI", 10F);
-            btnExportarPDF.Location = new Point(926, 78);
-            btnExportarPDF.Margin = new Padding(3, 4, 3, 4);
+            btnExportarPDF.Location = new Point(810, 58);
             btnExportarPDF.Name = "btnExportarPDF";
-            btnExportarPDF.Size = new Size(171, 47);
+            btnExportarPDF.Size = new Size(150, 35);
             btnExportarPDF.TabIndex = 2;
             btnExportarPDF.Text = "Exportar a PDF";
             btnExportarPDF.UseVisualStyleBackColor = true;
@@ -77,10 +75,9 @@ namespace WinFormsApp
             // 
             formsPlot.Anchor = AnchorStyles.None;
             formsPlot.DisplayScale = 1F;
-            formsPlot.Location = new Point(23, 133);
-            formsPlot.Margin = new Padding(3, 4, 3, 4);
+            formsPlot.Location = new Point(20, 100);
             formsPlot.Name = "formsPlot";
-            formsPlot.Size = new Size(1086, 467);
+            formsPlot.Size = new Size(950, 350);
             formsPlot.TabIndex = 3;
             // 
             // dgvDatos
@@ -91,13 +88,12 @@ namespace WinFormsApp
             dgvDatos.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dgvDatos.BackgroundColor = Color.White;
             dgvDatos.ColumnHeadersHeight = 29;
-            dgvDatos.Location = new Point(23, 680);
-            dgvDatos.Margin = new Padding(3, 4, 3, 4);
+            dgvDatos.Location = new Point(20, 510);
             dgvDatos.Name = "dgvDatos";
             dgvDatos.ReadOnly = true;
             dgvDatos.RowHeadersWidth = 51;
             dgvDatos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
-            dgvDatos.Size = new Size(1086, 240);
+            dgvDatos.Size = new Size(950, 180);
             dgvDatos.TabIndex = 4;
             // 
             // label1
@@ -105,27 +101,28 @@ namespace WinFormsApp
             label1.Anchor = AnchorStyles.None;
             label1.AutoSize = true;
             label1.Font = new Font("Segoe UI", 15.75F, FontStyle.Bold);
-            label1.Location = new Point(56, 30);
+            label1.Location = new Point(49, 22);
             label1.Name = "label1";
-            label1.Size = new Size(614, 37);
+            label1.Size = new Size(468, 30);
             label1.TabIndex = 5;
             label1.Text = "Reporte: cantidad de pacientes por obra social";
             // 
             // ReporteObrasSocialesForm
             // 
-            AutoScaleDimensions = new SizeF(8F, 20F);
+            AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(1143, 933);
+            ClientSize = new Size(1000, 700);
             Controls.Add(label1);
             Controls.Add(dgvDatos);
             Controls.Add(formsPlot);
             Controls.Add(btnExportarPDF);
             Controls.Add(btnCargar);
             Controls.Add(lblFecha);
-            Margin = new Padding(3, 4, 3, 4);
             Name = "ReporteObrasSocialesForm";
-            StartPosition = FormStartPosition.CenterScreen;
+            StartPosition = FormStartPosition.CenterParent;
             Text = "Reporte: Pacientes por Obra Social";
+            WindowState = FormWindowState.Maximized;
+            Load += ReporteObrasSocialesForm_Load;
             ((System.ComponentModel.ISupportInitialize)dgvDatos).EndInit();
             ResumeLayout(false);
             PerformLayout();

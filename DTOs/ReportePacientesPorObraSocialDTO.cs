@@ -3,6 +3,6 @@
     public class ReportePacientesPorObraSocialDTO
     {
         public DateTime FechaGeneracion { get; set; }
-        public List<PacientesPorObraSocialItem> Datos { get; set; } = new();
+        public List<PacientesPorObraSocialItem> Datos { get; set; } = [];
     }
 }

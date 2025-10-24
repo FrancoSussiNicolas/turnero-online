@@ -17,7 +17,12 @@ namespace WinFormsApp
             InitializeComponent();
         }
 
-        private async void btnCargar_Click(object sender, EventArgs e)
+        private async void ReporteObrasSocialesForm_Load(object sender, EventArgs e)
+        {
+            await GenerarReporte();
+        }
+
+        private async Task GenerarReporte()
         {
             try
             {
@@ -34,6 +39,11 @@ namespace WinFormsApp
                 MessageBox.Show($"Error al cargar el reporte: {ex.Message}",
                     "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+        private async void btnCargar_Click(object sender, EventArgs e)
+        {
+            await GenerarReporte();
         }
 
         private void btnExportarPDF_Click(object sender, EventArgs e)
@@ -86,20 +96,20 @@ namespace WinFormsApp
             }
 
             formsPlot.Plot.Axes.Bottom.TickGenerator = new ScottPlot.TickGenerators.NumericManual(posiciones, etiquetas);
-            formsPlot.Plot.Axes.Bottom.TickLabelStyle.Rotation = -40;
+            formsPlot.Plot.Axes.Bottom.TickLabelStyle.FontSize = 9;
             formsPlot.Plot.Axes.Bottom.TickLabelStyle.Alignment = Alignment.MiddleRight;
 
             formsPlot.Plot.Axes.Bottom.Label.Text = "Obras Sociales";
             formsPlot.Plot.Axes.Bottom.Label.FontSize = 12;
             formsPlot.Plot.Axes.Bottom.Label.Bold = true;
-            formsPlot.Plot.Axes.Bottom.Label.OffsetY = 5; 
+            formsPlot.Plot.Axes.Bottom.Label.OffsetY = 5;
 
             formsPlot.Plot.Axes.Left.Label.Text = "Cantidad de Pacientes";
             formsPlot.Plot.Axes.Left.Label.FontSize = 12;
             formsPlot.Plot.Axes.Left.Label.Bold = true;
 
             formsPlot.Plot.Title("Cantidad de Pacientes por Obra Social");
-            formsPlot.Plot.Axes.Margins(bottom: 0.4); 
+            formsPlot.Plot.Axes.Margins(bottom: 0.4);
 
             formsPlot.Refresh();
 
@@ -108,7 +118,7 @@ namespace WinFormsApp
             {
                 Id = d.ObraSocialId,
                 ObraSocial = d.NombreObraSocial,
-                CantidadPacientes = d.CantidadPacientes
+                d.CantidadPacientes
             }).ToList();
 
             if (dgvDatos.Columns.Count > 0)
