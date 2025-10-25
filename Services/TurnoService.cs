@@ -65,7 +65,7 @@ namespace Services
                     .ThenInclude(p => p.PlanObraSocial)
                     .Include(t => t.Profesional)
                     .ThenInclude(p => p.ObraSociales)
-                    .Where(t => t.ProfesionalId == profesionalId)
+                    .Where(t => t.ProfesionalId == profesionalId && t.Estado == EstadoTurno.Disponible)
                     .OrderBy(t => t.FechaTurno)
                     .ThenBy(t => t.HoraTurno)
                     .ToList();

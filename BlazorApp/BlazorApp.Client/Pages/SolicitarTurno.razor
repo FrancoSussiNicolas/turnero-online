@@ -247,7 +247,6 @@
         isLoadingProfesionales = true;
         try
         {
-            // Validaciones tempranas: dejar una lista vacía y salir si no hay sesión o especialidad seleccionada
             if (SessionManager.PersonaId is null)
             {
                 profesionales = new List<ProfesionalDTO>();

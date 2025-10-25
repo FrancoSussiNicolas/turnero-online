@@ -256,8 +256,6 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                Console.WriteLine($"=== DEBUG ===");
-                Console.WriteLine($"Buscando: EspecialidadId={especialidadId}, PlanId={planId}");
 
                 var profesionales = context.Profesionales
                     .Include(p => p.ObraSociales)
@@ -288,9 +286,6 @@ namespace Services
                         Estado = (EstadoObraSocialDTO)os.Estado
                     }).ToList() ?? new List<ObraSocialDTO>()
                 }).ToList();
-
-                Console.WriteLine($"Total profesionales encontrados: {profesionalesDTO.Count}");
-                Console.WriteLine($"=== FIN DEBUG ===");
 
                 return profesionalesDTO;
             }
