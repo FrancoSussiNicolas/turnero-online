@@ -135,7 +135,7 @@ namespace API.Clients
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Put, $"planObraSocial/cambiarEstado/{id}");
+                var request = new HttpRequestMessage(HttpMethod.Patch, $"planObraSocial/cambiarEstado/{id}");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
 
                 HttpResponseMessage response = await client.SendAsync(request);

@@ -4,6 +4,13 @@ namespace DTOs
 {
     public class ProfesionalDTO
     {
+
+        public enum EstadoProfesionalDTO
+        {
+            Habilitado,
+            Deshabilitado
+        }
+
         public int PersonaId { get; set; }
 
         [Required]
@@ -22,18 +29,9 @@ namespace DTOs
         [Required]
         public int EspecialidadId { get; set; } 
 
-        public ProfesionalDTO(string apellidoNombre, string mail, string contrasenia, string matricula, int especialidadId)
-        {
-            ApellidoNombre = apellidoNombre;
-            Mail = mail;
-            Contrasenia = contrasenia;
-            Matricula = matricula;
-            EspecialidadId = especialidadId;
-        }
+        public EstadoProfesionalDTO Estado { get; set; }
 
-        public EstadoConsultorioDTO Estado { get; set; }
-
-        public List<ObraSocialDTO> ObraSociales { get; set; }
+        public List<ObraSocialDTO>? ObraSociales { get; set; } = new List<ObraSocialDTO>();
 
         public bool AtiendePorObraSocial => ObraSociales != null && ObraSociales.Any();
     }

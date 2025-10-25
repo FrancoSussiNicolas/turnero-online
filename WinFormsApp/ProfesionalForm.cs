@@ -89,6 +89,11 @@ namespace WinFormsApp
                     ProfesionalesDataGridView.Columns["Estado"].HeaderText = "Estado";
                 }
 
+                if (ProfesionalesDataGridView.Columns["AtiendePorObraSocial"] != null)
+                {
+                    ProfesionalesDataGridView.Columns["AtiendePorObraSocial"].Visible = false;
+                }
+
                 // Ajustes generales
                 ProfesionalesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 ProfesionalesDataGridView.AllowUserToResizeColumns = true;

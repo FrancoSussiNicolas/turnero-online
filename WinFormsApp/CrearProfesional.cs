@@ -60,13 +60,13 @@ namespace WinFormsApp
                     int idEspecialidad = (int)comboEspecialidad.SelectedValue;
 
                     // Crear objeto profesional
-                    var nuevoProfesional = new ProfesionalDTO(
-                        textNombreCompleto.Text,
-                        textEmail.Text,
-                        textContrasenia.Text,
-                        textMatricula.Text, 
-                        idEspecialidad
-                    );
+                    var nuevoProfesional = new ProfesionalDTO {
+                        ApellidoNombre =textNombreCompleto.Text,
+                        Mail = textEmail.Text,
+                        Contrasenia = textContrasenia.Text,
+                        Matricula = textMatricula.Text,
+                        EspecialidadId = idEspecialidad
+                    };
 
                     await ProfesionalApiClient.AddAsync(nuevoProfesional);
 

@@ -2,6 +2,7 @@
 using Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
+using static DTOs.ProfesionalDTO;
 
 namespace Services
 {
@@ -244,10 +245,54 @@ namespace Services
                 var profesionales = context.Profesionales
                     .Include(p => p.Especialidad)
                     .Include(p => p.ObraSociales) 
-                    .Where(p => p.EspecialidadId == especialidadId)
+                    .Where(p => p.EspecialidadId == especialidadId && p.Estado == EstadoProfesional.Habilitado)
                     .ToList();
 
                 return profesionales;
+            }
+        }
+
+        public IEnumerable<ProfesionalDTO> GetProfesionalByEspecialidadAndObra(int especialidadId, int planId)
+        {
+            using (var context = new TurneroContext())
+            {
+                Console.WriteLine($"=== DEBUG ===");
+                Console.WriteLine($"Buscando: EspecialidadId={especialidadId}, PlanId={planId}");
+
+                var profesionales = context.Profesionales
+                    .Include(p => p.ObraSociales)
+                        .ThenInclude(o => o.PlanesObraSocial)
+                    .Where(p => p.EspecialidadId == especialidadId &&
+                        (
+                            p.ObraSociales.Any(o => o.PlanesObraSocial.Any(pl => pl.PlanObraSocialId == planId))
+                            ||
+                            !p.ObraSociales.Any()
+                        ) && p.Estado == EstadoProfesional.Habilitado
+                    )
+                    .ToList();
+
+                // Mapear a DTO
+                var profesionalesDTO = profesionales.Select(p => new ProfesionalDTO
+                {
+                    PersonaId = p.PersonaId,
+                    ApellidoNombre = p.ApellidoNombre,
+                    Mail = p.Mail,
+                    Contrasenia = p.Contrasenia ?? "", 
+                    Matricula = p.Matricula,
+                    EspecialidadId = p.EspecialidadId,
+                    Estado = (EstadoProfesionalDTO)p.Estado,
+                    ObraSociales = p.ObraSociales?.Select(os => new ObraSocialDTO
+                    {
+                        ObraSocialId = os.ObraSocialId,
+                        NombreObraSocial = os.NombreObraSocial,
+                        Estado = (EstadoObraSocialDTO)os.Estado
+                    }).ToList() ?? new List<ObraSocialDTO>()
+                }).ToList();
+
+                Console.WriteLine($"Total profesionales encontrados: {profesionalesDTO.Count}");
+                Console.WriteLine($"=== FIN DEBUG ===");
+
+                return profesionalesDTO;
             }
         }
     }

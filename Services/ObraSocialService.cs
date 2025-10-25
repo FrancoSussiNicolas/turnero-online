@@ -70,28 +70,37 @@ namespace Services
         {
             using (var context = new TurneroContext())
             {
-                var plan = context.PlanesObrasSociales
-                                  .FirstOrDefault(p => p.PlanObraSocialId == planId && p.ObraSocialId == obraSocialId);
+                var obraSocial = context.ObrasSociales
+                    .Include(o => o.PlanesObraSocial)
+                    .FirstOrDefault(o => o.ObraSocialId == obraSocialId);
+
+                if (obraSocial == null) return false;
+
+                var plan = obraSocial.PlanesObraSocial
+                    .FirstOrDefault(p => p.PlanObraSocialId == planId);
 
                 if (plan == null) return false;
 
-                context.PlanesObrasSociales.Remove(plan);
+  
+                obraSocial.PlanesObraSocial.Remove(plan);
+
                 context.SaveChanges();
                 return true;
             }
         }
 
 
-        public ObraSocial? UpdateObraSocial(ObraSocialDTO os, int idOs)
+        public ObraSocial? UpdateObraSocial(int idOs, ObraSocialDTO os)
         {
             using (var context = new TurneroContext())
-            {
+            {                
 
                 var obraSocialEncontrado = context.ObrasSociales.FirstOrDefault(os => os.ObraSocialId == idOs);
 
                 if (obraSocialEncontrado is null) return null;
 
                 obraSocialEncontrado.NombreObraSocial = os.NombreObraSocial;
+                obraSocialEncontrado.Estado = (Entities.EstadoObraSocial)(int)os.Estado;
 
                 try
                 {

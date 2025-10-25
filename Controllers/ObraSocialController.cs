@@ -54,11 +54,11 @@ namespace Controllers
 
         [Authorize(Roles = "Administrador")] 
         [HttpPut("{id}")]
-        public ActionResult UpdateObraSocial([FromBody] ObraSocialDTO obraSocial, int id)
+        public ActionResult UpdateObraSocial (int id, [FromBody] ObraSocialDTO obraSocial)
         {
             try
             {
-                var updatedOS = obraSocialService.UpdateObraSocial(obraSocial, id);
+                var updatedOS = obraSocialService.UpdateObraSocial(id, obraSocial);
                 if (updatedOS is null) return NotFound(new { message = "Obra Social no encontrada" });
 
                 return NoContent();

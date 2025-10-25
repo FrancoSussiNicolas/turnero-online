@@ -71,7 +71,7 @@ namespace WinFormsApp
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error al cargar la práctica: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show($"Error al cargar la obra social y sus planes: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
         private void ConfigurarColumnasEspecificas()
@@ -270,7 +270,8 @@ namespace WinFormsApp
 
         private async void btnRegistrarObraSocial_Click(object sender, EventArgs e)
         {
-            if ((!btnRadioDeshabilitado.Checked || !btnRadioHabilitado.Checked) && string.IsNullOrWhiteSpace(textNombreObraSocial.Text))
+            if (string.IsNullOrWhiteSpace(textNombreObraSocial.Text) ||
+               (!btnRadioHabilitado.Checked && !btnRadioDeshabilitado.Checked))
             {
                 MessageBox.Show("Todos los campos son obligatorios.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 return;
@@ -290,22 +291,18 @@ namespace WinFormsApp
                     await ObraSocialApiClient.AddAsync(obraSocialDTO);
 
                     MessageBox.Show("Obra Social registrada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    this.DialogResult = DialogResult.OK;
+                    this.Close();
                 }
 
                 else
                 {
                     _obraSocialExistente.NombreObraSocial = textNombreObraSocial.Text;
 
-                    if (btnRadioHabilitado.Checked)
-                    {
-                        await ObraSocialApiClient.ChangeStateAsync(_obraSocialExistente.ObraSocialId);
-                    }
-                    else if (btnRadioDeshabilitado.Checked)
-                    {
-                        await ObraSocialApiClient.ChangeStateAsync(_obraSocialExistente.ObraSocialId);
-                    }
+                    _obraSocialExistente.Estado = btnRadioHabilitado.Checked ? EstadoObraSocialDTO.Habilitada : EstadoObraSocialDTO.Deshabilitada;
 
                     await ObraSocialApiClient.UpdateAsync(_obraSocialExistente.ObraSocialId, _obraSocialExistente);
+
                     MessageBox.Show("Obra Social modificada correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                     this.DialogResult = DialogResult.OK;
                     this.Close();

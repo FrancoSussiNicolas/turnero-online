@@ -133,6 +133,7 @@
             btnRegistrarObraSocial.TabIndex = 13;
             btnRegistrarObraSocial.Text = "Registrar";
             btnRegistrarObraSocial.UseVisualStyleBackColor = false;
+            btnRegistrarObraSocial.Click += btnRegistrarObraSocial_Click;
             // 
             // btnCancelarObraSocial
             // 
@@ -156,6 +157,7 @@
             btnCancelarPlan.Text = "Cancelar Plan";
             btnCancelarPlan.UseVisualStyleBackColor = false;
             btnCancelarPlan.Visible = false;
+            btnCancelarPlan.Click += btnCancelarPlan_Click;
             // 
             // lbSusPlanes
             // 

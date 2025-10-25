@@ -138,23 +138,23 @@
         {
             cargando = true;
             profesionalDTO = await ProfesionalApiClient.GetAsync(profesionalId);
-<<<<<<< HEAD
-            profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula,profesionalDTO.EspecialidadId)
+
+            profesionalOriginal = new ProfesionalDTO
             {
                 PersonaId = profesionalDTO.PersonaId,
                 EspecialidadId = profesionalDTO.EspecialidadId
             };
 
-=======
+
             GuardarCopiaOriginal();
->>>>>>> develop
+
             await CargarEspecialidad();
         }
         catch (Exception ex) { errorMessage = ex.Message; }
         finally { cargando = false; }
     }
 
-    private void GuardarCopiaOriginal() => profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula)
+    private void GuardarCopiaOriginal() => profesionalOriginal = new ProfesionalDTO
     {
         PersonaId = profesionalDTO.PersonaId,
         EspecialidadId = profesionalDTO.EspecialidadId
@@ -184,8 +184,8 @@
             await ProfesionalApiClient.UpdateAsync(profesionalDTO);
             mensajeExito = "Perfil actualizado correctamente.";
             editando = false;
-<<<<<<< HEAD
-            profesionalOriginal = new ProfesionalDTO(profesionalDTO.ApellidoNombre, profesionalDTO.Mail, profesionalDTO.Contrasenia, profesionalDTO.Matricula, profesionalDTO.EspecialidadId)
+
+            profesionalOriginal = new ProfesionalDTO
             {
                 PersonaId = profesionalDTO.PersonaId,
                 EspecialidadId = profesionalDTO.EspecialidadId
@@ -198,17 +198,15 @@
         finally
         {
             guardando = false;
-=======
+
             GuardarCopiaOriginal();
->>>>>>> develop
+
         }
-        catch (Exception ex) { errorMessage = "Error al guardar cambios: " + ex.Message; }
-        finally { guardando = false; }
     }
 
     private void CancelarEdicion()
     {
-        profesionalDTO = new ProfesionalDTO(profesionalOriginal.ApellidoNombre, profesionalOriginal.Mail, profesionalOriginal.Contrasenia, profesionalOriginal.Matricula, profesionalOriginal.EspecialidadId)
+        profesionalDTO = new ProfesionalDTO
         {
             PersonaId = profesionalOriginal.PersonaId,
             EspecialidadId = profesionalOriginal.EspecialidadId

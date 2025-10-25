@@ -27,7 +27,7 @@ namespace Controllers
             return Ok(pacienteService.GetAll());
         }
 
-        [Authorize(Roles = "Profesional,Administrador")]
+        [Authorize]
         [HttpGet("{id}")]
         public ActionResult<Paciente> GetById(int id)
         {

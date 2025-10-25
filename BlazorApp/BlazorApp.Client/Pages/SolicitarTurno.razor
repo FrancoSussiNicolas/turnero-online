@@ -13,15 +13,15 @@
         <div class="card-body p-4">
             <!-- Pasos -->
             <div class="stepper-wrapper mb-5">
-                <div class="stepper-item @(actualPaso >= 1 ? "completed" : "")">
+                <div class="stepper-item @(actualPaso >= 1 ? "completado" : "")">
                     <div class="step-counter">1</div>
                     <div class="step-name">Especialidad</div>
                 </div>
-                <div class="stepper-item @(actualPaso >= 2 ? "completed" : "")">
+                <div class="stepper-item @(actualPaso >= 2 ? "completado" : "")">
                     <div class="step-counter">2</div>
                     <div class="step-name">Profesional</div>
                 </div>
-                <div class="stepper-item @(actualPaso >= 3 ? "completed" : "")">
+                <div class="stepper-item @(actualPaso >= 3 ? "completado" : "")">
                     <div class="step-counter">3</div>
                     <div class="step-name">Turno</div>
                 </div>
@@ -84,7 +84,7 @@
                 }
                 else
                 {
-                    <div class="alert alert-info">No hay profesionales disponibles para esta especialidad.</div>
+                    <div class="alert alert-info">No hay profesionales disponibles que cubran esa obra social o particulares.</div>
                 }
             }
 
@@ -210,6 +210,7 @@
 
     private bool showModal = false;
     private TurnoDTO? turnoSeleccionado;
+    private PacienteDTO paciente;
 
     private IEnumerable<EspecialidadDTO> especialidades = new List<EspecialidadDTO>();
     private IEnumerable<ProfesionalDTO> profesionales = new List<ProfesionalDTO>();
@@ -217,6 +218,10 @@
 
     protected override async Task OnInitializedAsync()
     {
+
+        Console.WriteLine($"Token: {SessionManager.Token}");
+        Console.WriteLine($"PersonaId: {SessionManager.PersonaId}");
+
         await LoadEspecialidades();
     }
 
@@ -240,8 +245,50 @@
     private async Task LoadProfesionales()
     {
         isLoadingProfesionales = true;
-        profesionales = await ProfesionalApiClient.GetProfesionalByEspecialidad(selectedEspecialidadId);
-        isLoadingProfesionales = false;
+        try
+        {
+            // Validaciones tempranas: dejar una lista vacía y salir si no hay sesión o especialidad seleccionada
+            if (SessionManager.PersonaId is null)
+            {
+                profesionales = new List<ProfesionalDTO>();
+                return;
+            }
+
+            if (selectedEspecialidadId <= 0)
+            {
+                profesionales = new List<ProfesionalDTO>();
+                return;
+            }
+
+            // Obtener paciente
+            paciente = await PacienteApiClient.GetAsync((int)SessionManager.PersonaId);
+
+            if (paciente == null)
+            {
+                profesionales = new List<ProfesionalDTO>();
+                return;
+            }
+
+            Console.WriteLine($"Llamando API con: especialidadId={selectedEspecialidadId}, planId={paciente.PlanObraSocialId}");
+
+            // Llamada al API (controlamos que no devuelva null)
+            profesionales = await ProfesionalApiClient.GetProfesionalesByEspecialidadAndObraAsync(
+                selectedEspecialidadId, paciente.PlanObraSocialId);
+
+            
+
+            Console.WriteLine($"Profesionales recibidos: {profesionales.Count()}");
+        }
+        catch (Exception ex)
+        {
+            Console.Error.WriteLine($"Error cargando profesionales: {ex}");
+            profesionales = new List<ProfesionalDTO>();
+
+        }
+        finally
+        {
+            isLoadingProfesionales = false;
+        }
     }
 
     private async Task SelectProfesional(int profesionalId)

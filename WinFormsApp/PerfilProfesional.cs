@@ -57,13 +57,13 @@ namespace WinFormsApp
             {
                 try
                 {
-                    var profData = new ProfesionalDTO(
-                        txtApellidoNombre.Text,
-                        txtMail.Text,
-                        profesional.Contrasenia,
-                        txtMatricula.Text, 
-                        profesional.EspecialidadId
-                    );
+                    var profData = new ProfesionalDTO { 
+                        ApellidoNombre =txtApellidoNombre.Text,
+                        Mail = txtMail.Text,
+                        Contrasenia = profesional.Contrasenia,
+                        Matricula =txtMatricula.Text,
+                        EspecialidadId = profesional.EspecialidadId
+                    };
                     profData.PersonaId = (int)SessionManager.PersonaId;
 
                     if (profesional.ApellidoNombre != profData.ApellidoNombre || profesional.Mail != profData.Mail || profesional.Matricula != profData.Matricula)

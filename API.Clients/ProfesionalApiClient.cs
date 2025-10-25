@@ -328,8 +328,51 @@ namespace API.Clients
             {
                 throw new Exception($"Timeout al obtener la epecilalidad del profesional con Id {especilidadId}: {ex.Message}", ex);
             }
+        }
 
+        public static async Task<IEnumerable<ProfesionalDTO>> GetProfesionalesByEspecialidadAndObraAsync(int especialidadId, int planId)
+        {
+            try
+            {
+                var request = new HttpRequestMessage(HttpMethod.Get, $"profesionales/especialidad/obraSocial?especialidadId={especialidadId}&planId={planId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
 
-        } 
+                Console.WriteLine($"[API CLIENT] Enviando request: {request.RequestUri}");
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+               
+                if (response.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    return Enumerable.Empty<ProfesionalDTO>();
+                }
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception(
+                        $"Error al encontrar profesionales con esa especialidad que cubran con la obra social. " +
+                        $"Status: {response.StatusCode}, Detalle: {errorContent}");
+                }
+
+                var options = new System.Text.Json.JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true,
+                    Converters = { new System.Text.Json.Serialization.JsonStringEnumConverter() }
+                };
+
+                var result = await response.Content.ReadFromJsonAsync<IEnumerable<ProfesionalDTO>>(options);
+
+                return result ?? Enumerable.Empty<ProfesionalDTO>();
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception($"Error de conexión al buscar profesionales: {ex.Message}", ex);
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception($"Timeout al buscar profesionales: {ex.Message}", ex);
+            }
+        }
     }
 }
