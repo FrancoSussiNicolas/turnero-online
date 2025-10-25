@@ -75,11 +75,11 @@ namespace API.Clients
             }
         }
 
-        public static async Task<List<TurnoDTO>> GetDisponiblesAsync()
+        public static async Task<IEnumerable<TurnoDTO>> GetDisponiblesAsync(int profesionalId)
         {
             try
             {
-                var request = new HttpRequestMessage(HttpMethod.Get, "turnos/disponibles");
+                var request = new HttpRequestMessage(HttpMethod.Get, $"turnos/disponibles/{profesionalId}");
                 request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
 
                 HttpResponseMessage response = await client.SendAsync(request);
