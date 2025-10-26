@@ -2,11 +2,6 @@
 using Entities;
 using Microsoft.Data.SqlClient;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services
 {
@@ -25,42 +20,6 @@ namespace Services
             using (var context = new TurneroContext())
             {
                 return context.Admin.FirstOrDefault(a => a.Mail == email);
-            }
-        }
-
-        // ----------------- BORRAR -----------------
-        public Admin Create(AdminDTO adminData)
-        {
-            using (var context = new TurneroContext())
-            {
-                if (context.Admin.Any(a => a.Mail == adminData.Mail))
-                {
-                    throw new InvalidOperationException("Ya existe un Administrador con el mail ingresado");
-                }
-
-                var newAdmin = Admin.Crear(
-                    adminData.ApellidoNombre,
-                    adminData.Mail,
-                    adminData.Contrasenia
-                );
-
-                context.Admin.Add(newAdmin);
-
-                try
-                {
-                    context.SaveChanges();
-                }
-                catch (DbUpdateException ex)
-                {
-                    if (ex.InnerException is SqlException sqlEx && (sqlEx.Number == 2601 || sqlEx.Number == 2627))
-                    {
-                        throw new InvalidOperationException("Ya existe un Administrador con el mail ingresado");
-                    }
-
-                    throw;
-                }
-
-                return newAdmin;
             }
         }
 
