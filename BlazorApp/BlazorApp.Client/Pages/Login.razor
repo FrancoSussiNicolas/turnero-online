@@ -1,5 +1,7 @@
 ﻿@page "/"
 @inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthProvider
+@using BlazorApp.Client.Auth 
 @using System.ComponentModel.DataAnnotations
 @using API.Clients
 @using Shared
@@ -73,12 +75,19 @@
 
         try
         {
-            var userToken = await AuthApiClient.LoginAsync(loginModel);
+            var response = await AuthApiClient.LoginAsync(loginModel);
 
-            SessionManager.SetSession(userToken.Token);
+            if (JwtHelper.GetUserType(response.Token) == "Administrador")
+            {
+                error = "El sitio web solo es accesible para Pacientes y Profesionales. Por favor, utilice la aplicación de escritorio.";
 
-            if (SessionManager.UserType == "Administrador") 
-                throw new Exception("El sitio web solo es accesible para Pacientes y Profesionales. Por favor, utilice la aplicación de escritorio.");
+                isLoading = false;
+                StateHasChanged();
+                return;
+            }
+
+            var authProvider = (AuthStateProvider)AuthProvider;
+            await authProvider.MarkUserAsAuthenticated(response.Token);
 
             NavigationManager.NavigateTo(SessionManager.UserType == "Paciente" ? "paciente/home" : "profesional/home");
         }

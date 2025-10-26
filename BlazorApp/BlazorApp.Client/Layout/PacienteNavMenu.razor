@@ -1,0 +1,63 @@
+﻿@inject NavigationManager NavigationManager
+@inject AuthenticationStateProvider AuthProvider
+@using Shared
+@using BlazorApp.Client.Auth
+
+<div class="top-row ps-3 navbar navbar-dark">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="">BlazorApp</a>
+    </div>
+</div>
+
+<input type="checkbox" title="Navigation menu" class="navbar-toggler" />
+
+<div class="nav-scrollable" onclick="document.querySelector('.navbar-toggler').click()">
+    <nav class="flex-column">
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="paciente/home" Match="NavLinkMatch.All">
+                <span class="bi bi-house-door-fill-nav-menu" aria-hidden="true"></span> Inicio
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="paciente/nuevoTurno">
+                <span class="bi bi-plus-square-fill-nav-menu" aria-hidden="true"></span> Sacar un Turno
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="paciente/cambiar-plan">
+                <span class="bi bi-buildings-fill" aria-hidden="true"></span> Plan Obra Social
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="paciente/misTurnos">
+                <span class="bi bi-clock-history" aria-hidden="true"></span> Historial de Turnos
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <NavLink class="nav-link" href="paciente/perfil">
+                <span class="bi bi-person-fill nav-icon" aria-hidden="true"></span> Perfil
+            </NavLink>
+        </div>
+
+        <div class="nav-item px-3">
+            <button class="nav-link" @onclick="Logout">
+                <i class="bi bi-box-arrow-left nav-icon" aria-hidden="true"></i> Cerrar Sesión
+            </button>
+        </div>
+
+    </nav>
+</div>
+
+@code {
+    private async Task Logout()
+    {
+        var provider = (AuthStateProvider)AuthProvider;
+        await provider.MarkUserAsLoggedOut();
+        NavigationManager.NavigateTo("/");
+    }
+}
