@@ -127,7 +127,6 @@
         {
             try
             {
-                Console.WriteLine($"Buscando consultorios libres: {nuevoTurno.FechaTurno} {nuevoTurno.HoraTurno}");
                 consultorios = await ConsultorioApiClient.GetLibresAsync(nuevoTurno.FechaTurno, nuevoTurno.HoraTurno);
 
                 // Si estamos editando, agregar el consultorio actual si no está en la lista

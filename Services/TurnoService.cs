@@ -39,7 +39,7 @@ namespace Services
             }
         }
 
-        public List<Turno> GetDisponibles()
+        public List<Turno> GetDisponibles(int profesionalId)
         {
             using (var context = new TurneroContext())
             {
@@ -49,6 +49,8 @@ namespace Services
                     .ThenInclude(p => p.PlanObraSocial)
                     .Include(t => t.Profesional)
                     .ThenInclude(p => p.ObraSociales)
+                    .Where(t => t.ProfesionalId == profesionalId)
+                    .OrderBy(t => t.FechaTurno)
                     .ToList()
                     .FindAll(turno => turno.Estado == Entities.EstadoTurno.Disponible);
             }
@@ -65,7 +67,7 @@ namespace Services
                     .ThenInclude(p => p.PlanObraSocial)
                     .Include(t => t.Profesional)
                     .ThenInclude(p => p.ObraSociales)
-                    .Where(t => t.ProfesionalId == profesionalId && t.Estado == EstadoTurno.Disponible)
+                    .Where(t => t.ProfesionalId == profesionalId)
                     .OrderBy(t => t.FechaTurno)
                     .ThenBy(t => t.HoraTurno)
                     .ToList();

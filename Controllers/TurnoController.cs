@@ -47,10 +47,16 @@ namespace Controllers
         }
 
         [Authorize]
-        [HttpGet("disponibles")]
-        public ActionResult<IEnumerable<Turno>> GetDisponibles()
+        [HttpGet("disponibles/{profesionalId}")]
+        public ActionResult<IEnumerable<Turno>> GetDisponibles(int profesionalId)
         {
-            return Ok(turnoService.GetDisponibles());
+            var profesional = profesionalService.GetByIdProfesional(profesionalId);
+            if (profesional is null) return NotFound(new { message = "Profesional no encontrado" });
+
+
+            var turnosDisponibles = turnoService.GetDisponibles(profesionalId);
+
+            return Ok(turnosDisponibles ?? new List<Turno>());
         }
 
         [Authorize]

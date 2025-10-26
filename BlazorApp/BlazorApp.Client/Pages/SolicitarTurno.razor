@@ -220,10 +220,6 @@
 
     protected override async Task OnInitializedAsync()
     {
-
-        Console.WriteLine($"Token: {SessionManager.Token}");
-        Console.WriteLine($"PersonaId: {SessionManager.PersonaId}");
-
         await LoadEspecialidades();
     }
 
@@ -270,15 +266,11 @@
                 return;
             }
 
-            Console.WriteLine($"Llamando API con: especialidadId={selectedEspecialidadId}, planId={paciente.PlanObraSocialId}");
-
             // Llamada al API (controlamos que no devuelva null)
             profesionales = await ProfesionalApiClient.GetProfesionalesByEspecialidadAndObraAsync(
                 selectedEspecialidadId, paciente.PlanObraSocialId);
 
-            
 
-            Console.WriteLine($"Profesionales recibidos: {profesionales.Count()}");
         }
         catch (Exception ex)
         {
@@ -303,9 +295,7 @@
     {
         isLoadingTurnos = true;
 
-        turnosDisponibles = (await TurnoApiClient.GetByProfesionalAsync(selectedProfesionalId))
-            .OrderBy(t => t.FechaTurno)
-            .ToList();
+        turnosDisponibles = await TurnoApiClient.GetDisponiblesAsync(selectedProfesionalId);
 
         isLoadingTurnos = false;
     }
