@@ -74,19 +74,25 @@
                     <div class="list-group">
                         @foreach (var profesional in profesionales)
                         {
-                            <button type="button" class="list-group-item list-group-item-action d-flex justify-content-between"
+                            <button type="button" class="list-group-item list-group-item-action"
                                     @onclick="() => SelectProfesional(profesional.PersonaId)">
-                                <span>@profesional.ApellidoNombre</span>
-                                <span class="badge @(profesional.AtiendePorObraSocial ? "bg-success" : "bg-warning text-dark")">
-                                    @(profesional.AtiendePorObraSocial ? "Obra Social" : "Particular")
-                                </span>
+                                <div class="d-flex justify-content-between align-items-center">
+                                    <div>
+                                        <h6 class="mb-1">@profesional.ApellidoNombre</h6>
+                                        <small class="text-muted">@especialidades.FirstOrDefault(e => e.EspecialidadId == profesional.EspecialidadId)?.Descripcion</small>
+                                    </div>
+                                    <span class="badge rounded-pill @(profesional.AtiendePorObraSocial ? "bg-success" : "bg-warning text-dark")">
+                                        <i class="bi @(profesional.AtiendePorObraSocial ? "bi-heart-pulse" : "bi-cash-stack")"></i>
+                                        @(profesional.AtiendePorObraSocial ? " Obra Social" : " Particular")
+                                    </span>
+                                </div>
                             </button>
                         }
                     </div>
                 }
                 else
                 {
-                    <div class="alert alert-info">No hay profesionales disponibles que cubran esa obra social o particulares.</div>
+                    <div class="alert alert-info">No hay profesionales disponibles para esta especialidad.</div>
                 }
             }
 
@@ -112,15 +118,15 @@
                         {
                             <button type="button" class="list-group-item list-group-item-action"
                                     @onclick="() => AbrirModalConfirmacion(turno)">
-                                <strong>@turno.FechaTurno.ToString("dddd, dd 'de' MMMM")</strong> a las
-                                <strong>@turno.HoraTurno.ToString("HH:mm")</strong>
+                                <strong>@turno.FechaTurno.ToString("dddd, dd 'de' MMMM yyyy")</strong> a las
+                                <strong>@turno.HoraTurno.ToString("HH:mm")</strong> hs
                             </button>
                         }
                     </div>
                 }
                 else
                 {
-                    <div class="alert alert-info">El profesional no tiene turnos disponibles.</div>
+                    <div class="alert alert-info">El profesional no tiene turnos disponibles próximamente.</div>
                 }
             }
         </div>
@@ -196,7 +202,7 @@
         font-weight: bold;
     }
 
-    .completed .step-counter {
+    .completado .step-counter {
         background-color: #0d6efd;
     }
 </style>
@@ -245,13 +251,8 @@
         isLoadingProfesionales = true;
         try
         {
-            if (SessionManager.PersonaId is null)
-            {
-                profesionales = new List<ProfesionalDTO>();
-                return;
-            }
-
-            if (selectedEspecialidadId <= 0)
+            // Validaciones iniciales
+            if (SessionManager.PersonaId is null || selectedEspecialidadId <= 0)
             {
                 profesionales = new List<ProfesionalDTO>();
                 return;
@@ -266,17 +267,30 @@
                 return;
             }
 
-            // Llamada al API (controlamos que no devuelva null)
-            profesionales = await ProfesionalApiClient.GetProfesionalesByEspecialidadAndObraAsync(
-                selectedEspecialidadId, paciente.PlanObraSocialId);
+            // Traer todos los profesionales con la especialidad seleccionada
+            var profesionalesConEspecialidad = await ProfesionalApiClient.GetProfesionalByEspecialidad(selectedEspecialidadId);
 
+            if (profesionalesConEspecialidad == null || !profesionalesConEspecialidad.Any())
+            {
+                profesionales = new List<ProfesionalDTO>();
+                return;
+            }
 
+            // Verificar si atienden el plan del paciente
+            foreach (var p in profesionalesConEspecialidad)
+            {
+                bool atiendePorPlan = p.ObraSociales?.Any(os =>
+                    os.PlanesObraSocial?.Any(plan =>
+                        plan.PlanObraSocialId == paciente.PlanObraSocialId) ?? false) ?? false;
+
+                p.AtiendePorObraSocial = atiendePorPlan;
+            }
+
+            profesionales = profesionalesConEspecialidad;
         }
         catch (Exception ex)
         {
-            Console.Error.WriteLine($"Error cargando profesionales: {ex}");
             profesionales = new List<ProfesionalDTO>();
-
         }
         finally
         {
@@ -295,11 +309,18 @@
     {
         isLoadingTurnos = true;
 
-        turnosDisponibles = await TurnoApiClient.GetDisponiblesAsync(selectedProfesionalId);
+        var turnosObtenidos = await TurnoApiClient.GetDisponiblesAsync(selectedProfesionalId);
 
+        // Reemplaza la línea problemática en el método LoadTurnosDisponibles:
+
+        turnosDisponibles = turnosObtenidos
+            .Where(t => t.FechaTurno >= DateOnly.FromDateTime(DateTime.Now) &&
+                       (t.FechaTurno > DateOnly.FromDateTime(DateTime.Now) || t.HoraTurno >= TimeOnly.FromDateTime(DateTime.Now)))
+            .OrderBy(t => t.FechaTurno)
+            .ThenBy(t => t.HoraTurno)
+            .ToList();
         isLoadingTurnos = false;
     }
-
 
     private void AbrirModalConfirmacion(TurnoDTO turno)
     {
@@ -317,10 +338,10 @@
     {
         int pacienteId = Convert.ToInt32(SessionManager.PersonaId);
 
-        if(turnoSeleccionado is not null)
+        if (turnoSeleccionado is not null)
         {
-            await TurnoApiClient.AsignarTurno(turnoSeleccionado.TurnoId, pacienteId);  
-        
+            await TurnoApiClient.AsignarTurno(turnoSeleccionado.TurnoId, pacienteId);
+
             await Task.Delay(1500);
             NavigationManager.NavigateTo("/paciente/misTurnos");
         }

@@ -238,53 +238,54 @@ namespace Services
             }
         }
 
-        public IEnumerable<Profesional> GetProfesionalByEspecialidad(int especialidadId)
+        // ⭐ SOLUCIÓN DEFINITIVA - Reemplazá tu método por este:
+
+        public IEnumerable<ProfesionalDTO> GetProfesionalByEspecialidad(int especialidadId)
         {
             using (var context = new TurneroContext())
             {
                 var profesionales = context.Profesionales
-                    .Include(p => p.Especialidad)
-                    .Include(p => p.ObraSociales) 
-                    .Where(p => p.EspecialidadId == especialidadId && p.Estado == EstadoProfesional.Habilitado)
-                    .ToList();
+                        .Include(p => p.ObraSociales)
+                            .ThenInclude(os => os.PlanesObraSocial)
+                        .Where(p => p.EspecialidadId == especialidadId)
+                        .ToList();
 
-                return profesionales;
-            }
-        }
 
-        public IEnumerable<ProfesionalDTO> GetProfesionalByEspecialidadAndObra(int especialidadId, int planId)
-        {
-            using (var context = new TurneroContext())
-            {
-
-                var profesionales = context.Profesionales
-                    .Include(p => p.ObraSociales)
-                        .ThenInclude(o => o.PlanesObraSocial)
-                    .Where(p => p.EspecialidadId == especialidadId &&
-                        (
-                            p.ObraSociales.Any(o => o.PlanesObraSocial.Any(pl => pl.PlanObraSocialId == planId))
-                            ||
-                            !p.ObraSociales.Any()
-                        ) && p.Estado == EstadoProfesional.Habilitado
-                    )
-                    .ToList();
-
-                // Mapear a DTO
+                // ⭐ MAPEO COMPLETO A DTO
                 var profesionalesDTO = profesionales.Select(p => new ProfesionalDTO
                 {
                     PersonaId = p.PersonaId,
                     ApellidoNombre = p.ApellidoNombre,
                     Mail = p.Mail,
-                    Contrasenia = p.Contrasenia ?? "", 
-                    Matricula = p.Matricula,
+                    Contrasenia = "",
+                    Matricula = p.Matricula ?? "",
                     EspecialidadId = p.EspecialidadId,
-                    Estado = (EstadoProfesionalDTO)p.Estado,
+                    Estado = p.Estado == EstadoProfesional.Habilitado
+                        ? ProfesionalDTO.EstadoProfesionalDTO.Habilitado
+                        : ProfesionalDTO.EstadoProfesionalDTO.Deshabilitado,
+                    AtiendePorObraSocial = false,
+
                     ObraSociales = p.ObraSociales?.Select(os => new ObraSocialDTO
                     {
                         ObraSocialId = os.ObraSocialId,
                         NombreObraSocial = os.NombreObraSocial,
-                        Estado = (EstadoObraSocialDTO)os.Estado
+                        Estado = os.Estado == EstadoObraSocial.Habilitada
+                            ? EstadoObraSocialDTO.Habilitada
+                            : EstadoObraSocialDTO.Deshabilitada,
+
+                        PlanesObraSocial = os.PlanesObraSocial?.Select(plan => new PlanObraSocialDTO
+                        {
+                            PlanObraSocialId = plan.PlanObraSocialId,
+                            NombrePlan = plan.NombrePlan,
+                            DescripcionPlan = plan.DescripcionPlan,
+                            ObraSocialId = plan.ObraSocialId,
+                            Estado = plan.Estado == EstadoPlanObraSocial.Habilitado
+                                ? EstadoPlanObraSocialDTO.Habilitado
+                                : EstadoPlanObraSocialDTO.Deshabilitado
+                        }).ToList() ?? new List<PlanObraSocialDTO>()
+
                     }).ToList() ?? new List<ObraSocialDTO>()
+
                 }).ToList();
 
                 return profesionalesDTO;
@@ -292,3 +293,4 @@ namespace Services
         }
     }
 }
+

@@ -31,8 +31,8 @@ namespace DTOs
 
         public EstadoProfesionalDTO Estado { get; set; }
 
-        public List<ObraSocialDTO>? ObraSociales { get; set; } = new List<ObraSocialDTO>();
+        public bool AtiendePorObraSocial { get; set; }
 
-        public bool AtiendePorObraSocial => ObraSociales != null && ObraSociales.Any();
+        public List<ObraSocialDTO>? ObraSociales { get; set; } = new List<ObraSocialDTO>();
     }
 }
