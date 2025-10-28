@@ -199,7 +199,7 @@ namespace WinFormsApp
                 {
                     ObraSocialDTO seleccionado = (ObraSocialDTO)obraSocialGridView.SelectedRows[0].DataBoundItem;
 
-                    ListaPlanObraSocial editarForm = new ListaPlanObraSocial(seleccionado);
+                    CrearPlanObraSocial editarForm = new CrearPlanObraSocial(seleccionado);
                     DialogResult result = editarForm.ShowDialog();
 
                     if (result == DialogResult.OK)
