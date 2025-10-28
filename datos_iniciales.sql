@@ -5,6 +5,7 @@ DECLARE @SALT NVARCHAR(MAX) = '9otENYoBq+zoWk+sZK+2Z7g0Wgh/PhVqQyRYUCXFGeM=';
 DECLARE @HASHED_PASS NVARCHAR(MAX) = '6hfbDvAXaxv6JFbX90fzMCO+k6KyhrFV15+zcYloc/I=';
 DECLARE @ESTADO_INICIAL INT = 0;
 
+-- Limpieza de datos previos
 DELETE FROM [dbo].[Turnos];
 DELETE FROM [dbo].[PlanPractica];
 DELETE FROM [dbo].[ProfesionalObraSocial];
@@ -18,7 +19,7 @@ DELETE FROM [dbo].[ObrasSociales];
 DELETE FROM [dbo].[Especialidades];
 DELETE FROM [dbo].[Consultorios];
 
-
+-- Reinicio de identidades
 DBCC CHECKIDENT ('[dbo].[Turnos]', RESEED, 0);
 DBCC CHECKIDENT ('[dbo].[Pacientes]', RESEED, 0);
 DBCC CHECKIDENT ('[dbo].[Profesionales]', RESEED, 0);
@@ -27,8 +28,9 @@ DBCC CHECKIDENT ('[dbo].[Practicas]', RESEED, 0);
 DBCC CHECKIDENT ('[dbo].[ObrasSociales]', RESEED, 0);
 DBCC CHECKIDENT ('[dbo].[Especialidades]', RESEED, 0);
 DBCC CHECKIDENT ('[dbo].[Consultorios]', RESEED, 0);
+DBCC CHECKIDENT ('[dbo].[Admin]', RESEED, 0);
 
-
+-- Consultorios
 INSERT INTO [dbo].[Consultorios] ([Ubicacion], [Estado])
 VALUES
 ('Consultorio 1A', @ESTADO_INICIAL), ('Consultorio 1B', @ESTADO_INICIAL),
@@ -37,7 +39,7 @@ VALUES
 ('Consultorio 4A', @ESTADO_INICIAL), ('Consultorio 4B', @ESTADO_INICIAL),
 ('Consultorio 5A', @ESTADO_INICIAL), ('Consultorio 5B', @ESTADO_INICIAL);
 
-
+-- Especialidades
 INSERT INTO [dbo].[Especialidades] ([Descripcion], [Estado])
 VALUES
 ('Cardiología', @ESTADO_INICIAL), ('Dermatología', @ESTADO_INICIAL),
@@ -46,7 +48,7 @@ VALUES
 ('Odontología', @ESTADO_INICIAL), ('Traumatología', @ESTADO_INICIAL),
 ('Ginecología', @ESTADO_INICIAL), ('Urología', @ESTADO_INICIAL);
 
-
+-- Obras sociales
 INSERT INTO [dbo].[ObrasSociales] ([NombreObraSocial], [Estado])
 VALUES
 ('Osde', @ESTADO_INICIAL), ('Swiss Medical', @ESTADO_INICIAL),
@@ -55,6 +57,7 @@ VALUES
 ('Aca Salud', @ESTADO_INICIAL), ('Premedic', @ESTADO_INICIAL),
 ('Prevención Salud', @ESTADO_INICIAL), ('Cobertura Médica', @ESTADO_INICIAL);
 
+-- Practicas
 INSERT INTO [dbo].[Practicas] ([Nombre], [Descripcion], [Estado])
 VALUES
 ('Electrocardiograma', 'Registro de la actividad eléctrica del corazón.', @ESTADO_INICIAL),
@@ -68,7 +71,7 @@ VALUES
 ('Papanicolau', 'Examen para detección temprana de cáncer uterino.', @ESTADO_INICIAL),
 ('Ecografía Renal', 'Visualización de riñones y vías urinarias.', @ESTADO_INICIAL);
 
-
+-- Planes (solo 10)
 INSERT INTO [dbo].[PlanesObrasSociales] ([NombrePlan], [DescripcionPlan], [Estado], [ObraSocialId])
 VALUES
 ('Plan Azul', 'Cobertura Básica', @ESTADO_INICIAL, 1),
@@ -82,7 +85,7 @@ VALUES
 ('Plan Joven', 'Para jóvenes de 18 a 30 años', @ESTADO_INICIAL, 6),
 ('Plan Único', 'Plan general sin límites', @ESTADO_INICIAL, 7);
 
-
+-- Profesionales
 INSERT INTO [dbo].[Profesionales] ([Matricula], [EspecialidadId], [Estado], [ApellidoNombre], [Mail], [Contrasenia], [Salt])
 VALUES
 ('MP-12345', 1, @ESTADO_INICIAL, 'García Pérez, Dr. Alberto', 'a.garcia@test.com', @HASHED_PASS, @SALT),
@@ -96,7 +99,7 @@ VALUES
 ('MP-90123', 9, @ESTADO_INICIAL, 'Ruiz Martín, Dra. Valeria', 'v.ruiz@test.com', @HASHED_PASS, @SALT),
 ('MP-01234', 10, @ESTADO_INICIAL, 'Castro Gil, Dr. Ricardo', 'r.castro@test.com', @HASHED_PASS, @SALT);
 
-
+-- Pacientes
 INSERT INTO [dbo].[Pacientes] ([Dni], [Sexo], [FechaNacimiento], [Telefono], [PlanObraSocialId], [ApellidoNombre], [Mail], [Contrasenia], [Salt])
 VALUES
 ('11222333', 'Masculino', '1985-05-15', '3411234567', 1, 'Pérez Juan', 'juan.perez@test.com', @HASHED_PASS, @SALT),
@@ -110,7 +113,7 @@ VALUES
 ('99000111', 'Masculino', '1998-03-22', '3419012345', 9, 'Sánchez Pablo', 'pablo.sanchez@test.com', @HASHED_PASS, @SALT),
 ('00111222', 'Femenino', '1980-10-30', '3410123456', 10, 'Ramírez Belén', 'belen.ramirez@test.com', @HASHED_PASS, @SALT);
 
-
+-- Turnos: octubre y noviembre 2025
 INSERT INTO [dbo].[Turnos] ([FechaTurno], [HoraTurno], [Estado], [ConsultorioId], [PacienteId], [ProfesionalId])
 VALUES
 ('2025-10-27', '09:00:00', @ESTADO_INICIAL, 1, 1, 1),
@@ -124,12 +127,18 @@ VALUES
 ('2025-11-15', '17:00:00', @ESTADO_INICIAL, 9, 9, 9),
 ('2025-11-18', '17:30:00', @ESTADO_INICIAL, 10, 10, 10);
 
+-- Relación Plan–Práctica
 INSERT INTO [dbo].[PlanPractica] ([PlanObraSocialId], [PracticaId])
 VALUES
 (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
 (6, 6), (7, 7), (8, 8), (9, 9), (10, 10);
 
+-- Relación Profesional–Obra Social
 INSERT INTO [dbo].[ProfesionalObraSocial] ([ObraSocialesObraSocialId], [ProfesionalPersonaId])
 VALUES
 (1, 1), (2, 2), (3, 3), (4, 4), (5, 5),
 (6, 6), (7, 7), (8, 8), (9, 9), (10, 10);
+
+INSERT INTO [dbo].[Admin] ([ApellidoNombre], [Mail], [Contrasenia], [Salt])
+VALUES 
+('Galvano Martin', 'admin@test.com', @HASHED_PASS, @SALT);

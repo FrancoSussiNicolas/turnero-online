@@ -67,7 +67,6 @@ namespace Controllers
             
             var turnos = turnoService.GetByPaciente(pacienteId); 
 
-            if (turnos.Count == 0) return NotFound("El paciente no tiene turnos asignados");
             return Ok(turnos);
         }
 
