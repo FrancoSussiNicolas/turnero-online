@@ -43,6 +43,37 @@ namespace WinFormsApp
             dvgTurnos.AllowUserToResizeColumns = true;
             dvgTurnos.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             dvgTurnos.MultiSelect = false;
+            dvgTurnos.AutoGenerateColumns = true;
+
+            dvgTurnos.DataBindingComplete += DvgTurnos_DataBindingComplete;
+        }
+
+        private void DvgTurnos_DataBindingComplete(object sender, DataGridViewBindingCompleteEventArgs e)
+        {
+            foreach (DataGridViewColumn column in dvgTurnos.Columns)
+            {
+                column.Visible = column.Name switch
+                {
+                    "TurnoId" => true,
+                    "FechaTurno" => true,
+                    "HoraTurno" => true,
+                    "Estado" => true,
+                    "ConsultorioId" => true,
+                    _ => false
+                };
+            }
+
+            if (dvgTurnos.Columns["TurnoId"] != null)
+                dvgTurnos.Columns["TurnoId"].HeaderText = "ID";
+
+            if (dvgTurnos.Columns["FechaTurno"] != null)
+                dvgTurnos.Columns["FechaTurno"].HeaderText = "Fecha";
+
+            if (dvgTurnos.Columns["HoraTurno"] != null)
+                dvgTurnos.Columns["HoraTurno"].HeaderText = "Hora";
+
+            if (dvgTurnos.Columns["ConsultorioId"] != null)
+                dvgTurnos.Columns["ConsultorioId"].HeaderText = "Consultorio";
         }
 
         private async void ListaTurnos_Load(object sender, EventArgs e)
@@ -63,7 +94,7 @@ namespace WinFormsApp
                 {
                     TurnoDTO seleccionado = (TurnoDTO)dvgTurnos.SelectedRows[0].DataBoundItem;
 
-                    int id = Convert.ToInt32(dvgTurnos.SelectedRows[0].Cells["TurnoId"].Value);
+                    int id = seleccionado.TurnoId;
 
                     DialogResult result = MessageBox.Show("¿Seguro que deseas eliminar definitivamente este turno?",
                         "Confirmar Eliminación",
