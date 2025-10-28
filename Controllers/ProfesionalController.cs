@@ -187,10 +187,10 @@ namespace Controllers
 
         [Authorize]
         [HttpGet("especialidad/obraSocial")]
-        public ActionResult<IEnumerable<ProfesionalDTO>> GetProfesionalByEspecialidadAndObra([FromQuery]int especialidadId, [FromQuery] int planId) 
+        public ActionResult<IEnumerable<ProfesionalDTO>> GetProfesionalByEspecialidad(int especialidadId) 
         {
 
-            var profesionales = profesionalService.GetProfesionalByEspecialidadAndObra(especialidadId, planId);
+            var profesionales = profesionalService.GetProfesionalByEspecialidad(especialidadId);
 
             if (profesionales == null || !profesionales.Any())
                 return NotFound("No se encontraron profesionales con esa especialidad o que cubran con la obra social");

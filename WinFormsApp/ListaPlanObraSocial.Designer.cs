@@ -34,7 +34,6 @@
             btnEliminarPlan = new Button();
             btnVolver = new Button();
             btnAgregarPlanPractica = new Button();
-            btnAgregarPlan = new Button();
             ((System.ComponentModel.ISupportInitialize)planObraSocialGridView).BeginInit();
             tableLayoutPanel1.SuspendLayout();
             SuspendLayout();
@@ -45,9 +44,11 @@
             planObraSocialGridView.Dock = DockStyle.Fill;
             planObraSocialGridView.EnableHeadersVisualStyles = false;
             planObraSocialGridView.Location = new Point(0, 0);
+            planObraSocialGridView.Margin = new Padding(3, 4, 3, 4);
             planObraSocialGridView.Name = "planObraSocialGridView";
             planObraSocialGridView.ReadOnly = true;
-            planObraSocialGridView.Size = new Size(1210, 450);
+            planObraSocialGridView.RowHeadersWidth = 51;
+            planObraSocialGridView.Size = new Size(1383, 600);
             planObraSocialGridView.TabIndex = 0;
             planObraSocialGridView.CellFormatting += planObraSocialGridView_CellFormatting;
             // 
@@ -55,21 +56,21 @@
             // 
             tableLayoutPanel1.BackColor = SystemColors.ControlDark;
             tableLayoutPanel1.ColumnCount = 3;
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Absolute, 357F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333321F));
+            tableLayoutPanel1.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.3333359F));
             tableLayoutPanel1.Controls.Add(btnModificarPlan, 2, 1);
             tableLayoutPanel1.Controls.Add(btnEliminarPlan, 0, 1);
             tableLayoutPanel1.Controls.Add(btnVolver, 0, 0);
             tableLayoutPanel1.Controls.Add(btnAgregarPlanPractica, 2, 0);
-            tableLayoutPanel1.Controls.Add(btnAgregarPlan, 1, 1);
             tableLayoutPanel1.Dock = DockStyle.Bottom;
-            tableLayoutPanel1.Location = new Point(0, 350);
+            tableLayoutPanel1.Location = new Point(0, 467);
+            tableLayoutPanel1.Margin = new Padding(3, 4, 3, 4);
             tableLayoutPanel1.Name = "tableLayoutPanel1";
             tableLayoutPanel1.RowCount = 2;
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
             tableLayoutPanel1.RowStyles.Add(new RowStyle(SizeType.Percent, 50F));
-            tableLayoutPanel1.Size = new Size(1210, 100);
+            tableLayoutPanel1.Size = new Size(1383, 133);
             tableLayoutPanel1.TabIndex = 1;
             // 
             // btnModificarPlan
@@ -77,9 +78,10 @@
             btnModificarPlan.Anchor = AnchorStyles.None;
             btnModificarPlan.AutoSize = true;
             btnModificarPlan.BackColor = Color.FromArgb(255, 255, 128);
-            btnModificarPlan.Location = new Point(979, 57);
+            btnModificarPlan.Location = new Point(1093, 75);
+            btnModificarPlan.Margin = new Padding(3, 4, 3, 4);
             btnModificarPlan.Name = "btnModificarPlan";
-            btnModificarPlan.Size = new Size(104, 36);
+            btnModificarPlan.Size = new Size(119, 48);
             btnModificarPlan.TabIndex = 4;
             btnModificarPlan.Text = "Modificar";
             btnModificarPlan.UseVisualStyleBackColor = false;
@@ -89,20 +91,22 @@
             // 
             btnEliminarPlan.Anchor = AnchorStyles.None;
             btnEliminarPlan.BackColor = Color.IndianRed;
-            btnEliminarPlan.Location = new Point(164, 57);
+            btnEliminarPlan.Location = new Point(175, 75);
+            btnEliminarPlan.Margin = new Padding(3, 4, 3, 4);
             btnEliminarPlan.Name = "btnEliminarPlan";
-            btnEliminarPlan.Size = new Size(97, 36);
+            btnEliminarPlan.Size = new Size(111, 48);
             btnEliminarPlan.TabIndex = 15;
             btnEliminarPlan.Text = "Eliminar";
             btnEliminarPlan.UseVisualStyleBackColor = false;
-            btnEliminarPlan.Click += btnEliminarPlan_Click_1;
+            btnEliminarPlan.Click += btnEliminarPlan_Click;
             // 
             // btnVolver
             // 
             btnVolver.Anchor = AnchorStyles.None;
-            btnVolver.Location = new Point(165, 8);
+            btnVolver.Location = new Point(175, 11);
+            btnVolver.Margin = new Padding(3, 4, 3, 4);
             btnVolver.Name = "btnVolver";
-            btnVolver.Size = new Size(95, 33);
+            btnVolver.Size = new Size(111, 44);
             btnVolver.TabIndex = 13;
             btnVolver.Text = "Volver";
             btnVolver.UseVisualStyleBackColor = true;
@@ -112,35 +116,25 @@
             // 
             btnAgregarPlanPractica.Anchor = AnchorStyles.None;
             btnAgregarPlanPractica.BackColor = SystemColors.ActiveCaption;
-            btnAgregarPlanPractica.Location = new Point(981, 8);
+            btnAgregarPlanPractica.Location = new Point(1095, 11);
+            btnAgregarPlanPractica.Margin = new Padding(3, 4, 3, 4);
             btnAgregarPlanPractica.Name = "btnAgregarPlanPractica";
-            btnAgregarPlanPractica.Size = new Size(100, 33);
+            btnAgregarPlanPractica.Size = new Size(114, 44);
             btnAgregarPlanPractica.TabIndex = 12;
             btnAgregarPlanPractica.Text = "Agregar";
             btnAgregarPlanPractica.UseVisualStyleBackColor = false;
             btnAgregarPlanPractica.Click += btnAgregarPlanPractica_Click;
             // 
-            // btnAgregarPlan
-            // 
-            btnAgregarPlan.Anchor = AnchorStyles.None;
-            btnAgregarPlan.BackColor = SystemColors.ActiveCaption;
-            btnAgregarPlan.Location = new Point(587, 58);
-            btnAgregarPlan.Name = "btnAgregarPlan";
-            btnAgregarPlan.Size = new Size(103, 33);
-            btnAgregarPlan.TabIndex = 14;
-            btnAgregarPlan.Text = "Agregar";
-            btnAgregarPlan.UseVisualStyleBackColor = false;
-            btnAgregarPlan.Click += btnAgregarPlan_Click;
-            // 
             // ListaPlanObraSocial
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(8F, 20F);
             AutoScaleMode = AutoScaleMode.Font;
             AutoScroll = true;
-            ClientSize = new Size(1210, 450);
+            ClientSize = new Size(1383, 600);
             Controls.Add(tableLayoutPanel1);
             Controls.Add(planObraSocialGridView);
             FormBorderStyle = FormBorderStyle.FixedSingle;
+            Margin = new Padding(3, 4, 3, 4);
             MaximizeBox = false;
             MinimizeBox = false;
             Name = "ListaPlanObraSocial";
@@ -158,7 +152,6 @@
         private TableLayoutPanel tableLayoutPanel1;
         private Button btnVolver;
         private Button btnAgregarPlanPractica;
-        private Button btnAgregarPlan;
         private Button btnEliminarPlan;
         private Button btnModificarPlan;
     }

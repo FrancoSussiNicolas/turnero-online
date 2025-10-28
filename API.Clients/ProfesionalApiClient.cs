@@ -79,7 +79,14 @@ namespace API.Clients
         {
             try
             {
-                HttpResponseMessage response = await client.PostAsJsonAsync("profesionales", profesional);
+                var request = new HttpRequestMessage(HttpMethod.Post, "profesionales")
+                {
+                    Content = JsonContent.Create(profesional)
+                };
+
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
 
                 if (!response.IsSuccessStatusCode)
                 {
