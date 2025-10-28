@@ -32,16 +32,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener obra social con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -61,16 +61,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de obras sociales. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de obras sociales: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de obras sociales: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -90,16 +90,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al crear obra social. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al crear obra social: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al crear obra social: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -115,16 +115,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al eliminar obra social con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al eliminar obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al eliminar obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -144,16 +144,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar obra social con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -169,16 +169,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al cambiar estado de la obra social con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al cambiar estado de la obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al cambiar estado de la obra social con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -198,16 +198,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de obras sociales disponibles. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de obras sociales disponibles: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de obras sociales disponibles: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -223,30 +223,41 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al agregar el plan a la obra social. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al agregar el plan a la obra social: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al agregar el plan a la obra social: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
         public static async Task RemovePlanAsync(int obraSocialId, int planObraSocialId)
         {
-            var request = new HttpRequestMessage(HttpMethod.Put, $"obraSocial/eliminarPlan/{obraSocialId}/{planObraSocialId}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
-
-            HttpResponseMessage response = await client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
+            try
             {
-                string errorContent = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Error al eliminar el plan de la obra social. Status: {response.StatusCode}, Detalle: {errorContent}");
+                var request = new HttpRequestMessage(HttpMethod.Put, $"obraSocial/eliminarPlan/{obraSocialId}/{planObraSocialId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception(errorContent);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
     }

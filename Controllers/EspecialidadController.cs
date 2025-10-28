@@ -30,7 +30,7 @@ namespace Controllers
         public ActionResult<Especialidad> GetById(int id)
         {
             var e = especialidadService.GetById(id);
-            if (e is null) return NotFound(new { message = "Especialidad no encontrada" });
+            if (e is null) return NotFound("Especialidad no encontrada");
 
             return Ok(e);
         }
@@ -47,7 +47,7 @@ namespace Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -58,13 +58,13 @@ namespace Controllers
             try
             {
                 var updatedEsp = especialidadService.UpdateEspecialidad(especialidad, id);
-                if (updatedEsp is null) return NotFound(new { message = "Especialidad no encontrada" });
+                if (updatedEsp is null) return NotFound("Especialidad no encontrada");
 
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -73,7 +73,7 @@ namespace Controllers
         public ActionResult CambiarEstadoEspecialidad(int id)
         {
             var estadoCambiado = especialidadService.CambiarEstadoEspecialidad(id);
-            if (!estadoCambiado) return NotFound(new { message = "Especialidad no encontrada" });
+            if (!estadoCambiado) return NotFound("Especialidad no encontrada");
 
             return NoContent();
         }
@@ -83,7 +83,7 @@ namespace Controllers
         public ActionResult DeleteEspecialidad(int id)
         {
             var deletedEsp = especialidadService.DeleteEspecialidad(id);
-            if (!deletedEsp) return NotFound(new { message = "Especialidad no encontrada" });
+            if (!deletedEsp) return NotFound("Especialidad no encontrada");
 
             return NoContent();
         }

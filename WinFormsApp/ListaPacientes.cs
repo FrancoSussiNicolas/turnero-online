@@ -29,13 +29,10 @@ namespace WinFormsApp
 
         private void ConfigurarDataGridView()
         {
-            // La tabla ocupa todo el ancho del formulario
             pacientesGridView.Dock = DockStyle.Fill;
 
-            // Las columnas se distribuyen proporcionalmente
             pacientesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Configuraciones adicionales
             pacientesGridView.AllowUserToResizeColumns = true;
             pacientesGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             pacientesGridView.MultiSelect = false;
@@ -47,7 +44,6 @@ namespace WinFormsApp
         {
             if (pacientesGridView.Columns.Count > 0)
             {
-                // Configurar tamaño relativo de columnas (FillWeight)
                 if (pacientesGridView.Columns["PersonaId"] != null)
                 {
                     pacientesGridView.Columns["PersonaId"].Visible = false;
@@ -99,7 +95,6 @@ namespace WinFormsApp
                     pacientesGridView.Columns["PlanObraSocialId"].Visible = false;
                 }
 
-                // Ajustes generales
                 pacientesGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 pacientesGridView.AllowUserToResizeColumns = true;
                 pacientesGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -111,7 +106,6 @@ namespace WinFormsApp
         {
             try
             {
-
                 this.pacientesGridView.DataSource = null;
                 this.pacientesGridView.DataSource = await PacienteApiClient.GetAllAsync();
 

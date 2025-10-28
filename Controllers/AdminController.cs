@@ -32,12 +32,12 @@ namespace Controllers
             {
                 var adminUpdated = adminService.UpdateAdmin(admin);
 
-                if (adminUpdated is null) return NotFound(new { message = "Administrador no encontrado" });
+                if (adminUpdated is null) return NotFound("Administrador no encontrado");
 
                 return NoContent();
             }
             catch (InvalidOperationException ex) {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
     }

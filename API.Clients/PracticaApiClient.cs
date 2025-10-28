@@ -32,16 +32,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener práctica con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener práctica con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener práctica con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -61,16 +61,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de prácticas. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de prácticas: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de prácticas: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -90,16 +90,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al crear práctica. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al crear práctica: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al crear práctica: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -115,16 +115,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al eliminar práctica con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al eliminar práctica con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al eliminar práctica con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -144,16 +144,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar práctica con Id {practica.PracticaId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar práctica con Id {practica.PracticaId}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar práctica con Id {practica.PracticaId}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -169,16 +169,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al deshabilitar práctica con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al deshabilitar práctica con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al deshabilitar práctica con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -194,30 +194,41 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al agregar el plan a la práctica. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al agregar el plan a la práctica: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-            throw new Exception($"Timeout al agregar el plan a la práctica: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
         public static async Task RemovePlanAsync(int practicaId, int planObraSocialId)
-        {
-            var request = new HttpRequestMessage(HttpMethod.Put, $"practicas/eliminarPlan/{practicaId}/{planObraSocialId}");
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
-
-            HttpResponseMessage response = await client.SendAsync(request);
-
-            if (!response.IsSuccessStatusCode)
+        { 
+            try
             {
-                string errorContent = await response.Content.ReadAsStringAsync();
-                throw new Exception($"Error al eliminar el plan de la práctica. Status: {response.StatusCode}, Detalle: {errorContent}");
+                var request = new HttpRequestMessage(HttpMethod.Put, $"practicas/eliminarPlan/{practicaId}/{planObraSocialId}");
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", SessionManager.Token);
+
+                HttpResponseMessage response = await client.SendAsync(request);
+
+                if (!response.IsSuccessStatusCode)
+                {
+                    string errorContent = await response.Content.ReadAsStringAsync();
+                    throw new Exception(errorContent);
+                }
+            }
+            catch (HttpRequestException ex)
+            {
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
+            }
+            catch (TaskCanceledException ex)
+            {
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
     }

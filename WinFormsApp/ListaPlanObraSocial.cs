@@ -84,13 +84,10 @@ namespace WinFormsApp
 
         private void ConfigurarDataGridView()
         {
-            // La tabla ocupa todo el ancho del formulario
             planObraSocialGridView.Dock = DockStyle.Fill;
 
-            // Las columnas se distribuyen proporcionalmente
             planObraSocialGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Configuraciones adicionales
             planObraSocialGridView.AllowUserToResizeColumns = true;
             planObraSocialGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             planObraSocialGridView.MultiSelect = false;
@@ -102,7 +99,6 @@ namespace WinFormsApp
         {
             if (_obrasSocial != null)
             {
-                // Estamos mostrando planes para ObraSocial
                 btnVolver.Visible = true;
                 btnAgregarPlan.Visible = false;
                 btnModificarPlan.Visible = false;
@@ -112,7 +108,6 @@ namespace WinFormsApp
             }
             else if (_practica != null)
             {
-                // Estamos mostrando planes para Practica
                 btnVolver.Visible = true;
                 btnAgregarPlanPractica.Visible = true;
 
@@ -132,7 +127,6 @@ namespace WinFormsApp
             
             if (planObraSocialGridView.Columns.Count > 0)
             {
-                // Configurar tamaño relativo de columnas (FillWeight)
                 if (planObraSocialGridView.Columns["PlanObraSocialId"] != null)
                 {
                     planObraSocialGridView.Columns["PlanObraSocialId"].Visible = false;
@@ -161,8 +155,6 @@ namespace WinFormsApp
                     planObraSocialGridView.Columns["Estado"].HeaderText = "Estado";
                 }
 
-
-                // Ajustes generales
                 planObraSocialGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 planObraSocialGridView.AllowUserToResizeColumns = true;
                 planObraSocialGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;

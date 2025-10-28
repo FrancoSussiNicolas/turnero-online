@@ -342,11 +342,9 @@ namespace WinFormsApp
 
             try
             {
-                // Obtener el plan seleccionado
                 PlanObraSocialDTO seleccionado = (PlanObraSocialDTO)planesAsignadosGridView.SelectedRows[0].DataBoundItem;
                 int planId = seleccionado.PlanObraSocialId;
 
-                // Confirmación del usuario
                 DialogResult result = MessageBox.Show(
                     $"¿Seguro que deseas cancelar este plan para la práctica '{_practicaExistente.Nombre}'?",
                     "Confirmar cancelación",
@@ -356,13 +354,10 @@ namespace WinFormsApp
 
                 if (result != DialogResult.Yes) return;
 
-                // Llamar a la API para deshabilitar el plan (baja lógica)
                 await PracticaApiClient.RemovePlanAsync(_practicaExistente.PracticaId, planId);
 
-                // Quitar el plan de la lista en memoria
                 _practicaExistente.PlanObraSocial.RemoveAll(p => p.PlanObraSocialId == planId);
 
-                // Recargar el DataGridView con la lista actualizada
                 PracticaDTO planesDto = (PracticaDTO)await PracticaApiClient.GetAsync(_practicaExistente.PracticaId);
 
                 CargarPlanesAsignados(_practicaExistente.PlanObraSocial);

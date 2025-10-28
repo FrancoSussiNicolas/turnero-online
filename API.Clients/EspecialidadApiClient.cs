@@ -32,16 +32,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener especialidad con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener especialidad con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener especialidad con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -61,16 +61,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener lista de especialidades. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener lista de especialidades: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener lista de especialidades: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -91,16 +91,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al crear especialidad. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al crear especialidad: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al crear especialidad: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -117,16 +117,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al eliminar especialidad con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al eliminar especialidad con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al eliminar especialidad con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -146,16 +146,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar especialidad con Id {especialidad.EspecialidadId}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar especialidad con Id {especialidad.EspecialidadId}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar especialidad con Id {especialidad.EspecialidadId}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -172,16 +172,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al deshabilitar especialidad con Id {id}. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al deshabilitar especialidad con Id {id}: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al deshabilitar especialidad con Id {id}: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
     }

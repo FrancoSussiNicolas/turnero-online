@@ -70,10 +70,9 @@ namespace WinFormsApp
                             MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     }
                 }
-                catch (Exception err)
+                catch (Exception ex)
                 {
-                    MessageBox.Show($"Error al actualizar el perfil, inténtelo de nuevo más tarde", "Perfil",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show($"Error al actualizar el perfil: {ex.Message}", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }

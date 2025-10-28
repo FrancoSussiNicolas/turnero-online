@@ -30,16 +30,16 @@ namespace API.Clients
                 else 
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al iniciar sesión. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al iniciar sesión: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al iniciar sesión: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
     }

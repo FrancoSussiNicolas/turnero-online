@@ -50,7 +50,6 @@ namespace WinFormsApp
         {
             try
             {
-                // Validar campos obligatorios
                 if (!string.IsNullOrWhiteSpace(textNombreCompleto.Text) &&
                     !string.IsNullOrWhiteSpace(textContrasenia.Text) &&
                     !string.IsNullOrWhiteSpace(textEmail.Text) &&
@@ -59,7 +58,6 @@ namespace WinFormsApp
                 {
                     int idEspecialidad = (int)comboEspecialidad.SelectedValue;
 
-                    // Crear objeto profesional
                     var nuevoProfesional = new ProfesionalDTO {
                         ApellidoNombre =textNombreCompleto.Text,
                         Mail = textEmail.Text,
@@ -73,7 +71,6 @@ namespace WinFormsApp
 
                     MessageBox.Show("Profesional registrado exitosamente", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
 
-                    // Cerrar formulario con resultado OK
                     this.DialogResult = DialogResult.OK;
                     this.Close();
                 }

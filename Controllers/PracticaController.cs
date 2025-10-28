@@ -31,7 +31,7 @@ namespace Controllers
         public ActionResult<Practica> GetById(int id)
         {
             var practica = practicaService.GetByIdPractica(id);
-            if (practica is null) return NotFound(new { message = "Practica no encontrada" });
+            if (practica is null) return NotFound("Practica no encontrada");
 
             return Ok(practica);
         }
@@ -43,14 +43,11 @@ namespace Controllers
             try
             {
                 var nuevaPractica = practicaService.CrearPractica(practica);
-                return Created(
-                    $"https://localhost:7119/practica/{nuevaPractica.PracticaId}",
-                    nuevaPractica
-                );
+                return Created($"https://localhost:7119/practica/{nuevaPractica.PracticaId}", nuevaPractica);
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -61,13 +58,13 @@ namespace Controllers
             try
             {
                 var practicaActualizada = practicaService.UpdatePractica(practica, id);
-                if (practicaActualizada is null) return NotFound(new { message = "Practica no encontrada" });
+                if (practicaActualizada is null) return NotFound("Practica no encontrada");
 
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -76,7 +73,7 @@ namespace Controllers
         public ActionResult CambiarEstadoPractica(int id)
         {
             var estadoCambiado = practicaService.CambiarEstadoPractica(id);
-            if (!estadoCambiado) return NotFound(new { message = "Practica no encontrada" });
+            if (!estadoCambiado) return NotFound("Practica no encontrada");
 
             return NoContent();
         }
@@ -88,16 +85,16 @@ namespace Controllers
             try
             {
                 var planOs = planObraSocialService.GetByNroPlan(planObraSocialId);
-                if (planOs is null) return NotFound(new { message = "Plan de Obra Social no encontrado" });
+                if (planOs is null) return NotFound("Plan de Obra Social no encontrado");
 
                 var practicaActualizada = practicaService.AgregarPlanObraSocial(planOs, practicaId);
-                if (practicaActualizada is null) return NotFound(new { message = "Practica o Plan de Obra Social no encontrado" });
+                if (practicaActualizada is null) return NotFound("Practica o Plan de Obra Social no encontrado");
 
                 return Ok(practicaActualizada);
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -108,9 +105,9 @@ namespace Controllers
             bool eliminado = practicaService.EliminarPlanDePractica(practicaId, planId);
 
             if (!eliminado)
-                return NotFound(new { message = "Plan o práctica no encontrada" });
+                return NotFound("Plan o práctica no encontrada");
 
-            return Ok(new { message = "Plan eliminado de la práctica exitosamente" });
+            return Ok("Plan eliminado de la práctica exitosamente");
         }
 
         [Authorize(Roles = "Administrador")]
@@ -118,7 +115,7 @@ namespace Controllers
         public ActionResult DeletePractica(int id)
         {
             var practicaEliminada = practicaService.EliminarPractica(id);
-            if (!practicaEliminada) return NotFound(new { message = "Practica no encontrada" });
+            if (!practicaEliminada) return NotFound("Practica no encontrada");
 
             return NoContent();
         }

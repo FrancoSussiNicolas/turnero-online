@@ -32,16 +32,16 @@ namespace API.Clients
                 else
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al obtener al Administrador. Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al obtener al Administrador: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al obtener al Administrador:: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
 
@@ -61,16 +61,16 @@ namespace API.Clients
                 if (!response.IsSuccessStatusCode)
                 {
                     string errorContent = await response.Content.ReadAsStringAsync();
-                    throw new Exception($"Error al actualizar al Administrador . Status: {response.StatusCode}, Detalle: {errorContent}");
+                    throw new Exception(errorContent);
                 }
             }
             catch (HttpRequestException ex)
             {
-                throw new Exception($"Error de conexión al actualizar al Administrador: {ex.Message}", ex);
+                throw new Exception("Error al comunicarse con el servidor, inténtelo de nuevo");
             }
             catch (TaskCanceledException ex)
             {
-                throw new Exception($"Timeout al actualizar al Administrador: {ex.Message}", ex);
+                throw new Exception("El servidor no respondió a su solicitud, inténtelo más tarde");
             }
         }
     }

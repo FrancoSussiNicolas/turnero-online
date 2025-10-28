@@ -31,7 +31,7 @@ namespace Controllers
         public ActionResult<PlanObraSocial> GetByNro(int nro)
         {
             var planOS = planObraSocialService.GetByNroPlan(nro);
-            if (planOS is null) return NotFound(new { message = "Plan no encontrado" });
+            if (planOS is null) return NotFound("Plan no encontrado");
 
             return Ok(planOS);
         }
@@ -43,7 +43,7 @@ namespace Controllers
             var obraSocialExistente = obraSocialService.GetByIdObraSocial(planObraSocial.ObraSocialId);
             if (obraSocialExistente is null)
             {
-                return BadRequest(new { message = $"La Obra Social con ID {planObraSocial.ObraSocialId} no existe." });
+                return BadRequest($"La Obra Social con ID {planObraSocial.ObraSocialId} no existe.");
             }
 
             var newPlanOS = planObraSocialService.CrearPlanObraSocial(planObraSocial);
@@ -56,7 +56,7 @@ namespace Controllers
         public ActionResult UpdatePlanObraSocial([FromBody] PlanObraSocialDTO planObraSocial, int nro)
         {
             var updatedPlanOS = planObraSocialService.UpdatePlanObraSocial(planObraSocial, nro);
-            if (updatedPlanOS is null) return NotFound(new { message = "Plan no encontrado" });
+            if (updatedPlanOS is null) return NotFound("Plan no encontrado");
 
             return NoContent();
         }
@@ -68,13 +68,13 @@ namespace Controllers
             try
             {
                 var planDisabled = planObraSocialService.CambiarEstadoPlan(id);
-                if (!planDisabled) return NotFound(new { message = "Plan no encontrado" });
+                if (!planDisabled) return NotFound("Plan no encontrado");
 
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -83,7 +83,7 @@ namespace Controllers
         public ActionResult DeletePlanObraSocial(int nro)
         {
             var deletedPlanOS = planObraSocialService.EliminarPlanObraSocial(nro);
-            if (!deletedPlanOS) return NotFound(new { message = "Plan no encontrado" });
+            if (!deletedPlanOS) return NotFound("Plan no encontrado");
 
             return NoContent();
         }

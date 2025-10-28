@@ -43,7 +43,6 @@ namespace WinFormsApp
             {
                 ConfigurarVistaModificacion();
 
-                // Precargar valores en controles
                 textNombreObraSocial.Text = obraSocial.NombreObraSocial;
 
                 if (_obraSocialExistente.Estado == EstadoObraSocialDTO.Habilitada)
@@ -78,7 +77,6 @@ namespace WinFormsApp
         {
             if (planesAsignadosGridView.Columns.Count > 0)
             {
-                // Configurar tamaño relativo de columnas (FillWeight)
                 if (planesAsignadosGridView.Columns["PlanObraSocialId"] != null)
                 {
                     planesAsignadosGridView.Columns["PlanObraSocialId"].Visible = false;
@@ -107,7 +105,6 @@ namespace WinFormsApp
                     planesAsignadosGridView.Columns["Estado"].HeaderText = "Estado";
                 }
 
-                // Ajustes generales
                 planesAsignadosGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 planesAsignadosGridView.AllowUserToResizeColumns = true;
                 planesAsignadosGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -117,13 +114,10 @@ namespace WinFormsApp
 
         private void ConfigurarDataGridView()
         {
-            // La tabla ocupa todo el ancho del formulario
             planesAsignadosGridView.Dock = DockStyle.None;
 
-            // Las columnas se distribuyen proporcionalmente
             planesAsignadosGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Configuraciones adicionales
             planesAsignadosGridView.AllowUserToResizeColumns = true;
             planesAsignadosGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             planesAsignadosGridView.MultiSelect = false;
@@ -133,10 +127,8 @@ namespace WinFormsApp
         {
             try
             {
-                // Obtener la práctica actualizada desde la API
                 _obraSocialExistente = await ObraSocialApiClient.GetAsync(_obraSocialExistente.ObraSocialId);
 
-                // Transformar los planes a DTOs
                 var planesDto = _obraSocialExistente.PlanesObraSocial.Select(p => new PlanObraSocialDTO
                 {
                     PlanObraSocialId = p.PlanObraSocialId,
@@ -146,7 +138,6 @@ namespace WinFormsApp
                     Estado = p.Estado
                 }).ToList();
 
-                // Recargar el DataGridView
                 CargarPlanesAsignados(planesDto);
             }
             catch (Exception ex)
@@ -162,9 +153,7 @@ namespace WinFormsApp
                 planesAsignadosGridView.DataSource = null;
                 planesAsignadosGridView.DataSource = planesAsignados;
 
-                // Configurar columnas específicas
                 ConfigurarColumnasEspecificas();
-
             }
             catch (Exception ex)
             {
@@ -184,26 +173,20 @@ namespace WinFormsApp
             btnCancelarPlan.Visible = true;
             lbSusPlanes.Visible = true;
 
-            // Ubicar controles a un costado y botón abajo
             tableLayoutPanelBotones.SuspendLayout();
 
-            // Configurar para 3 columnas
             tableLayoutPanelBotones.ColumnCount = 3;
             tableLayoutPanelBotones.RowCount = 1;
 
-            // Limpiar estilos existentes
             tableLayoutPanelBotones.ColumnStyles.Clear();
             tableLayoutPanelBotones.RowStyles.Clear();
 
-            // Configurar columnas con distribución equitativa
             tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
             tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
             tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 33.33F));
-
-            // Configurar fila
+  
             tableLayoutPanelBotones.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            // Posicionar controles
             tableLayoutPanelBotones.SetColumn(btnCancelarObraSocial, 0);
             tableLayoutPanelBotones.SetRow(btnCancelarObraSocial, 0);
 
@@ -213,12 +196,10 @@ namespace WinFormsApp
             tableLayoutPanelBotones.SetColumn(btnCancelarPlan, 2);
             tableLayoutPanelBotones.SetRow(btnCancelarPlan, 0);
 
-            // Mostrar todos los botones
             btnCancelarObraSocial.Visible = true;
             btnRegistrarObraSocial.Visible = true;
             btnCancelarPlan.Visible = true;
 
-            // Alineación centrada
             btnCancelarObraSocial.Anchor = AnchorStyles.None;
             btnRegistrarObraSocial.Anchor = AnchorStyles.None;
             btnCancelarPlan.Anchor = AnchorStyles.None;
@@ -227,7 +208,6 @@ namespace WinFormsApp
         }
         private void ConfigurarVistaRegistro()
         {
-            // Cambiar texto del formulario y botones
             this.Text = "Registrar Nueva Obra Social";
             Titulo.Text = this.Text;
             btnRegistrarObraSocial.Text = "Registrar";
@@ -235,32 +215,25 @@ namespace WinFormsApp
 
             tableLayoutPanelBotones.SuspendLayout();
 
-            // Configurar para 2 columnas
             tableLayoutPanelBotones.ColumnCount = 2;
             tableLayoutPanelBotones.RowCount = 1;
 
-            // Limpiar estilos existentes
             tableLayoutPanelBotones.ColumnStyles.Clear();
             tableLayoutPanelBotones.RowStyles.Clear();
 
-            // Configurar columnas centradas
             tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
             tableLayoutPanelBotones.ColumnStyles.Add(new ColumnStyle(SizeType.Percent, 50F));
 
-            // Configurar fila
             tableLayoutPanelBotones.RowStyles.Add(new RowStyle(SizeType.AutoSize));
 
-            // Posicionar solo 2 botones
             tableLayoutPanelBotones.SetColumn(btnCancelarObraSocial, 0);
             tableLayoutPanelBotones.SetRow(btnCancelarObraSocial, 0);
 
             tableLayoutPanelBotones.SetColumn(btnRegistrarObraSocial, 1);
             tableLayoutPanelBotones.SetRow(btnRegistrarObraSocial, 0);
 
-            // Ocultar el tercer botón
             btnCancelarPlan.Visible = false;
 
-            // Alineación centrada
             btnCancelarObraSocial.Anchor = AnchorStyles.None;
             btnRegistrarObraSocial.Anchor = AnchorStyles.None;
 
@@ -324,11 +297,9 @@ namespace WinFormsApp
 
             try
             {
-                // Obtener el plan seleccionado
                 PlanObraSocialDTO seleccionado = (PlanObraSocialDTO)planesAsignadosGridView.SelectedRows[0].DataBoundItem;
                 int planId = seleccionado.PlanObraSocialId;
 
-                // Confirmación del usuario
                 DialogResult result = MessageBox.Show(
                     $"¿Seguro que deseas cancelar este plan para la obra social '{_obraSocialExistente.NombreObraSocial}'?",
                     "Confirmar cancelación",
@@ -338,19 +309,14 @@ namespace WinFormsApp
 
                 if (result != DialogResult.Yes) return;
 
-                // Llamar a la API para deshabilitar el plan (baja lógica)
                 await ObraSocialApiClient.RemovePlanAsync(_obraSocialExistente.ObraSocialId, planId);
 
-                // Quitar el plan de la lista en memoria
                 _obraSocialExistente.PlanesObraSocial.RemoveAll(p => p.PlanObraSocialId == planId);
 
-                // Traer la obra social actualizada desde la API
                 var obraSocialActualizada = await ObraSocialApiClient.GetAsync(_obraSocialExistente.ObraSocialId);
 
-                // Reemplazar la referencia local
                 _obraSocialExistente = obraSocialActualizada;
 
-                // Volver a cargar los planes en el grid
                 CargarPlanesAsignados(_obraSocialExistente.PlanesObraSocial);
 
                 MessageBox.Show("El plan fue cancelado exitosamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);

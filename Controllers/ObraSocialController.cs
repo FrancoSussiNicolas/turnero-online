@@ -31,7 +31,7 @@ namespace Controllers
         public ActionResult<ObraSocial> GetById(int id)
         {
             var os = obraSocialService.GetByIdObraSocial(id);
-            if (os is null) return NotFound(new { message = "Obra Social no encontrada" });
+            if (os is null) return NotFound("Obra Social no encontrada");
 
             return Ok(os);
         }
@@ -48,7 +48,7 @@ namespace Controllers
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -59,13 +59,13 @@ namespace Controllers
             try
             {
                 var updatedOS = obraSocialService.UpdateObraSocial(id, obraSocial);
-                if (updatedOS is null) return NotFound(new { message = "Obra Social no encontrada" });
+                if (updatedOS is null) return NotFound("Obra Social no encontrada");
 
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -74,7 +74,7 @@ namespace Controllers
         public ActionResult CambiarEstadoObraSocial(int id)
         {
             var osDisabled = obraSocialService.CambiarEstadoObraSocial(id);
-            if (!osDisabled) return NotFound(new { message = "Obra Social no encontrada" });
+            if (!osDisabled) return NotFound("Obra Social no encontrada");
 
             return NoContent();
         }
@@ -84,7 +84,7 @@ namespace Controllers
         public ActionResult DeleteObraSocial(int id)
         {
             var deletedOS = obraSocialService.EliminarObraSocial(id);
-            if (!deletedOS) return NotFound(new { message = "Obra Social no encontrada" });
+            if (!deletedOS) return NotFound("Obra Social no encontrada");
         
             return NoContent();
         }
@@ -96,9 +96,9 @@ namespace Controllers
             bool eliminado = obraSocialService.EliminarPlanDeObraSocial(obraSocialId, planId);
 
             if (!eliminado)
-                return NotFound(new { message = "Obra Social o plan no encontrada" });
+                return NotFound("Obra Social o plan no encontrada");
 
-            return Ok(new { message = "Plan eliminado de la obra social exitosamente" });
+            return Ok("Plan eliminado de la obra social exitosamente");
         }
 
         [Authorize(Roles = "Administrador")]
@@ -110,22 +110,22 @@ namespace Controllers
                 // Obtener el plan de obra social
                 var planOs = planObraSocialService.GetByNroPlan(planObraSocialId);
                 if (planOs is null)
-                    return NotFound(new { message = "Plan de Obra Social no encontrado" });
+                    return NotFound("Plan de Obra Social no encontrado");
 
                 // Llamar al service de ObraSocial
                 var obraSocialActualizada = obraSocialService.AgregarPlanAObraSocial(obraSocialId, planOs);
                 if (obraSocialActualizada is null)
-                    return NotFound(new { message = "Obra Social no encontrada" });
+                    return NotFound("Obra Social no encontrada");
 
                 return Ok(obraSocialActualizada);
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
             catch (Exception ex)
             {
-                return StatusCode(500, new { message = "Error interno: " + ex.Message });
+                return StatusCode(500, "Error interno: " + ex.Message);
             }
         }
 

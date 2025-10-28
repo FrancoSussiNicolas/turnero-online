@@ -87,7 +87,6 @@ namespace WinFormsApp
             MessageBox.Show("Es Ud. un usuario muy descuidado, haga memoria",
                 "Olvidé mi contraseña",
                 MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
-            // TODO ---> recuperación de contraseña
         }
 
         private void checkBoxPassword_CheckedChanged(object sender, EventArgs e)

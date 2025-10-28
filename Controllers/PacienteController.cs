@@ -32,7 +32,7 @@ namespace Controllers
         public ActionResult<Paciente> GetById(int id)
         {
             var p = pacienteService.GetByIdPaciente(id);
-            if (p is null) return NotFound(new { message = "Paciente no encontrado" });
+            if (p is null) return NotFound("Paciente no encontrado");
 
             return Ok(p);
         }
@@ -44,12 +44,11 @@ namespace Controllers
             {               
                 var newPaciente = pacienteService.CrearPaciente(paciente);
 
-                //return CreatedAtAction(nameof(GetById), new { id = newPaciente.IdPersona }, newPaciente);
                 return Created($"https://localhost:7119/pacientes/{newPaciente.PersonaId}", newPaciente);
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -60,13 +59,13 @@ namespace Controllers
             try
             {
                 var updatePac = pacienteService.UpdatePaciente(paciente, id);
-                if (updatePac is null) return NotFound(new { message = "Paciente no encontrado" });
+                if (updatePac is null) return NotFound("Paciente no encontrado");
 
                 return NoContent();
             }
             catch (InvalidOperationException ex)
             {
-                return Conflict(new { message = "Error al guardar: " + ex.Message });
+                return Conflict("Error al guardar: " + ex.Message);
             }
         }
 
@@ -85,7 +84,7 @@ namespace Controllers
         public ActionResult DeletePaciente (int id) 
         {
             var eliminadoPac = pacienteService.EliminarPaciente(id);
-            if(!eliminadoPac) return NotFound(new { message = "Paciente no encontrado" });
+            if(!eliminadoPac) return NotFound("Paciente no encontrado");
 
             return NoContent();
         }
@@ -95,10 +94,9 @@ namespace Controllers
         public ActionResult<object> GetPlanObraSocial(int id)
         {
             var paciente = pacienteService.GetPlanObraSocialDePaciente(id);
-            if (paciente is null) return NotFound(new { message = "Paciente no encontrado" });
+            if (paciente is null) return NotFound("Paciente no encontrado");
 
             return Ok(paciente);
         }
-
     }
 }

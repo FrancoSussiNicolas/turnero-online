@@ -14,7 +14,7 @@ namespace WinFormsApp
 
         private void ModificarEspecialidadToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Form modificarEspecialidadForm = new ModificarEspecialidad((int)SessionManager.PersonaId); // Cambiar por el valor que viene en la información del login
+            Form modificarEspecialidadForm = new ModificarEspecialidad((int)SessionManager.PersonaId);
             modificarEspecialidadForm.MdiParent = this;
             modificarEspecialidadForm.Text = "Modificar Especialidad";
             modificarEspecialidadForm.Show();

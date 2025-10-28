@@ -31,7 +31,6 @@ namespace WinFormsApp
             _planExistente = planObraSocial;
             btnRegistrarPlan.Text = "Modificar";
 
-            // Precargar valores en los controles
             textNombrePlan.Text = planObraSocial.NombrePlan;
             textDescripcionPlan.Text = planObraSocial.DescripcionPlan;
             if (planObraSocial.Estado == EstadoPlanObraSocialDTO.Habilitado)
@@ -66,7 +65,7 @@ namespace WinFormsApp
 
                     await PlanApiClient.AddAsync(planObraSocialDTO);
 
-                    MessageBox.Show("Plan de Obra Social registradó correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    MessageBox.Show("Plan de Obra Social registrado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }
 
                 else
@@ -86,7 +85,7 @@ namespace WinFormsApp
                     await PlanApiClient.UpdateAsync(_planExistente);
                 }
 
-                MessageBox.Show("Plan de Obra Social modificadó correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Plan de Obra Social modificado correctamente.", "Éxito", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 this.DialogResult = DialogResult.OK;
                 this.Close();
             }

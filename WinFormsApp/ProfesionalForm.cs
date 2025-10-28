@@ -30,13 +30,10 @@ namespace WinFormsApp
 
         private void ConfigurarDataGridView()
         {
-            // La tabla ocupa todo el ancho del formulario
             ProfesionalesDataGridView.Dock = DockStyle.Fill;
 
-            // Las columnas se distribuyen proporcionalmente
             ProfesionalesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Configuraciones adicionales
             ProfesionalesDataGridView.AllowUserToResizeColumns = true;
             ProfesionalesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             ProfesionalesDataGridView.MultiSelect = false;
@@ -47,7 +44,6 @@ namespace WinFormsApp
         {
             if (ProfesionalesDataGridView.Columns.Count > 0)
             {
-                // Configurar tamaño relativo de columnas (FillWeight)
                 if (ProfesionalesDataGridView.Columns["PersonaId"] != null)
                 {
                     ProfesionalesDataGridView.Columns["PersonaId"].FillWeight = 10;
@@ -94,7 +90,6 @@ namespace WinFormsApp
                     ProfesionalesDataGridView.Columns["AtiendePorObraSocial"].Visible = false;
                 }
 
-                // Ajustes generales
                 ProfesionalesDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
                 ProfesionalesDataGridView.AllowUserToResizeColumns = true;
                 ProfesionalesDataGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
@@ -106,7 +101,6 @@ namespace WinFormsApp
         {
             try
             {
-
                 this.ProfesionalesDataGridView.DataSource = null;
                 this.ProfesionalesDataGridView.DataSource = await ProfesionalApiClient.GetAllAsync();
 

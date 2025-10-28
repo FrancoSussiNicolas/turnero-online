@@ -48,13 +48,10 @@ namespace WinFormsApp
 
         private void ConfigurarDataGridView()
         {
-            // La tabla ocupa todo el ancho del formulario
             especialidadGridView.Dock = DockStyle.Fill;
 
-            // Las columnas se distribuyen proporcionalmente
             especialidadGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Configuraciones adicionales
             especialidadGridView.AllowUserToResizeColumns = true;
             especialidadGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             especialidadGridView.MultiSelect = false;
@@ -69,7 +66,6 @@ namespace WinFormsApp
                 {
                     EspecialidadDTO seleccionado = (EspecialidadDTO)especialidadGridView.SelectedRows[0].DataBoundItem;
 
-                    // Verificamos estado
                     if (seleccionado.Estado == EstadoEspecialidadDTO.Deshabilitada)
                     {
                         MessageBox.Show("La especialidad ya está deshabilitada, no puede volver a eliminarla.\nDebe modificarla en su lugar.",

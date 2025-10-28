@@ -45,13 +45,10 @@ namespace WinFormsApp
         }
         private void ConfigurarDataGridView()
         {
-            // La tabla ocupa todo el ancho del formulario
             practicasGridView.Dock = DockStyle.Fill;
 
-            // Las columnas se distribuyen proporcionalmente
             practicasGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
 
-            // Configuraciones adicionales
             practicasGridView.AllowUserToResizeColumns = true;
             practicasGridView.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             practicasGridView.MultiSelect = false;
